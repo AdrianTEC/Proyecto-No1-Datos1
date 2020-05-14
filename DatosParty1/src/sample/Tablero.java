@@ -18,10 +18,12 @@ public class Tablero extends Application {
     // there is the class atributes and encapsulation levels  (private and public)
     public ListaCircular caminoPrincipal;
    // private fases
-   // public dados
-   // public jugadores
-   // private cuantosHanMovido
+   // public dado dados
+   // public int jugadores
+   // private int cuantosHanMovido
+
    public  int numerodeRondas;
+
     /*This funtion is in charge of controlling the game boards
      *@author Adrián González Jiménez
      *@Version 02/05/2020
@@ -56,6 +58,7 @@ public class Tablero extends Application {
         Image J4=new Image("Imagenes/4.png");
 
         ///SE CREA EL JUGADOR ACÁ //////////////////////////////////////////////////////////////////////////////////
+
         Jugador p1= new Jugador();
         p1.imagen= new ImageView(J1);
         //Acá agarro la primera casilla de la lista circular
