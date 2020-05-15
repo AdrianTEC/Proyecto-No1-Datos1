@@ -52,6 +52,7 @@ public class Jugador
 
 
             System.out.println("Se movió a : "+String.valueOf(posX)+" ,"+String.valueOf(posY));
+            System.out.println("El index de la casilla es:"+ubicacionEnElMapa.INDEX);
         }
 
 

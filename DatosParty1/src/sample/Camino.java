@@ -3,8 +3,7 @@ package sample;
 
 public class Camino
 {
-    private float[][] matrizPosiciones ={{470,230},{470,273},{470,316},{470,359},{470,402} ,{470,445},{470,488},{427,531} ,{375,531}
-                                        ,{333,531},{291,531},{246,531,},{204,531},{162,531},{110,531},{70,494},{70,445},{70,402},{70,359},{70,316},{70,273},{70,230} };
+    public float[][] matrizPosiciones ;
     public ListaCircular casillas;
     public void  convertirMatrizAListaCircular()
         {
