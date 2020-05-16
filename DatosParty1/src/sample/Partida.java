@@ -161,22 +161,8 @@ public class Partida extends Application {
                         e.printStackTrace();
                     }
                 }
-                else
-                        {
 
-                            if(numeroDeRondas==0&&cantidadDeJugadores!=0)
-                                {
-                                    advertencia.setText("Es necesario un numero "+"\n"+ "de Rondas distinto a cero");
-                                }
-                            if (cantidadDeJugadores==0&&numeroDeRondas!=0)
-                                {
-                                    advertencia.setText("Es necesario un numero"+"\n"+ "de Jugadores distinto a cero");
-                                }
-                            }
-                            if (cantidadDeJugadores==0 && numeroDeRondas==0)
-                                {
-                                    advertencia.setText("Es necesario que ingrese"+ "\n"+"valores distintos de cero");
-                                }
+
             }
         });
 
