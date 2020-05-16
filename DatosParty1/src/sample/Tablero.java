@@ -21,10 +21,9 @@ public class Tablero extends Application {
    // private fases
    // public dado dados
    public int numeroDeJugadores;
-   // private int cuantosHanMovido
 
    public  int numerodeRondas= 0;
-   public int TurnodeJugador = 1;
+   public int turnodeJugador = 1;
 
 
 
@@ -84,7 +83,7 @@ public class Tablero extends Application {
         p3.moverseA(caminoPrincipal.primero);
         p4.moverseA(caminoPrincipal.primero);
 
-
+    //Hola
 
 
 
@@ -107,16 +106,16 @@ public class Tablero extends Application {
             @Override
             public void handle(ActionEvent event) {
 
-                if (TurnodeJugador==1) {
+                if (turnodeJugador==1) {
                     p1.moverseA(p1.ubicacionEnElMapa.siguiente);
                 }
-                if (TurnodeJugador==2) {
+                if (turnodeJugador==2) {
                     p2.moverseA(p2.ubicacionEnElMapa.siguiente);
                 }
-                if (TurnodeJugador==3) {
+                if (turnodeJugador==3) {
                     p3.moverseA(p3.ubicacionEnElMapa.siguiente);
                 }
-                if (TurnodeJugador==4) {
+                if (turnodeJugador==4) {
                     p4.moverseA(p4.ubicacionEnElMapa.siguiente);
                 }
 
@@ -137,11 +136,11 @@ public class Tablero extends Application {
         Turno.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
-                if (TurnodeJugador < 5) {
-                    TurnodeJugador += 1;
+                if (turnodeJugador < numeroDeJugadores+1) {
+                    turnodeJugador += 1;
                 }
-                if (TurnodeJugador == 5) {
-                    TurnodeJugador = 1;
+                if (turnodeJugador == numeroDeJugadores+1) {
+                    turnodeJugador = 1;
                     numerodeRondas += 1;
                 }
             }
