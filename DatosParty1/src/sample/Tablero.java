@@ -25,10 +25,12 @@ public class Tablero extends Application {
 
    public  int numerodeRondas= 0;
    public int TurnodeJugador = 1;
-   public Jugador p1;
-   public Jugador p2;
-   public Jugador p3;
-   public Jugador p4;
+
+
+
+
+
+
     /*This funtion is in charge of controlling the game boards
      *@author Adrián González Jiménez
      *@Version 02/05/2020
@@ -41,6 +43,8 @@ public class Tablero extends Application {
          *@Version 02/05/2020
          * @param primaryStage
          */
+
+
         Pane root = new Pane();
 
         Camino FaseInicial= new Camino();
@@ -66,33 +70,22 @@ public class Tablero extends Application {
         Image J4=new Image("Imagenes/4.png");
 
         ///SE CREAN LOS JUGADORES ACÁ //////////////////////////////////////////////////////////////////////////////////
-        if (numeroDeJugadores >= 2) {
-            Jugador p1 = new Jugador();
-            p1.imagen = new ImageView(J1);
-            //Acá agarro la primera casilla de la lista circular
-            p1.moverseA(caminoPrincipal.primero);
+        Jugador p1 = new Jugador();
+        p1.imagen = new ImageView(J1);
+        Jugador p2 = new Jugador();
+        p2.imagen = new ImageView(J2);
+        Jugador p3 = new Jugador();
+        p3.imagen = new ImageView(J3);
+        Jugador p4 = new Jugador();
+        p4.imagen = new ImageView(J4);
 
-            Jugador p2 = new Jugador();
-            p2.imagen = new ImageView(J2);
-            p2.moverseA(caminoPrincipal.primero);
+        p1.moverseA(caminoPrincipal.primero);
+        p2.moverseA(caminoPrincipal.primero);
+        p3.moverseA(caminoPrincipal.primero);
+        p4.moverseA(caminoPrincipal.primero);
 
-            root.getChildren().addAll(p1.imagen,p2.imagen);
-        }
-        if (numeroDeJugadores >= 3) {
 
-            Jugador p3 = new Jugador();
-            p3.imagen = new ImageView(J3);
-            p3.moverseA(caminoPrincipal.primero);
 
-            root.getChildren().addAll(p3.imagen);
-        }
-        if (numeroDeJugadores == 4) {
-            Jugador p4 = new Jugador();
-            p4.imagen = new ImageView(J4);
-            p4.moverseA(caminoPrincipal.primero);
-
-            root.getChildren().addAll(p4.imagen);
-        }
 
 
 
@@ -158,6 +151,26 @@ public class Tablero extends Application {
         //AQUI SE AGREGAN LOS COMPONENTES
 
         root.getChildren().addAll(tableroImagen, Move, Turno);
+
+
+        if(numeroDeJugadores>=2) {
+            //Acá agarro la primera casilla de la lista circular
+
+            root.getChildren().add(p1.imagen);
+            root.getChildren().add(p2.imagen);
+
+
+        }
+        if(numeroDeJugadores>=3) {
+            root.getChildren().add(p3.imagen);
+
+        }
+        if(numeroDeJugadores==4) {
+            root.getChildren().add(p4.imagen);
+
+        }
+
+
 
 
         primaryStage.setResizable(false);
