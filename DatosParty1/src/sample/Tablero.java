@@ -83,7 +83,7 @@ public class Tablero extends Application {
         p3.moverseA(caminoPrincipal.primero);
         p4.moverseA(caminoPrincipal.primero);
 
-
+    //Hola
 
 
 
