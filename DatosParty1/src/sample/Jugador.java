@@ -1,6 +1,7 @@
 package sample;
 
 
+import Listas.CasillaSimple;
 import javafx.scene.image.ImageView;
 
 public class Jugador
@@ -11,7 +12,7 @@ public class Jugador
     public  int estrellas;
     public  int monedas;
     public ImageView imagen;
-    public Casilla ubicacionEnElMapa;
+    public CasillaSimple ubicacionEnElMapa;
 
     public Jugador ()
         {
@@ -30,7 +31,7 @@ public class Jugador
         }
 
 
-    public  void moverseA(Casilla casillita)
+    public  void moverseA(CasillaSimple casillita)
 
         {
 

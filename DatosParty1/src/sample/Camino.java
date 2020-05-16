@@ -1,6 +1,9 @@
 package sample;
 
 
+import Listas.CasillaSimple;
+import Listas.ListaCircular;
+
 public class Camino
 {
     public float[][] matrizPosiciones ;
@@ -16,7 +19,7 @@ public class Camino
             casillas= new ListaCircular();
                 for(float[] i : matrizPosiciones)
                     {
-                        Casilla nuevo= new Casilla();
+                        CasillaSimple nuevo= new CasillaSimple();
                         nuevo.posicion=i;
                         casillas.ingresarNodo(nuevo);
                     }
