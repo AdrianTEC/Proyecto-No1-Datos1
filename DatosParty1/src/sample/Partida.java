@@ -19,8 +19,8 @@ import javafx.stage.Stage;
 
 public class Partida extends Application {
     // there is the class atributes and encapsulation levels
-    public int numeroDeRondas = 0;
-    public int cantidadDeJugadores = 0;
+    public int numeroDeRondas = 1;
+    public int cantidadDeJugadores = 2;
 
     @Override// there is overwriting  this  use  handle method from other class
     public void start(Stage primaryStage) throws Exception {
@@ -74,7 +74,7 @@ public class Partida extends Application {
         UnJugadorMenos.setOnAction(new EventHandler<ActionEvent>() {
             @Override //there is overwriting handle function is imported from another class
             public void handle(ActionEvent event) {
-                if (cantidadDeJugadores > 0) {
+                if (cantidadDeJugadores > 2) {
                     cantidadDeJugadores -= 1;
                     CampoNumeroJugadores.setText("Cantidad de jugadores : " + String.valueOf(cantidadDeJugadores));
                 }
@@ -118,7 +118,7 @@ public class Partida extends Application {
         UnoMenos.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                if (numeroDeRondas > 0) {
+                if (numeroDeRondas > 1) {
                     numeroDeRondas -= 1;
                     campoNumeroDeRondas.setText("Cantidad de rondas : " + String.valueOf(numeroDeRondas));
                 }
