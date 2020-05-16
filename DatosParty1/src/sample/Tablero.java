@@ -20,11 +20,15 @@ public class Tablero extends Application {
     public ListaCircular caminoPrincipal;
    // private fases
    // public dado dados
-   // public int jugadores
+   public int numeroDeJugadores;
    // private int cuantosHanMovido
 
-   public  int numerodeRondas;
-
+   public  int numerodeRondas= 0;
+   public int TurnodeJugador = 1;
+   public Jugador p1;
+   public Jugador p2;
+   public Jugador p3;
+   public Jugador p4;
     /*This funtion is in charge of controlling the game boards
      *@author Adrián González Jiménez
      *@Version 02/05/2020
@@ -37,7 +41,7 @@ public class Tablero extends Application {
          *@Version 02/05/2020
          * @param primaryStage
          */
-
+        Pane root = new Pane();
 
         Camino FaseInicial= new Camino();
         FaseInicial.matrizPosiciones= new float[][]{{470, 230}, {470, 273}, {470, 316}, {470, 359}, {470, 402}, {470, 445}, {470, 488}, {427, 531}, {375, 531}
@@ -61,13 +65,34 @@ public class Tablero extends Application {
         Image J3=new Image("Imagenes/3.png");
         Image J4=new Image("Imagenes/4.png");
 
-        ///SE CREA EL JUGADOR ACÁ //////////////////////////////////////////////////////////////////////////////////
+        ///SE CREAN LOS JUGADORES ACÁ //////////////////////////////////////////////////////////////////////////////////
+        if (numeroDeJugadores >= 2) {
+            Jugador p1 = new Jugador();
+            p1.imagen = new ImageView(J1);
+            //Acá agarro la primera casilla de la lista circular
+            p1.moverseA(caminoPrincipal.primero);
 
-        Jugador p1= new Jugador();
-        p1.imagen= new ImageView(J1);
-        //Acá agarro la primera casilla de la lista circular
-        p1.moverseA(caminoPrincipal.primero);
+            Jugador p2 = new Jugador();
+            p2.imagen = new ImageView(J2);
+            p2.moverseA(caminoPrincipal.primero);
 
+            root.getChildren().addAll(p1.imagen,p2.imagen);
+        }
+        if (numeroDeJugadores >= 3) {
+
+            Jugador p3 = new Jugador();
+            p3.imagen = new ImageView(J3);
+            p3.moverseA(caminoPrincipal.primero);
+
+            root.getChildren().addAll(p3.imagen);
+        }
+        if (numeroDeJugadores == 4) {
+            Jugador p4 = new Jugador();
+            p4.imagen = new ImageView(J4);
+            p4.moverseA(caminoPrincipal.primero);
+
+            root.getChildren().addAll(p4.imagen);
+        }
 
 
 
@@ -89,15 +114,50 @@ public class Tablero extends Application {
             @Override
             public void handle(ActionEvent event) {
 
-                p1.moverseA(p1.ubicacionEnElMapa.siguiente);
+                if (TurnodeJugador==1) {
+                    p1.moverseA(p1.ubicacionEnElMapa.siguiente);
+                }
+                if (TurnodeJugador==2) {
+                    p2.moverseA(p2.ubicacionEnElMapa.siguiente);
+                }
+                if (TurnodeJugador==3) {
+                    p3.moverseA(p3.ubicacionEnElMapa.siguiente);
+                }
+                if (TurnodeJugador==4) {
+                    p4.moverseA(p4.ubicacionEnElMapa.siguiente);
+                }
 
+            }
+        });
+        // Controlar de quien es turno
+        Button Turno = new Button ("", new ImageView(btn));
+        Turno.setStyle("-fx-background-color:transparent;-fx-background-radius: 30");
+        //POSICION
+        Turno.setLayoutX(428);
+        Turno.setLayoutY(420);
+        //POSICION
+        Turno.setScaleX(0.5);
+        Turno.setScaleY(0.5);
+        Turno.setFont(Font.font("Verdana", FontWeight.BOLD, 30));
+        Turno.setText("¡Acabar Turno!");
+        Move.setContentDisplay(ContentDisplay.CENTER);
+        Turno.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                if (TurnodeJugador < 5) {
+                    TurnodeJugador += 1;
+                }
+                if (TurnodeJugador == 5) {
+                    TurnodeJugador = 1;
+                    numerodeRondas += 1;
+                }
             }
         });
 
 
         //AQUI SE AGREGAN LOS COMPONENTES
-        Pane root = new Pane();
-        root.getChildren().addAll(tableroImagen,p1.imagen,Move);
+
+        root.getChildren().addAll(tableroImagen, Move, Turno);
 
 
         primaryStage.setResizable(false);

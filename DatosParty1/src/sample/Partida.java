@@ -210,7 +210,7 @@ public class Partida extends Application {
         Tablero mytable= new Tablero();
         Stage abs= new Stage();
         mytable.start(abs);
-
+        mytable.numeroDeJugadores = cantidadDeJugadores;
 
 
         }
