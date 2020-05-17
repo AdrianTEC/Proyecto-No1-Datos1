@@ -6,6 +6,7 @@ import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ContentDisplay;
+import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
@@ -21,8 +22,8 @@ public class Tablero extends Application {
    // private fases
    // public dado dados
    public int numeroDeJugadores;
-
-   public  int numerodeRondas= 0;
+   public int cantidadDeTurnos;
+   public  int rondasJugadas= 1;
    public int turnodeJugador = 1;
 
 
@@ -61,6 +62,14 @@ public class Tablero extends Application {
         Image btn = new Image("Imagenes/Boton.png");
         Image TableroImagen = new Image("Imagenes/Tablero.png");
         ImageView tableroImagen = new ImageView(TableroImagen);
+        /////////////////////////////////////////////////////////////////////////
+        //Aqui se muestra la cantidad de rondas que han pasado y la cantidad de rondas que se deben jugar
+        Label ronda = new Label();
+        ronda.setText(rondasJugadas + "/" + cantidadDeTurnos);
+        ronda.setLayoutX(605);
+        ronda.setLayoutY(130);
+        ronda.setFont(Font.font("Verdana", FontWeight.BOLD, 25));
+        ronda.setStyle("-fx-background-color: rgba(243,236,250,0.63);");
 
         //IMAGEN JUGADORES
         Image J1=new Image("Imagenes/1.png");
@@ -138,18 +147,38 @@ public class Tablero extends Application {
             public void handle(ActionEvent actionEvent) {
                 if (turnodeJugador < numeroDeJugadores+1) {
                     turnodeJugador += 1;
+                    ronda.setText(rondasJugadas + "/" + cantidadDeTurnos);
+                }
+                if (rondasJugadas == cantidadDeTurnos){
+                    Label victoria = new Label();
+                    victoria.setText("Victory Royale");
+                    victoria.setLayoutX(100);
+                    victoria.setLayoutY(130);
+                    victoria.setFont(Font.font("Verdana", FontWeight.BOLD, 50));
+                    victoria.setStyle("-fx-background-color: rgb(255,255,255);");
+
                 }
                 if (turnodeJugador == numeroDeJugadores+1) {
-                    turnodeJugador = 1;
-                    numerodeRondas += 1;
+                    if (rondasJugadas<cantidadDeTurnos) {
+                        if (rondasJugadas < cantidadDeTurnos) {
+                            turnodeJugador = 1;
+                            rondasJugadas += 1;
+                            ronda.setText(rondasJugadas + "/" + cantidadDeTurnos);
+                        }
+                        else{
+                            rondasJugadas += 1;
+                            ronda.setText(rondasJugadas + "/" + cantidadDeTurnos);
+                        }
+                    }
                 }
+
             }
         });
 
 
         //AQUI SE AGREGAN LOS COMPONENTES
 
-        root.getChildren().addAll(tableroImagen, Move, Turno);
+        root.getChildren().addAll(tableroImagen, Move, Turno, ronda);
 
 
         if(numeroDeJugadores>=2) {

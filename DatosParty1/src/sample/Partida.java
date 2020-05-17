@@ -196,6 +196,7 @@ public class Partida extends Application {
         Tablero mytable= new Tablero();
         Stage abs= new Stage();
         mytable.numeroDeJugadores=cantidadDeJugadores;
+        mytable.cantidadDeTurnos=numeroDeRondas;
 
         mytable.start(abs);
 
@@ -205,4 +206,4 @@ public class Partida extends Application {
         launch(args);
     }
 }
-    //Comentario de saguridad
+    //Comentario de seguridad
