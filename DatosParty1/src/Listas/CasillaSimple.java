@@ -6,6 +6,6 @@ public class CasillaSimple {
         public int INDEX;         //AGREGADO QUE ME PERMITE SABER QUÉ CASILLA ES
         public float[] posicion  ; //contiene una ubicacion X,Y
         public String tipo;        //Sin desarrollar
-       public CasillaSimple siguiente;  //Indica cual es la casilla siguiente
+       public Object siguiente;  //Indica cual es la casilla siguiente
 
     }

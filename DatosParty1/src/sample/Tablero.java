@@ -1,4 +1,6 @@
 package sample;
+import Listas.CasillaDoble;
+import Listas.CasillaSimple;
 import Listas.ListaCircular;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
@@ -36,6 +38,25 @@ public class Tablero extends Application {
      *@Version 02/05/2020
      * @param Stage
      */
+    public void lanzarDados(Jugador px)
+        { /*This funtion throw the dices and ask players to move
+         *@author Adrián González Jiménez
+         *@Version 02/05/2020
+         * @param Jugador
+         */
+
+
+
+            //Aquí debemos realizar un doble casteo, se realizó una actualización para poder generalizar a las casillas
+            //Estas en vez de poderse comunicar entre casillas del mismo tipo lo podrán hacer con otras que no lo sean
+            //Entonces ellas tendran de atributo de tipo OBJETO entonces hacemos doble casteo primero por "UBICACION EN EL MAPA"
+            //Luego lo hacemos por "SIGUIENTE"
+            if(px.ubicacionEnElMapa instanceof  CasillaSimple) {
+                px.moverseA((CasillaSimple) ((CasillaSimple) px.ubicacionEnElMapa).siguiente);
+            }
+            if(px.ubicacionEnElMapa instanceof CasillaDoble) {
+                px.moverseA((CasillaSimple) ((CasillaDoble) px.ubicacionEnElMapa).siguiente);}
+        }
     @Override// there is overwriting  this  use  handle method from other class;
     public void start(Stage primaryStage) throws Exception {
         /*This funtion is in charge of window building and creates the way list
@@ -43,18 +64,29 @@ public class Tablero extends Application {
          *@Version 02/05/2020
          * @param primaryStage
          */
-
+        //CREO EL PANE  EN EL AGREGARE COSAS COMO BOTONES IMAGENES O LABELES
 
         Pane root = new Pane();
 
-        Camino FaseInicial= new Camino();
-        FaseInicial.matrizPosiciones= new float[][]{{470, 230}, {470, 273}, {470, 316}, {470, 359}, {470, 402}, {470, 445}, {470, 488}, {427, 531}, {375, 531}
-                                    , {333, 531}, {291, 531}, {246, 531,}, {204, 531}, {162, 531}, {110, 531}, {70, 494}, {70, 445}, {70, 402}, {70, 359}, {70, 316}, {70, 273}, {70, 230}};
-        //Convierto el camino a una listaCircular
-        FaseInicial.convertirMatrizAListaCircular();
 
-        caminoPrincipal= FaseInicial.casillas;   //extraigo la lista circular
 
+        //CREO UN OBJETO LLAMADO FASE INICIAL QUE ES IGUAL A UN NUEVO CAMINO
+            //LE ASIGNO UNA MATRIZ DE POSICIONES QUE CORRESPONDE A LAS UBICACIONES DE TODOS LOS LUGARES DONDE SE PODRAN MOVER
+            Camino FaseInicial= new Camino();
+            FaseInicial.matrizPosiciones= new float[][]{{470, 230}, {470, 273}, {470, 316}, {470, 359}, {470, 402}, {470, 445}, {470, 488}, {427, 531}, {375, 531}
+                                        , {333, 531}, {291, 531}, {246, 531,}, {204, 531}, {162, 531}, {110, 531}, {70, 494}, {70, 445}, {70, 402}, {70, 359}, {70, 316}, {70, 273}, {70, 230}};
+
+
+            //Convierto el camino a una listaCircular lo cual me permitirá seguir primero las indicaciones del proyecto y
+            //segundo recorrer el camino
+            FaseInicial.convertirMatrizAListaCircular();
+
+            caminoPrincipal= FaseInicial.casillas;   //extraigo la lista circular
+        //CREO LA FASE C
+
+            Camino FaseC= new Camino();
+            FaseC.dobleEnlaze=true; //ESTA LISTA VA A SER DOBLE ENLAZADA
+            FaseC.matrizPosiciones= new float[][]{{123,123},{453,231},{234,343}};
 
 
 
@@ -87,10 +119,12 @@ public class Tablero extends Application {
         Jugador p4 = new Jugador();
         p4.imagen = new ImageView(J4);
 
-        p1.moverseA(caminoPrincipal.primero);
-        p2.moverseA(caminoPrincipal.primero);
-        p3.moverseA(caminoPrincipal.primero);
-        p4.moverseA(caminoPrincipal.primero);
+        p1.moverseA((CasillaSimple) caminoPrincipal.primero);
+        p2.moverseA((CasillaSimple)caminoPrincipal.primero);
+        p3.moverseA((CasillaSimple)caminoPrincipal.primero);
+        p4.moverseA((CasillaSimple)caminoPrincipal.primero);
+
+
 
     //Hola
 
@@ -114,34 +148,50 @@ public class Tablero extends Application {
         Move.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
+                //Como los jugadores pueden estar en dos tipos de casillas diferentes
+                //y como es obligatorio enviarle El tipo de casilla al cual se va  a mover
+                // hay que considerar que "ubicacionEnElMapa" es de tipo objeto
+                // por lo tanto hay que saber que
+                // tipo de objeto es en el que el jugador está (tipo casilla simple o doble)
 
+
+                Jugador px= new Jugador();
                 if (turnodeJugador==1) {
-                    p1.moverseA(p1.ubicacionEnElMapa.siguiente);
-                }
+                    lanzarDados(p1);
+                  }
                 if (turnodeJugador==2) {
-                    p2.moverseA(p2.ubicacionEnElMapa.siguiente);
+                    lanzarDados(p2);
+
                 }
                 if (turnodeJugador==3) {
-                    p3.moverseA(p3.ubicacionEnElMapa.siguiente);
+                    lanzarDados(p3);
+
                 }
                 if (turnodeJugador==4) {
-                    p4.moverseA(p4.ubicacionEnElMapa.siguiente);
+                    lanzarDados(p4);
+
                 }
+
+
+
+
+
 
             }
         });
         // Controlar de quien es turno
         Button Turno = new Button ("", new ImageView(btn));
-        Turno.setStyle("-fx-background-color:transparent;-fx-background-radius: 30");
+        Turno.setStyle("-fx-background-color:transparent;");
         //POSICION
-        Turno.setLayoutX(428);
+        Turno.setLayoutX(495);
         Turno.setLayoutY(420);
         //POSICION
         Turno.setScaleX(0.5);
         Turno.setScaleY(0.5);
-        Turno.setFont(Font.font("Verdana", FontWeight.BOLD, 30));
-        Turno.setText("¡Acabar Turno!");
-        Move.setContentDisplay(ContentDisplay.CENTER);
+
+
+        Label victoria = new Label();
+
         Turno.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
@@ -150,7 +200,6 @@ public class Tablero extends Application {
                     ronda.setText(rondasJugadas + "/" + cantidadDeTurnos);
                 }
                 if (rondasJugadas == cantidadDeTurnos){
-                    Label victoria = new Label();
                     victoria.setText("Victory Royale");
                     victoria.setLayoutX(100);
                     victoria.setLayoutY(130);
@@ -178,7 +227,7 @@ public class Tablero extends Application {
 
         //AQUI SE AGREGAN LOS COMPONENTES
 
-        root.getChildren().addAll(tableroImagen, Move, Turno, ronda);
+        root.getChildren().addAll(tableroImagen, Move, Turno, ronda,victoria);
 
 
         if(numeroDeJugadores>=2) {

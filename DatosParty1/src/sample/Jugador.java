@@ -1,6 +1,7 @@
 package sample;
 
 
+import Listas.CasillaDoble;
 import Listas.CasillaSimple;
 import javafx.scene.image.ImageView;
 
@@ -12,7 +13,7 @@ public class Jugador
     public  int estrellas;
     public  int monedas;
     public ImageView imagen;
-    public CasillaSimple ubicacionEnElMapa;
+    public Object ubicacionEnElMapa;
 
     public Jugador ()
         {
@@ -35,29 +36,41 @@ public class Jugador
 
         {
 
-            /*This funtion moves the player to other slot position
+            /*This funtion calls the funtion moverseAcoordenada
              *@author Adrián González Jiménez
              *@Version 02/05/2020
-             * @param and object type of Casilla
+             * @param and object type of CasillaSimple
              */
 
-
-            // Extraigo los componentes de posicion
-            posX=casillita.posicion[0];
-            posY=casillita.posicion[1];
-
-
             ubicacionEnElMapa=casillita;// ahora la nueva casilla donde está el jugador es la introducida
+            moverAcoordenada(casillita.posicion[0],casillita.posicion[1]);
+
+
+        }
+    public  void moverseA(CasillaDoble casillita)
+
+    {
+
+        /*This funtion calls the funtion moverseAcoordenada
+         *@author Adrián González Jiménez
+         *@Version 02/05/2020
+         * @param and object type of CasillaDoble
+         */
+        ubicacionEnElMapa=casillita;// ahora la nueva casilla donde está el jugador es la introducida
+        moverAcoordenada(casillita.posicion[0],casillita.posicion[1]);
+
+
+
+    }
+
+    private void moverAcoordenada(float x, float y)
+        {
+            posY=y;
+            posX=x;
             imagen.setLayoutX(posX);
             imagen.setLayoutY(posY);
 
-
-            System.out.println("Se movió a : "+String.valueOf(posX)+" ,"+String.valueOf(posY));
-            System.out.println("El index de la casilla es:"+ubicacionEnElMapa.INDEX);
         }
-
-
-
 
 
 }
