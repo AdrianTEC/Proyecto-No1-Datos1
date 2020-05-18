@@ -1,9 +1,6 @@
 package Listas;
 
-public class CasillaDoble {
-    public int INDEX;         //AGREGADO QUE ME PERMITE SABER QUÉ CASILLA ES
-    public float[] posicion  ; //contiene una ubicacion X,Y
-    public String tipo;        //Sin desarrollar
+public class CasillaDoble extends CasillaSimple {
+
     public Object anterior;
-    public Object siguiente;
 }

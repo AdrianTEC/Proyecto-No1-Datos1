@@ -18,18 +18,31 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
 
+
 public class Tablero extends Application {
     // there is the class atributes and encapsulation levels  (private and public)
     public ListaCircular caminoPrincipal;
    // private fases
-   // public dado dados
-   public int numeroDeJugadores;
+   public  ImageView dadoActual;
+
+    public int numeroDeJugadores;
    public int cantidadDeTurnos;
    public  int rondasJugadas= 1;
    public int turnodeJugador = 1;
 
-
-
+    //IMAGEN LADOS DEL DADO
+    Image D1=new Image("Imagenes/Dados-1.png.png");
+    Image D2=new Image("Imagenes/Dados-2.png.png");
+    Image D3=new Image("Imagenes/Dados-3.png.png");
+    Image D4=new Image("Imagenes/Dados-4.png.png");
+    Image D5=new Image("Imagenes/Dados-5.png.png");
+    Image D6=new Image("Imagenes/Dados-6.png.png");
+    //IMAGEN JUGADORES
+    Image J1=new Image("Imagenes/1.png");
+    Image J2=new Image("Imagenes/2.png");
+    Image J3=new Image("Imagenes/3.png");
+    Image J4=new Image("Imagenes/4.png");
+    Pane root = new Pane();
 
 
 
@@ -38,6 +51,34 @@ public class Tablero extends Application {
      *@Version 02/05/2020
      * @param Stage
      */
+    private void moverPersonaje(Jugador px,int numDado,int puntero)
+        {
+
+            if( puntero <numDado) {
+
+                new java.util.Timer().schedule(
+
+                        new java.util.TimerTask() {
+                            @Override
+                            public void run() {
+                                if (px.ubicacionEnElMapa instanceof CasillaSimple) {
+                                    px.moverseA((CasillaSimple) ((CasillaSimple) px.ubicacionEnElMapa).siguiente);
+
+
+                                }
+                                if (px.ubicacionEnElMapa instanceof CasillaDoble) {
+                                    px.moverseA((CasillaSimple) ((CasillaDoble) px.ubicacionEnElMapa).siguiente);
+                                }
+                                moverPersonaje(px,numDado,puntero+1);
+
+                            }
+                        },
+                        500
+                );
+            }
+
+
+        }
     public void lanzarDados(Jugador px)
         { /*This funtion throw the dices and ask players to move
          *@author Adrián González Jiménez
@@ -45,17 +86,32 @@ public class Tablero extends Application {
          * @param Jugador
          */
 
+            Dado.tirar();
+            if (Dado.getNumero() == 1) {
+                dadoActual=new ImageView(D1); }
+            if (Dado.getNumero() == 2) {
+                dadoActual=new ImageView(D2); }
+            if (Dado.getNumero() == 3) {
+                dadoActual=new ImageView(D3); }
+            if (Dado.getNumero() == 4) {
+                dadoActual=new ImageView(D4); }
+            if (Dado.getNumero() == 5) {
+                dadoActual=new ImageView(D5); }
+            if (Dado.getNumero() == 6) {
+                dadoActual=new ImageView(D6); }
 
-
+            dadoActual.setFitHeight(100);
+            dadoActual.setFitWidth(100);
+            dadoActual.setLayoutX(120);
+            dadoActual.setLayoutY(600);
+            root.getChildren().add(dadoActual);
             //Aquí debemos realizar un doble casteo, se realizó una actualización para poder generalizar a las casillas
             //Estas en vez de poderse comunicar entre casillas del mismo tipo lo podrán hacer con otras que no lo sean
             //Entonces ellas tendran de atributo de tipo OBJETO entonces hacemos doble casteo primero por "UBICACION EN EL MAPA"
-            //Luego lo hacemos por "SIGUIENTE"
-            if(px.ubicacionEnElMapa instanceof  CasillaSimple) {
-                px.moverseA((CasillaSimple) ((CasillaSimple) px.ubicacionEnElMapa).siguiente);
-            }
-            if(px.ubicacionEnElMapa instanceof CasillaDoble) {
-                px.moverseA((CasillaSimple) ((CasillaDoble) px.ubicacionEnElMapa).siguiente);}
+            //            //Luego lo hacemos por "SIGUIENTE"
+
+            moverPersonaje(px,Dado.getNumero(),0);
+
         }
     @Override// there is overwriting  this  use  handle method from other class;
     public void start(Stage primaryStage) throws Exception {
@@ -66,7 +122,7 @@ public class Tablero extends Application {
          */
         //CREO EL PANE  EN EL AGREGARE COSAS COMO BOTONES IMAGENES O LABELES
 
-        Pane root = new Pane();
+
 
 
 
@@ -102,18 +158,7 @@ public class Tablero extends Application {
         ronda.setLayoutY(130);
         ronda.setFont(Font.font("Verdana", FontWeight.BOLD, 25));
         ronda.setStyle("-fx-background-color: rgba(243,236,250,0.63);");
-        //IMAGEN LADOS DEL DADO
-        Image D1=new Image("Imagenes/Dados-1.png.png");
-        Image D2=new Image("Imagenes/Dados-2.png.png");
-        Image D3=new Image("Imagenes/Dados-3.png.png");
-        Image D4=new Image("Imagenes/Dados-4.png.png");
-        Image D5=new Image("Imagenes/Dados-5.png.png");
-        Image D6=new Image("Imagenes/Dados-6.png.png");
-        //IMAGEN JUGADORES
-        Image J1=new Image("Imagenes/1.png");
-        Image J2=new Image("Imagenes/2.png");
-        Image J3=new Image("Imagenes/3.png");
-        Image J4=new Image("Imagenes/4.png");
+
 
         ///SE CREAN LOS JUGADORES ACÁ //////////////////////////////////////////////////////////////////////////////////
         Jugador p1 = new Jugador();
@@ -129,72 +174,6 @@ public class Tablero extends Application {
         p2.moverseA((CasillaSimple)caminoPrincipal.primero);
         p3.moverseA((CasillaSimple)caminoPrincipal.primero);
         p4.moverseA((CasillaSimple)caminoPrincipal.primero);
-
-///////////////////////////////////////////////////   BOTON DADO
-        Button TirarDado = new Button("", new ImageView(btn));
-        TirarDado.setStyle("-fx-background-color:transparent;-fx-background-radius: 30");
-        TirarDado.setLayoutX(-80);
-        TirarDado.setLayoutY(600);
-        TirarDado.setScaleX(0.5);
-        TirarDado.setScaleY(0.5);
-        TirarDado.setFont(Font.font("Verdana", FontWeight.BOLD, 30));
-        TirarDado.setText("Tirar Dado");
-        TirarDado.setContentDisplay(ContentDisplay.CENTER);
-        TirarDado.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                Dado.showDado();
-                if (Dado.getNumero() == 1) {
-                    ImageView d1 = new ImageView(D1);
-                    d1.setFitHeight(80);
-                    d1.setFitWidth(80);
-                    d1.setLayoutX(140);
-                    d1.setLayoutY(620);
-                    root.getChildren().add(d1);
-                }
-                if (Dado.getNumero() == 2) {
-                    ImageView d2 = new ImageView(D2);
-                    d2.setFitHeight(100);
-                    d2.setFitWidth(100);
-                    d2.setLayoutX(120);
-                    d2.setLayoutY(600);
-                    root.getChildren().add(d2);
-                }
-                if (Dado.getNumero() == 3) {
-                    ImageView d3 = new ImageView(D3);
-                    d3.setFitHeight(100);
-                    d3.setFitWidth(100);
-                    d3.setLayoutX(120);
-                    d3.setLayoutY(600);
-                    root.getChildren().add(d3);
-                }
-                if (Dado.getNumero() == 4) {
-                    ImageView d4 = new ImageView(D4);
-                    d4.setFitHeight(100);
-                    d4.setFitWidth(100);
-                    d4.setLayoutX(120);
-                    d4.setLayoutY(600);
-                    root.getChildren().add(d4);
-                }
-                if (Dado.getNumero() == 5) {
-                    ImageView d5 = new ImageView(D5);
-                    d5.setFitHeight(100);
-                    d5.setFitWidth(100);
-                    d5.setLayoutX(120);
-                    d5.setLayoutY(600);
-                    root.getChildren().add(d5);
-                }
-                if (Dado.getNumero() == 6) {
-                    ImageView d6 = new ImageView(D6);
-                    d6.setFitHeight(100);
-                    d6.setFitWidth(100);
-                    d6.setLayoutX(120);
-                    d6.setLayoutY(600);
-                    root.getChildren().add(d6);
-                }
-
-            }
-        });
 
 
 
@@ -266,25 +245,21 @@ public class Tablero extends Application {
                     turnodeJugador += 1;
                     ronda.setText(rondasJugadas + "/" + cantidadDeTurnos);
                 }
-                if (rondasJugadas == cantidadDeTurnos){
-                    victoria.setText("Victory Royale");
-                    victoria.setLayoutX(100);
-                    victoria.setLayoutY(130);
-                    victoria.setFont(Font.font("Verdana", FontWeight.BOLD, 50));
-                    victoria.setStyle("-fx-background-color: rgb(255,255,255);");
 
-                }
                 if (turnodeJugador == numeroDeJugadores+1) {
                     if (rondasJugadas<cantidadDeTurnos) {
-                        if (rondasJugadas < cantidadDeTurnos) {
+
                             turnodeJugador = 1;
                             rondasJugadas += 1;
                             ronda.setText(rondasJugadas + "/" + cantidadDeTurnos);
-                        }
-                        else{
-                            rondasJugadas += 1;
-                            ronda.setText(rondasJugadas + "/" + cantidadDeTurnos);
-                        }
+
+                    }
+                    else{
+                        victoria.setText("Victory Royale");
+                        victoria.setLayoutX(100);
+                        victoria.setLayoutY(130);
+                        victoria.setFont(Font.font("Verdana", FontWeight.BOLD, 50));
+                        victoria.setStyle("-fx-background-color: rgb(255,255,255);");
                     }
                 }
 
@@ -294,7 +269,7 @@ public class Tablero extends Application {
 
         //AQUI SE AGREGAN LOS COMPONENTES
 
-        root.getChildren().addAll(tableroImagen, Move,TirarDado, Turno, ronda,victoria);
+        root.getChildren().addAll(tableroImagen, Move, Turno, ronda,victoria);
 
 
         if(numeroDeJugadores>=2) {
