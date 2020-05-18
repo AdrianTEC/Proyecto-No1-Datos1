@@ -12,10 +12,9 @@ public class Dado {
         return numero;
     }
 
-    public static void main (String[] args){
+    public static void showDado(){
         tirar();
         System.out.println("Número del dado  "+  getNumero());
     }
 
 }
-
