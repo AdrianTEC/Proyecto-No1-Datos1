@@ -102,13 +102,7 @@ public class Tablero extends Application {
         ronda.setLayoutY(130);
         ronda.setFont(Font.font("Verdana", FontWeight.BOLD, 25));
         ronda.setStyle("-fx-background-color: rgba(243,236,250,0.63);");
-        //IMAGEN LADOS DEL DADO
-        Image D1=new Image("Imagenes/Dados-1.png.png");
-        Image D2=new Image("Imagenes/Dados-2.png.png");
-        Image D3=new Image("Imagenes/Dados-3.png.png");
-        Image D4=new Image("Imagenes/Dados-4.png.png");
-        Image D5=new Image("Imagenes/Dados-5.png.png");
-        Image D6=new Image("Imagenes/Dados-6.png.png");
+
         //IMAGEN JUGADORES
         Image J1=new Image("Imagenes/1.png");
         Image J2=new Image("Imagenes/2.png");
@@ -130,71 +124,10 @@ public class Tablero extends Application {
         p3.moverseA((CasillaSimple)caminoPrincipal.primero);
         p4.moverseA((CasillaSimple)caminoPrincipal.primero);
 
-///////////////////////////////////////////////////   BOTON DADO
-        Button TirarDado = new Button("", new ImageView(btn));
-        TirarDado.setStyle("-fx-background-color:transparent;-fx-background-radius: 30");
-        TirarDado.setLayoutX(-80);
-        TirarDado.setLayoutY(600);
-        TirarDado.setScaleX(0.5);
-        TirarDado.setScaleY(0.5);
-        TirarDado.setFont(Font.font("Verdana", FontWeight.BOLD, 30));
-        TirarDado.setText("Tirar Dado");
-        TirarDado.setContentDisplay(ContentDisplay.CENTER);
-        TirarDado.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                Dado.showDado();
-                if (Dado.getNumero() == 1) {
-                    ImageView d1 = new ImageView(D1);
-                    d1.setFitHeight(80);
-                    d1.setFitWidth(80);
-                    d1.setLayoutX(140);
-                    d1.setLayoutY(620);
-                    root.getChildren().add(d1);
-                }
-                if (Dado.getNumero() == 2) {
-                    ImageView d2 = new ImageView(D2);
-                    d2.setFitHeight(100);
-                    d2.setFitWidth(100);
-                    d2.setLayoutX(120);
-                    d2.setLayoutY(600);
-                    root.getChildren().add(d2);
-                }
-                if (Dado.getNumero() == 3) {
-                    ImageView d3 = new ImageView(D3);
-                    d3.setFitHeight(100);
-                    d3.setFitWidth(100);
-                    d3.setLayoutX(120);
-                    d3.setLayoutY(600);
-                    root.getChildren().add(d3);
-                }
-                if (Dado.getNumero() == 4) {
-                    ImageView d4 = new ImageView(D4);
-                    d4.setFitHeight(100);
-                    d4.setFitWidth(100);
-                    d4.setLayoutX(120);
-                    d4.setLayoutY(600);
-                    root.getChildren().add(d4);
-                }
-                if (Dado.getNumero() == 5) {
-                    ImageView d5 = new ImageView(D5);
-                    d5.setFitHeight(100);
-                    d5.setFitWidth(100);
-                    d5.setLayoutX(120);
-                    d5.setLayoutY(600);
-                    root.getChildren().add(d5);
-                }
-                if (Dado.getNumero() == 6) {
-                    ImageView d6 = new ImageView(D6);
-                    d6.setFitHeight(100);
-                    d6.setFitWidth(100);
-                    d6.setLayoutX(120);
-                    d6.setLayoutY(600);
-                    root.getChildren().add(d6);
-                }
 
-            }
-        });
+
+    //Hola
+
 
 
 
@@ -294,7 +227,7 @@ public class Tablero extends Application {
 
         //AQUI SE AGREGAN LOS COMPONENTES
 
-        root.getChildren().addAll(tableroImagen, Move,TirarDado, Turno, ronda,victoria);
+        root.getChildren().addAll(tableroImagen, Move, Turno, ronda,victoria);
 
 
         if(numeroDeJugadores>=2) {
