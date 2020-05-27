@@ -18,7 +18,6 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
 
-
 public class Tablero extends Application {
     // there is the class atributes and encapsulation levels  (private and public)
     public ListaCircular caminoPrincipal;
@@ -53,7 +52,7 @@ public class Tablero extends Application {
      */
     private void moverPersonaje(Jugador px,int numDado,int puntero)
         {
-
+            Partida.reproducirSonido("paso");
             if( puntero <numDado) {
 
                 new java.util.Timer().schedule(
@@ -194,13 +193,13 @@ public class Tablero extends Application {
         Move.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
+
                 //Como los jugadores pueden estar en dos tipos de casillas diferentes
                 //y como es obligatorio enviarle El tipo de casilla al cual se va  a mover
                 // hay que considerar que "ubicacionEnElMapa" es de tipo objeto
                 // por lo tanto hay que saber que
                 // tipo de objeto es en el que el jugador está (tipo casilla simple o doble)
-
-
+                Partida.encojerBoton(Move);
                 Jugador px= new Jugador();
                 if (turnodeJugador==1) {
                     lanzarDados(p1);
