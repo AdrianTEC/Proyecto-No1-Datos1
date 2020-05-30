@@ -1,5 +1,6 @@
 package sample;
 
+
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -16,11 +17,21 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
 
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
+import java.io.File;
+import java.nio.file.Paths;
+
 
 public class   Partida extends Application {
     // there is the class atributes and encapsulation levels
     public int numeroDeRondas = 1;
     public int cantidadDeJugadores = 2;
+    private static Media sound1 = new Media(Paths.get("DatosParty1/src/Media/Button.mp3").toUri().toString());
+    private static Media sound2 = new Media(Paths.get("DatosParty1/src/Media/Step.mp3").toUri().toString());
+
+
+
 
     @Override// there is overwriting  this  use  handle method from other class
     public void start(Stage primaryStage) throws Exception {
@@ -55,6 +66,8 @@ public class   Partida extends Application {
             @Override//there is overwriting handle function is imported from another class
 
             public void handle(ActionEvent event) {
+                encojerBoton(UnoJugadorMas);
+
                 if (cantidadDeJugadores < 4) {
                     cantidadDeJugadores += 1;
                     CampoNumeroJugadores.setText("Cantidad de jugadores : " + String.valueOf(cantidadDeJugadores));
@@ -74,6 +87,8 @@ public class   Partida extends Application {
         UnJugadorMenos.setOnAction(new EventHandler<ActionEvent>() {
             @Override //there is overwriting handle function is imported from another class
             public void handle(ActionEvent event) {
+                encojerBoton(UnJugadorMenos);
+
                 if (cantidadDeJugadores > 2) {
                     cantidadDeJugadores -= 1;
                     CampoNumeroJugadores.setText("Cantidad de jugadores : " + String.valueOf(cantidadDeJugadores));
@@ -100,6 +115,8 @@ public class   Partida extends Application {
         UnoMas.setOnAction(new EventHandler<ActionEvent>() {
             @Override //there is overwriting handle function is imported from another class
             public void handle(ActionEvent event) {
+                encojerBoton(UnoMas);
+
                 numeroDeRondas += 1;
                 campoNumeroDeRondas.setText("Cantidad de rondas : " + String.valueOf(numeroDeRondas));
 
@@ -118,6 +135,10 @@ public class   Partida extends Application {
         UnoMenos.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
+                    encojerBoton(UnoMenos);
+
+
+
                 if (numeroDeRondas > 1) {
                     numeroDeRondas -= 1;
                     campoNumeroDeRondas.setText("Cantidad de rondas : " + String.valueOf(numeroDeRondas));
@@ -149,11 +170,14 @@ public class   Partida extends Application {
             @Override
 
             public void handle(ActionEvent event) {
+                encojerBoton(Empezar);
+
                 /*This funtion is in charge of opening the game window
                  *@author Adrián González Jiménez
                  *@Version 02/05/2020
                  * @param Event
                  */
+
                 if (numeroDeRondas !=0 && cantidadDeJugadores!=0) {
                     try {
                         crearTablero();
@@ -185,8 +209,37 @@ public class   Partida extends Application {
 
 
     }
+    public  static void reproducirSonido(String nombre)
+    {
+        if(nombre=="boton") {
+            MediaPlayer mediaPlayer = new MediaPlayer(sound1);
+            mediaPlayer.play();
+        }
+        if(nombre=="paso") {
+            MediaPlayer mediaPlayer = new MediaPlayer(sound2);
+            mediaPlayer.play();
+        }
+    }
+    public static void  encojerBoton (Button boton){
+        reproducirSonido("boton");
+        boton.setScaleX(0.4);
+        boton.setScaleY(0.4);
+        new java.util.Timer().schedule(
+
+                new java.util.TimerTask() {
+                    @Override
+                    public void run() {
+                        boton.setScaleX(0.5);
+                        boton.setScaleY(0.5);
+                    }
+                },
+                100
 
 
+
+        );
+
+    }
     public  void crearTablero() throws Exception {
         /*This funtion is instantiate a Tablero Object
          *@author Adrián González Jiménez

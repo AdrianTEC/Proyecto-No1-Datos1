@@ -1,6 +1,5 @@
 package sample;
 
-import javafx.scene.image.ImageView;
 
 public class Dado {
     private static int numero;
