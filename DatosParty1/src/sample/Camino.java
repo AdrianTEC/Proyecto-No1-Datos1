@@ -27,7 +27,7 @@ public class Camino
                     for(float[] i : matrizPosiciones)
                     {
                         CasillaSimple nuevo= new CasillaSimple();
-                        nuevo.posicion=i;
+                        nuevo.setPosicion(i);
                         casillas.ingresarNodo(nuevo);
                     }
                 }
@@ -35,7 +35,7 @@ public class Camino
                 for(float[] i : matrizPosiciones)
                 {
                     CasillaDoble nuevo= new CasillaDoble();
-                    nuevo.posicion=i;
+                    nuevo.setPosicion(i);
                     casillas.ingresarNodo(nuevo);
                 }
             }

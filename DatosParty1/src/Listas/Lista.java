@@ -15,16 +15,16 @@ public class Lista
 
         {
             ultimo =casillita;
-             ((CasillaSimple) ultimo).INDEX=tamano;
+             ((CasillaSimple) ultimo).setINDEX(tamano);
             tamano+=1;
             primero= ultimo;
         }
 
         else
         {
-            ((CasillaSimple) ultimo).siguiente=casillita;
+            ((CasillaSimple) ultimo).setSiguiente(casillita);
            ultimo =casillita;
-            ((CasillaSimple) ultimo).INDEX=tamano;
+            ((CasillaSimple) ultimo).setINDEX(tamano);
             tamano+=1;
 
         }
@@ -36,16 +36,16 @@ public class Lista
 
                 {
                     ultimo =casillita;
-                    ((CasillaDoble) ultimo).INDEX=tamano;
+                    ((CasillaDoble) ultimo).setINDEX(tamano);
                     tamano+=1;
                     primero= ultimo;
                 }
 
                 else
                 {
-                    ((CasillaDoble) ultimo).siguiente=casillita;
+                    ((CasillaDoble) ultimo).setSiguiente(casillita);
                     ultimo =casillita;
-                    ((CasillaDoble) ultimo).INDEX=tamano;
+                    ((CasillaDoble) ultimo).setINDEX(tamano);
                     tamano+=1;
 
                 }
@@ -60,9 +60,9 @@ public class Lista
          */
         {   CasillaSimple casillaSimpleActual =(CasillaSimple) primero;
             if(ind <= tamano) {
-                while (casillaSimpleActual.INDEX != ind) {
+                while (casillaSimpleActual.getINDEX() != ind) {
     
-                    casillaSimpleActual = (CasillaSimple) casillaSimpleActual.siguiente;
+                    casillaSimpleActual = (CasillaSimple) casillaSimpleActual.getSiguiente();
                 }
                 return casillaSimpleActual;
             }

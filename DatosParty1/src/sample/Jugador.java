@@ -7,13 +7,69 @@ import javafx.scene.image.ImageView;
 
 public class Jugador
 {   // ATRIBUTOS DEL JUGADOR
-    public  String nombre;
-    public  float posX;  //estos valores se consideran que deben de ser publicos para luego utilizarlos en eventos (QUIZA)
-    public  float posY;
-    public  int estrellas;
-    public  int monedas;
-    public ImageView imagen;
-    public Object ubicacionEnElMapa;
+    private   String nombre;
+    private   float posX;  //estos valores se consideran que deben de ser publicos para luego utilizarlos en eventos (QUIZA)
+    private   float posY;
+    private   int estrellas;
+    private   int monedas;
+    private ImageView imagen;
+    private Object ubicacionEnElMapa;
+
+    public String getNombre() {
+        return nombre;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
+    public float getPosX() {
+        return posX;
+    }
+
+    public void setPosX(float posX) {
+        this.posX = posX;
+    }
+
+    public float getPosY() {
+        return posY;
+    }
+
+    public void setPosY(float posY) {
+        this.posY = posY;
+    }
+
+    public int getEstrellas() {
+        return estrellas;
+    }
+
+    public void setEstrellas(int estrellas) {
+        this.estrellas = estrellas;
+    }
+
+    public int getMonedas() {
+        return monedas;
+    }
+
+    public void setMonedas(int monedas) {
+        this.monedas = monedas;
+    }
+
+    public ImageView getImagen() {
+        return imagen;
+    }
+
+    public void setImagen(ImageView imagen) {
+        this.imagen = imagen;
+    }
+
+    public Object getUbicacionEnElMapa() {
+        return ubicacionEnElMapa;
+    }
+
+    public void setUbicacionEnElMapa(Object ubicacionEnElMapa) {
+        this.ubicacionEnElMapa = ubicacionEnElMapa;
+    }
 
     public Jugador ()
         {
@@ -43,7 +99,7 @@ public class Jugador
              */
 
             ubicacionEnElMapa=casillita;// ahora la nueva casilla donde está el jugador es la introducida
-            moverAcoordenada(casillita.posicion[0],casillita.posicion[1]);
+            moverAcoordenada(casillita.getPosicion()[0],casillita.getPosicion()[1]);
 
 
         }
@@ -57,7 +113,7 @@ public class Jugador
          * @param and object type of CasillaDoble
          */
         ubicacionEnElMapa=casillita;// ahora la nueva casilla donde está el jugador es la introducida
-        moverAcoordenada(casillita.posicion[0],casillita.posicion[1]);
+        moverAcoordenada(casillita.getPosicion()[0],casillita.getPosicion()[1]);
 
 
 
