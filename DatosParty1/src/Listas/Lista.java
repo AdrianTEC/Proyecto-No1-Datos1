@@ -51,14 +51,14 @@ public class Lista
                 }
             }
         }
-
     public CasillaSimple giveMe(int ind)
-        /*This funtion returns the Casilla with the inserted index
-         *@author Adrián González Jiménez
-         *@Version 02/05/2020
-         * @param Casilla
-         */
-        {   CasillaSimple casillaSimpleActual =(CasillaSimple) primero;
+        {
+            /*This funtion returns the Casilla with the inserted index
+             *@author Adrián González Jiménez
+             *@Version 02/05/2020
+             * @param Casilla
+             */
+            CasillaSimple casillaSimpleActual =(CasillaSimple) primero;
             if(ind <= tamano) {
                 while (casillaSimpleActual.getINDEX() != ind) {
     
@@ -73,5 +73,35 @@ public class Lista
     
     
         }
+    public void aplicarPropiedades(String[] propiedades)
+        {
+            Object apuntador= new Object();
+            apuntador=primero;
+            int i =0;
+            while (apuntador!= null )
+                {
+                    if (apuntador instanceof CasillaSimple)
+                        {
+                             ((CasillaSimple) apuntador).setTipo(propiedades[i]);
+                             apuntador=((CasillaSimple) apuntador).getSiguiente();
+                            if(((CasillaSimple) apuntador).getSiguiente()== primero)
+                            {
+                                apuntador=null;
+                            }
+                        }
+                    if (apuntador instanceof CasillaDoble)
+                    {
+                        ((CasillaDoble) apuntador).setTipo(propiedades[i]);
+                        apuntador=((CasillaDoble) apuntador).getSiguiente();
+                        if(((CasillaDoble) apuntador).getSiguiente()== primero)
+                        {
+                            apuntador=null;
+                        }
+                    }
+                    i++;
 
+                }
+
+
+        }
 }

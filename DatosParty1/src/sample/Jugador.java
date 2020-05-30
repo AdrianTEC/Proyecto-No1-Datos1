@@ -67,9 +67,7 @@ public class Jugador
         return ubicacionEnElMapa;
     }
 
-    public void setUbicacionEnElMapa(Object ubicacionEnElMapa) {
-        this.ubicacionEnElMapa = ubicacionEnElMapa;
-    }
+
 
     public Jugador ()
         {
@@ -99,6 +97,8 @@ public class Jugador
              */
 
             ubicacionEnElMapa=casillita;// ahora la nueva casilla donde está el jugador es la introducida
+
+            System.out.println(casillita.getTipo());
             moverAcoordenada(casillita.getPosicion()[0],casillita.getPosicion()[1]);
 
 

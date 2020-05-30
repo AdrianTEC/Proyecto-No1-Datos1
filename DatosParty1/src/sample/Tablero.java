@@ -92,7 +92,8 @@ public class Tablero extends Application {
 
         }
     public void lanzarDados(Jugador px)
-        { /*This funtion throw the dices and ask players to move
+        {
+            /*This funtion throw the dices and ask players to move
          *@author Adrián González Jiménez
          *@Version 02/05/2020
          * @param Jugador
@@ -147,9 +148,10 @@ public class Tablero extends Application {
 
             //Convierto el camino a una listaCircular lo cual me permitirá seguir primero las indicaciones del proyecto y
             //segundo recorrer el camino
-            FaseInicial.convertirMatrizAListaCircular();
 
-            caminoPrincipal= FaseInicial.casillas;   //extraigo la lista circular
+            caminoPrincipal= (ListaCircular) FaseInicial.convertirMatrizALista(new ListaCircular());   //extraigo la lista circular
+
+            caminoPrincipal.aplicarPropiedades(new String[]{"D","R","A","R","V","R","V","A","D","A","V","R","V","A","V","A","R","D","V","R","A","R","V","A","R","D","V","A","R","A","V","R"});
         //CREO LA FASE C
 
             Camino FaseC= new Camino();
