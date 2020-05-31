@@ -2,6 +2,7 @@ package sample;
 import Listas.CasillaDoble;
 import Listas.CasillaSimple;
 import Listas.ListaCircular;
+import Listas.ListaLineal;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -21,7 +22,9 @@ import javafx.stage.Stage;
 public class Tablero extends Application {
     // there is the class atributes and encapsulation levels  (private and public)
     public ListaCircular caminoPrincipal;
-   // private fases
+    public ListaLineal caminoC;
+
+    // private fases
 
    private int numeroDeJugadores;
    private int cantidadDeTurnos;
@@ -30,8 +33,10 @@ public class Tablero extends Application {
    private Dado dado1;
    private Dado dado2;
 
-    public int getNumeroDeJugadores() {
-        return numeroDeJugadores;
+    public  Tablero()
+    {
+        numeroDeJugadores=2;
+         cantidadDeTurnos=10;
     }
 
     public void setNumeroDeJugadores(int numeroDeJugadores) {
@@ -73,15 +78,34 @@ public class Tablero extends Application {
                         new java.util.TimerTask() {
                             @Override
                             public void run() {
-                                if (px.getUbicacionEnElMapa() instanceof CasillaSimple) {
-                                    px.moverseA((CasillaSimple) ((CasillaSimple) px.getUbicacionEnElMapa()).getSiguiente());
+
+                                if(px.getUbicacionEnElMapa() instanceof  CasillaDoble)
+                                    {
+                                        if(px.getDirection()) {
+                                            px.moverseA((CasillaSimple) ((CasillaDoble) px.getUbicacionEnElMapa()).getSiguiente());
+                                        }
+                                        else {
+                                            px.moverseA((CasillaSimple) ((CasillaDoble) px.getUbicacionEnElMapa()).getAnterior());
+
+                                        }
+                                    }
 
 
-                                }
-                                if (px.getUbicacionEnElMapa() instanceof CasillaDoble) {
-                                    px.moverseA((CasillaSimple) ((CasillaDoble) px.getUbicacionEnElMapa()).getSiguiente());
-                                }
-                                moverPersonaje(px,numDado,puntero+1);
+                                else  {
+                                        System.out.println(px.getUbicacionEnElMapa());
+                                        if (((CasillaSimple) px.getUbicacionEnElMapa()).getSiguiente() instanceof CasillaSimple) {
+                                            px.moverseA((CasillaSimple) ((CasillaSimple) px.getUbicacionEnElMapa()).getSiguiente());
+
+                                        }
+                                        else {
+                                            px.moverseA((CasillaDoble) ((CasillaSimple) px.getUbicacionEnElMapa()).getSiguiente());
+
+                                        }
+                                    }
+                                    moverPersonaje(px,numDado,puntero+1);
+
+
+
 
                             }
                         },
@@ -90,6 +114,18 @@ public class Tablero extends Application {
             }
 
 
+            else {
+
+                if (px.getUbicacionEnElMapa() instanceof CasillaDoble) {
+
+                    String x=((CasillaDoble) px.getUbicacionEnElMapa()).getTipo();
+                    if (x=="Vi"|| x=="Ri" ||x=="Ai") {
+                        System.out.println("se ha cambiado la orientación");
+                        px.setDirection(   ((CasillaDoble) px.getUbicacionEnElMapa()).getRight()          );
+                        ((CasillaDoble) px.getUbicacionEnElMapa()).changeDirection();
+                    }
+                }
+            }
         }
     public void lanzarDados(Jugador px)
         {
@@ -141,9 +177,12 @@ public class Tablero extends Application {
         //CREO UN OBJETO LLAMADO FASE INICIAL QUE ES IGUAL A UN NUEVO CAMINO
             //LE ASIGNO UNA MATRIZ DE POSICIONES QUE CORRESPONDE A LAS UBICACIONES DE TODOS LOS LUGARES DONDE SE PODRAN MOVER
             Camino FaseInicial= new Camino();
-            FaseInicial.matrizPosiciones= new float[][]{{70, 179},{110, 142},{162, 142},{204, 142},{246, 142},{291, 142},{333, 142},{375, 142},{427, 142},{470, 185},{470, 230}, {470, 273}, {470, 316}, {470, 359}, {470, 402}, {470, 445}, {470, 488}, {427, 531}, {375, 531}
-                                        , {333, 531}, {291, 531}, {246, 531,}, {204, 531}, {162, 531}, {110, 531}, {70, 494}, {70, 445}, {70, 402}, {70, 359}, {70, 316},
-                                        {70, 273}, {70, 230}    };
+            FaseInicial.matrizPosiciones= new float[][]{    {427, 531}, {375, 531}, {333, 531}, {291, 531}, {246, 531,},
+                                                            {204, 531}, {162, 531}, {110, 531}, {70, 494 }, {70, 445},
+                                                            {70, 402} , {70, 359 }, {70, 316 }, {70, 273 }, {70, 230},{70, 179},
+                                                            {110, 142}, {162, 142}, {204, 142}, {246, 142}, {291, 142},{333, 142},
+                                                            {375, 142}, {427, 142}, {470, 185}, {470, 230}, {470, 273}, {470, 316},
+                                                            {470, 359}, {470, 402} ,{470, 445}, {470, 488}   };
 
 
             //Convierto el camino a una listaCircular lo cual me permitirá seguir primero las indicaciones del proyecto y
@@ -151,12 +190,23 @@ public class Tablero extends Application {
 
             caminoPrincipal= (ListaCircular) FaseInicial.convertirMatrizALista(new ListaCircular());   //extraigo la lista circular
 
-            caminoPrincipal.aplicarPropiedades(new String[]{"D","R","A","R","V","R","V","A","D","A","V","R","V","A","V","A","R","D","V","R","A","R","V","A","R","D","V","A","R","A","V","R"});
+            caminoPrincipal.aplicarPropiedades(new String[]{"D","V","R","A","R","V","A","R","D","Vi","A","R","A","Vi","R","D","R","A","R","V","R","V","A","D","A","V","R","V","A","V","Ai","R"});
+            caminoPrincipal.remplazarCasillaSimple(10);
+            caminoPrincipal.remplazarCasillaSimple(31);
+
+
+
         //CREO LA FASE C
 
             Camino FaseC= new Camino();
-            FaseC.dobleEnlaze=true; //ESTA LISTA VA A SER DOBLE ENLAZADA
-            FaseC.matrizPosiciones= new float[][]{{123,123},{453,231},{234,343}};
+            FaseC.dobleEnlaze=true;
+            FaseC.matrizPosiciones= new float[][]{{142, 445},{210, 445},{272, 445},{334, 445},{386, 445}};
+            caminoC= (ListaLineal) FaseC.convertirMatrizALista(new ListaLineal());
+            ((CasillaDoble) caminoPrincipal.giveMe(10)).setAnterior((caminoC.primero));
+             ((CasillaDoble)caminoC.primero).setAnterior(caminoPrincipal.giveMe(10));
+            ((CasillaDoble)caminoC.ultimo).setSiguiente(caminoPrincipal.giveMe(31));
+            ((CasillaDoble) caminoPrincipal.giveMe(31)).setAnterior(caminoC.ultimo);
+            ((CasillaDoble) caminoPrincipal.giveMe(31)).setRight(false);
 
 
 
@@ -240,6 +290,28 @@ public class Tablero extends Application {
 
             }
         });
+
+        Button Moved = new Button("", new ImageView(btn));
+
+        Moved.setStyle("-fx-background-color:transparent;-fx-background-radius: 30");
+        //POSICION
+        Moved.setLayoutX(490);
+        Moved.setLayoutY(10);
+        //POSICION
+        Moved.setScaleX(0.5);
+        Moved.setScaleY(0.5);
+        Moved.setFont(Font.font("Verdana", FontWeight.BOLD, 30));
+        Moved.setText("¡DEV!");
+        Moved.setContentDisplay(ContentDisplay.CENTER);
+        Moved.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                DevMOVING=!DevMOVING;
+            }
+        });
+
+
+
         // Controlar de quien es turno
         Button Turno = new Button ("", new ImageView(btn));
         Turno.setStyle("-fx-background-color:transparent;");
@@ -284,7 +356,7 @@ public class Tablero extends Application {
 
         //AQUI SE AGREGAN LOS COMPONENTES
 
-        root.getChildren().addAll(tableroImagen, Move, Turno, ronda,victoria);
+        root.getChildren().addAll(tableroImagen, Move, Turno, ronda,victoria,Moved);
 
 
         if(numeroDeJugadores>=2) {

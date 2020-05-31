@@ -14,6 +14,15 @@ public class Jugador
     private   int monedas;
     private ImageView imagen;
     private Object ubicacionEnElMapa;
+    private  boolean direction=true;
+
+    public boolean getDirection() {
+        return direction;
+    }
+
+    public void setDirection(boolean direction) {
+        this.direction = direction;
+    }
 
     public String getNombre() {
         return nombre;
@@ -98,7 +107,7 @@ public class Jugador
 
             ubicacionEnElMapa=casillita;// ahora la nueva casilla donde está el jugador es la introducida
 
-            System.out.println(casillita.getTipo());
+            System.out.println(casillita.getINDEX() +" "+ casillita.getTipo() );
             moverAcoordenada(casillita.getPosicion()[0],casillita.getPosicion()[1]);
 
 
