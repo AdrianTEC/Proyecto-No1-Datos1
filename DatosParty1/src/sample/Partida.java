@@ -17,21 +17,17 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
 
-import javafx.scene.media.Media;
-import javafx.scene.media.MediaPlayer;
+
+
+import javax.sound.sampled.*;
 import java.io.File;
-import java.nio.file.Paths;
+import java.io.IOException;
 
 
 public class   Partida extends Application {
     // there is the class atributes and encapsulation levels
     public int numeroDeRondas = 1;
     public int cantidadDeJugadores = 2;
-    private static Media sound1 = new Media(Paths.get("DatosParty1/src/Media/Button.mp3").toUri().toString());
-    private static Media sound2 = new Media(Paths.get("DatosParty1/src/Media/Step.mp3").toUri().toString());
-
-
-
 
     @Override// there is overwriting  this  use  handle method from other class
     public void start(Stage primaryStage) throws Exception {
@@ -42,7 +38,6 @@ public class   Partida extends Application {
          *@Version 02/05/2020
          * @param primaryStage
          */
-
         Image btn = new Image("Imagenes/Boton.png");
 
         ///////////////////////////////////////////////////
@@ -209,18 +204,46 @@ public class   Partida extends Application {
 
 
     }
-    public  static void reproducirSonido(String nombre)
-    {
+    public  static void reproducirSonido(String nombre) {
+        /*This funtion play different types of sounds
+         *@author Adrián González Jiménez
+         *@Version 02/05/2020
+         * @param nothing
+         */
+        String nombreSonido="";
         if(nombre=="boton") {
-            MediaPlayer mediaPlayer = new MediaPlayer(sound1);
-            mediaPlayer.play();
+            nombreSonido="DatosParty1/src/Media/Button.wav";
+
         }
         if(nombre=="paso") {
-            MediaPlayer mediaPlayer = new MediaPlayer(sound2);
-            mediaPlayer.play();
+            nombreSonido="DatosParty1/src/Media/Step.wav";
+
+
+        }
+        if(nombre=="dado")
+        {
+            nombreSonido="DatosParty1/src/Media/Dado.wav";
+
+        }
+        try {
+            AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File(nombreSonido).getAbsoluteFile());
+            Clip clip = AudioSystem.getClip();
+            clip.open(audioInputStream);
+            clip.start();
+        } catch(UnsupportedAudioFileException | IOException | LineUnavailableException ex) {
+            System.out.println(ex);
         }
     }
+
+
+
+
     public static void  encojerBoton (Button boton){
+        /*This funtion animate buttons when they are pressed
+         *@author Adrián González Jiménez
+         *@Version 02/05/2020
+         * @param nothing
+         */
         reproducirSonido("boton");
         boton.setScaleX(0.4);
         boton.setScaleY(0.4);
@@ -248,8 +271,8 @@ public class   Partida extends Application {
          */
         Tablero mytable= new Tablero();
         Stage abs= new Stage();
-        mytable.numeroDeJugadores=cantidadDeJugadores;
-        mytable.cantidadDeTurnos=numeroDeRondas;
+        mytable.setNumeroDeJugadores(cantidadDeJugadores);
+        mytable.setCantidadDeTurnos(numeroDeRondas);
 
         mytable.start(abs);
 

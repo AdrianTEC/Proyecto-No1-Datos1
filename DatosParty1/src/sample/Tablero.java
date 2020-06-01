@@ -2,6 +2,7 @@ package sample;
 import Listas.CasillaDoble;
 import Listas.CasillaSimple;
 import Listas.ListaCircular;
+import Listas.ListaLineal;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -21,21 +22,38 @@ import javafx.stage.Stage;
 public class Tablero extends Application {
     // there is the class atributes and encapsulation levels  (private and public)
     public ListaCircular caminoPrincipal;
-   // private fases
-   public  ImageView dadoActual;
+    public ListaLineal caminoC;
 
-    public int numeroDeJugadores;
-   public int cantidadDeTurnos;
-   public  int rondasJugadas= 1;
-   public int turnodeJugador = 1;
+    // private fases
 
-    //IMAGEN LADOS DEL DADO
-    Image D1=new Image("Imagenes/Dados-1.png.png");
-    Image D2=new Image("Imagenes/Dados-2.png.png");
-    Image D3=new Image("Imagenes/Dados-3.png.png");
-    Image D4=new Image("Imagenes/Dados-4.png.png");
-    Image D5=new Image("Imagenes/Dados-5.png.png");
-    Image D6=new Image("Imagenes/Dados-6.png.png");
+   private int numeroDeJugadores;
+   private int cantidadDeTurnos;
+   private int rondasJugadas= 1;
+   private int turnodeJugador = 1;
+   private Dado dado1;
+   private Dado dado2;
+
+    public  Tablero()
+    {
+        numeroDeJugadores=2;
+         cantidadDeTurnos=10;
+    }
+
+    public void setNumeroDeJugadores(int numeroDeJugadores) {
+        this.numeroDeJugadores = numeroDeJugadores;
+    }
+
+    public int getCantidadDeTurnos() {
+        return cantidadDeTurnos;
+    }
+
+    public void setCantidadDeTurnos(int cantidadDeTurnos) {
+        this.cantidadDeTurnos = cantidadDeTurnos;
+    }
+
+    public  boolean DevMOVING =false;
+
+
     //IMAGEN JUGADORES
     Image J1=new Image("Imagenes/1.png");
     Image J2=new Image("Imagenes/2.png");
@@ -60,57 +78,84 @@ public class Tablero extends Application {
                         new java.util.TimerTask() {
                             @Override
                             public void run() {
-                                if (px.ubicacionEnElMapa instanceof CasillaSimple) {
-                                    px.moverseA((CasillaSimple) ((CasillaSimple) px.ubicacionEnElMapa).siguiente);
+
+                                if(px.getUbicacionEnElMapa() instanceof  CasillaDoble)
+                                    {
+                                        if(px.getDirection()) {
+                                            px.moverseA((CasillaSimple) ((CasillaDoble) px.getUbicacionEnElMapa()).getSiguiente());
+                                        }
+                                        else {
+                                            px.moverseA((CasillaSimple) ((CasillaDoble) px.getUbicacionEnElMapa()).getAnterior());
+
+                                        }
+                                    }
 
 
-                                }
-                                if (px.ubicacionEnElMapa instanceof CasillaDoble) {
-                                    px.moverseA((CasillaSimple) ((CasillaDoble) px.ubicacionEnElMapa).siguiente);
-                                }
-                                moverPersonaje(px,numDado,puntero+1);
+                                else  {
+                                        System.out.println(px.getUbicacionEnElMapa());
+                                        if (((CasillaSimple) px.getUbicacionEnElMapa()).getSiguiente() instanceof CasillaSimple) {
+                                            px.moverseA((CasillaSimple) ((CasillaSimple) px.getUbicacionEnElMapa()).getSiguiente());
+
+                                        }
+                                        else {
+                                            px.moverseA((CasillaDoble) ((CasillaSimple) px.getUbicacionEnElMapa()).getSiguiente());
+
+                                        }
+                                    }
+                                    moverPersonaje(px,numDado,puntero+1);
+
+
+
 
                             }
                         },
-                        500
+                        300
                 );
             }
 
 
+            else {
+
+                if (px.getUbicacionEnElMapa() instanceof CasillaDoble) {
+
+                    String x=((CasillaDoble) px.getUbicacionEnElMapa()).getTipo();
+                    if (x=="Vi"|| x=="Ri" ||x=="Ai") {
+                        System.out.println("se ha cambiado la orientación");
+                        px.setDirection(   ((CasillaDoble) px.getUbicacionEnElMapa()).getRight()          );
+                        ((CasillaDoble) px.getUbicacionEnElMapa()).changeDirection();
+                    }
+                }
+            }
         }
     public void lanzarDados(Jugador px)
-        { /*This funtion throw the dices and ask players to move
+        {
+            /*This funtion throw the dices and ask players to move
          *@author Adrián González Jiménez
          *@Version 02/05/2020
          * @param Jugador
          */
+            if(!DevMOVING) {
+            dado1.tirar();
+            dado2.tirar();
 
-            Dado.tirar();
-            if (Dado.getNumero() == 1) {
-                dadoActual=new ImageView(D1); }
-            if (Dado.getNumero() == 2) {
-                dadoActual=new ImageView(D2); }
-            if (Dado.getNumero() == 3) {
-                dadoActual=new ImageView(D3); }
-            if (Dado.getNumero() == 4) {
-                dadoActual=new ImageView(D4); }
-            if (Dado.getNumero() == 5) {
-                dadoActual=new ImageView(D5); }
-            if (Dado.getNumero() == 6) {
-                dadoActual=new ImageView(D6); }
 
-            dadoActual.setFitHeight(100);
-            dadoActual.setFitWidth(100);
-            dadoActual.setLayoutX(120);
-            dadoActual.setLayoutY(600);
-            root.getChildren().add(dadoActual);
+            dado1.cara.setLayoutX(120);
+            dado2.cara.setLayoutX(180);
+
+            root.getChildren().addAll(dado1.cara,dado2.cara);
             //Aquí debemos realizar un doble casteo, se realizó una actualización para poder generalizar a las casillas
             //Estas en vez de poderse comunicar entre casillas del mismo tipo lo podrán hacer con otras que no lo sean
             //Entonces ellas tendran de atributo de tipo OBJETO entonces hacemos doble casteo primero por "UBICACION EN EL MAPA"
             //            //Luego lo hacemos por "SIGUIENTE"
 
-            moverPersonaje(px,Dado.getNumero(),0);
+                moverPersonaje(px, dado1.getNumero() + dado2.getNumero(), 0);
+            }
+            else
+                {
 
+                    moverPersonaje(px, 1, 0);
+
+                }
         }
     @Override// there is overwriting  this  use  handle method from other class;
     public void start(Stage primaryStage) throws Exception {
@@ -124,24 +169,44 @@ public class Tablero extends Application {
 
 
 
+        //CREO LOS DOS DADOS
+         dado1= new Dado();
+         dado2= new Dado();
+
 
         //CREO UN OBJETO LLAMADO FASE INICIAL QUE ES IGUAL A UN NUEVO CAMINO
             //LE ASIGNO UNA MATRIZ DE POSICIONES QUE CORRESPONDE A LAS UBICACIONES DE TODOS LOS LUGARES DONDE SE PODRAN MOVER
             Camino FaseInicial= new Camino();
-            FaseInicial.matrizPosiciones= new float[][]{{470, 230}, {470, 273}, {470, 316}, {470, 359}, {470, 402}, {470, 445}, {470, 488}, {427, 531}, {375, 531}
-                                        , {333, 531}, {291, 531}, {246, 531,}, {204, 531}, {162, 531}, {110, 531}, {70, 494}, {70, 445}, {70, 402}, {70, 359}, {70, 316}, {70, 273}, {70, 230}};
+            FaseInicial.matrizPosiciones= new float[][]{    {427, 531}, {375, 531}, {333, 531}, {291, 531}, {246, 531,},
+                                                            {204, 531}, {162, 531}, {110, 531}, {70, 494 }, {70, 445},
+                                                            {70, 402} , {70, 359 }, {70, 316 }, {70, 273 }, {70, 230},{70, 179},
+                                                            {110, 142}, {162, 142}, {204, 142}, {246, 142}, {291, 142},{333, 142},
+                                                            {375, 142}, {427, 142}, {470, 185}, {470, 230}, {470, 273}, {470, 316},
+                                                            {470, 359}, {470, 402} ,{470, 445}, {470, 488}   };
 
 
             //Convierto el camino a una listaCircular lo cual me permitirá seguir primero las indicaciones del proyecto y
             //segundo recorrer el camino
-            FaseInicial.convertirMatrizAListaCircular();
 
-            caminoPrincipal= FaseInicial.casillas;   //extraigo la lista circular
+            caminoPrincipal= (ListaCircular) FaseInicial.convertirMatrizALista(new ListaCircular());   //extraigo la lista circular
+
+            caminoPrincipal.aplicarPropiedades(new String[]{"D","V","R","A","R","V","A","R","D","Vi","A","R","A","Vi","R","D","R","A","R","V","R","V","A","D","A","V","R","V","A","V","Ai","R"});
+            caminoPrincipal.remplazarCasillaSimple(10);
+            caminoPrincipal.remplazarCasillaSimple(31);
+
+
+
         //CREO LA FASE C
 
             Camino FaseC= new Camino();
-            FaseC.dobleEnlaze=true; //ESTA LISTA VA A SER DOBLE ENLAZADA
-            FaseC.matrizPosiciones= new float[][]{{123,123},{453,231},{234,343}};
+            FaseC.dobleEnlaze=true;
+            FaseC.matrizPosiciones= new float[][]{{142, 445},{210, 445},{272, 445},{334, 445},{386, 445}};
+            caminoC= (ListaLineal) FaseC.convertirMatrizALista(new ListaLineal());
+            ((CasillaDoble) caminoPrincipal.giveMe(10)).setAnterior((caminoC.primero));
+             ((CasillaDoble)caminoC.primero).setAnterior(caminoPrincipal.giveMe(10));
+            ((CasillaDoble)caminoC.ultimo).setSiguiente(caminoPrincipal.giveMe(31));
+            ((CasillaDoble) caminoPrincipal.giveMe(31)).setAnterior(caminoC.ultimo);
+            ((CasillaDoble) caminoPrincipal.giveMe(31)).setRight(false);
 
 
 
@@ -161,13 +226,13 @@ public class Tablero extends Application {
 
         ///SE CREAN LOS JUGADORES ACÁ //////////////////////////////////////////////////////////////////////////////////
         Jugador p1 = new Jugador();
-        p1.imagen = new ImageView(J1);
+        p1.setImagen(new ImageView(J1));
         Jugador p2 = new Jugador();
-        p2.imagen = new ImageView(J2);
+        p2.setImagen(new ImageView(J2));
         Jugador p3 = new Jugador();
-        p3.imagen = new ImageView(J3);
+        p3.setImagen(new ImageView(J3));
         Jugador p4 = new Jugador();
-        p4.imagen = new ImageView(J4);
+        p4.setImagen(new ImageView(J4));
 
         p1.moverseA((CasillaSimple) caminoPrincipal.primero);
         p2.moverseA((CasillaSimple)caminoPrincipal.primero);
@@ -201,6 +266,8 @@ public class Tablero extends Application {
                 // tipo de objeto es en el que el jugador está (tipo casilla simple o doble)
                 Partida.encojerBoton(Move);
                 Jugador px= new Jugador();
+
+
                 if (turnodeJugador==1) {
                     lanzarDados(p1);
                   }
@@ -215,15 +282,36 @@ public class Tablero extends Application {
                 if (turnodeJugador==4) {
                     lanzarDados(p4);
 
+
                 }
-
-
-
+                //Lo que quisiera hacer es algo así
 
 
 
             }
         });
+
+        Button Moved = new Button("", new ImageView(btn));
+
+        Moved.setStyle("-fx-background-color:transparent;-fx-background-radius: 30");
+        //POSICION
+        Moved.setLayoutX(490);
+        Moved.setLayoutY(10);
+        //POSICION
+        Moved.setScaleX(0.5);
+        Moved.setScaleY(0.5);
+        Moved.setFont(Font.font("Verdana", FontWeight.BOLD, 30));
+        Moved.setText("¡DEV!");
+        Moved.setContentDisplay(ContentDisplay.CENTER);
+        Moved.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                DevMOVING=!DevMOVING;
+            }
+        });
+
+
+
         // Controlar de quien es turno
         Button Turno = new Button ("", new ImageView(btn));
         Turno.setStyle("-fx-background-color:transparent;");
@@ -268,23 +356,23 @@ public class Tablero extends Application {
 
         //AQUI SE AGREGAN LOS COMPONENTES
 
-        root.getChildren().addAll(tableroImagen, Move, Turno, ronda,victoria);
+        root.getChildren().addAll(tableroImagen, Move, Turno, ronda,victoria,Moved);
 
 
         if(numeroDeJugadores>=2) {
             //Acá agarro la primera casilla de la lista circular
 
-            root.getChildren().add(p1.imagen);
-            root.getChildren().add(p2.imagen);
+            root.getChildren().add(p1.getImagen());
+            root.getChildren().add(p2.getImagen());
 
 
         }
         if(numeroDeJugadores>=3) {
-            root.getChildren().add(p3.imagen);
+            root.getChildren().add(p3.getImagen());
 
         }
         if(numeroDeJugadores==4) {
-            root.getChildren().add(p4.imagen);
+            root.getChildren().add(p4.getImagen());
 
         }
 
@@ -310,7 +398,8 @@ public class Tablero extends Application {
 
                         if (evt.getCode().equals(KeyCode.ESCAPE))
                             {
-
+                                DevMOVING=!DevMOVING;
+                                System.out.println("El movimiento unitario es ahora:  "+ DevMOVING);
                             }
                     }
             });
