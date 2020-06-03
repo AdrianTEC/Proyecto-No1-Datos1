@@ -27,7 +27,7 @@ public class Tablero extends Application {
     private ListaLineal caminoC;
     private ListaLineal caminoA;
     private ListaLineal caminoB;
-
+    private EventManager eventManager;
 
     // private fases
 
@@ -171,7 +171,7 @@ public class Tablero extends Application {
          */
         //CREO EL PANE  EN EL AGREGARE COSAS COMO BOTONES IMAGENES O LABELES
 
-
+        eventManager= new EventManager(); //creo una instancia manejadora de eventos
 
 
 
@@ -340,6 +340,30 @@ public class Tablero extends Application {
             }
         });
 
+        Button EVENT = new Button("", new ImageView(btn));
+
+        EVENT.setStyle("-fx-background-color:transparent;-fx-background-radius: 30");
+        //POSICION
+        EVENT.setLayoutX(400);
+        EVENT.setLayoutY(10);
+        //POSICION
+        EVENT.setScaleX(0.5);
+        EVENT.setScaleY(0.5);
+        EVENT.setFont(Font.font("Verdana", FontWeight.BOLD, 30));
+        EVENT.setText("Event");
+        EVENT.setContentDisplay(ContentDisplay.CENTER);
+        EVENT.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                try {
+                    eventManager.generarJuego();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
+
 
 
         // Controlar de quien es turno
@@ -386,7 +410,7 @@ public class Tablero extends Application {
 
         //AQUI SE AGREGAN LOS COMPONENTES
 
-        root.getChildren().addAll(tableroImagen, Move, Turno, ronda,victoria,Moved);
+        root.getChildren().addAll(tableroImagen, Move, Turno, ronda,victoria,Moved,EVENT);
 
 
         if(numeroDeJugadores>=2) {
