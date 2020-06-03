@@ -174,6 +174,18 @@ public class Tablero extends Application {
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
         //CREO LOS DOS DADOS
          dado1= new Dado();
          dado2= new Dado();
@@ -205,14 +217,12 @@ public class Tablero extends Application {
             Camino FaseA= new Camino();
             FaseA.matrizPosiciones= new float[][]{{129,270},{179,251},{205,203}};
             caminoA= (ListaLineal) FaseA.convertirMatrizALista(new ListaLineal());
-            caminoA.aplicarPropiedades(new String[]{"R","V","A"});
            ((CasillaDoble) caminoPrincipal.giveMe(14)).setAnterior((caminoA.primero));
            ((CasillaSimple)caminoA.ultimo).setSiguiente(caminoPrincipal.giveMe(19));
         //CREO LA FASE B
             Camino FaseB= new Camino();
             FaseB.matrizPosiciones= new float[][]{{330,203},{355,251},{402,270}};
             caminoB= (ListaLineal) FaseB.convertirMatrizALista(new ListaLineal());
-            caminoB.aplicarPropiedades(new String[]{"D","D","D"});
             ((CasillaDoble) caminoPrincipal.giveMe(22)).setAnterior((caminoB.primero));
             ((CasillaSimple)caminoB.ultimo).setSiguiente(caminoPrincipal.giveMe(27));
 
