@@ -4,6 +4,7 @@ import Listas.CasillaSimple;
 import Listas.ListaCircular;
 import Listas.ListaLineal;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
@@ -66,7 +67,24 @@ public class Tablero extends Application {
     Image J4=new Image("Imagenes/4.png");
     Pane root = new Pane();
 
+    Image estrella = new Image ("Imagenes/Estrella.png");
 
+    Estrella e = new Estrella();
+
+    public void generar(Estrella es) {
+        if(rondasJugadas>=2) {
+            es.numeroRandom();
+            es.setUbicacionEnElMapa(caminoPrincipal.giveMe(es.getNumero()));
+            es.moverseA((CasillaSimple) es.getUbicacionEnElMapa());
+            root.getChildren().add(es.getImagen());
+        }
+    }
+
+    public void MoverEstrella(){
+        e.numeroRandom();
+        e.setUbicacionEnElMapa(caminoPrincipal.giveMe(e.getNumero()));
+        e.moverseA((CasillaSimple) e.getUbicacionEnElMapa());
+    }
 
     /*This funtion is in charge of controlling the game boards
      *@author Adrián González Jiménez
@@ -77,7 +95,17 @@ public class Tablero extends Application {
         {
             Partida.reproducirSonido("paso");
             if( puntero <numDado) {
+                if(px.getUbicacionEnElMapa()==e.getUbicacionEnElMapa())
+                    {
+                        Platform.runLater(new Runnable(){
+                            @Override
+                            public void run() {
+                                MoverEstrella();
 
+                            }
+// ...
+                    });
+                    }
                 new java.util.Timer().schedule(
 
                         new java.util.TimerTask() {
@@ -173,7 +201,7 @@ public class Tablero extends Application {
 
         eventManager= new EventManager(); //creo una instancia manejadora de eventos
 
-
+        e.setImagen(new ImageView(estrella));
 
 
 
@@ -392,6 +420,10 @@ public class Tablero extends Application {
 
                             turnodeJugador = 1;
                             rondasJugadas += 1;
+                        if (rondasJugadas==2)
+                        {
+                            generar(e);
+                        }
                             ronda.setText(rondasJugadas + "/" + cantidadDeTurnos);
 
                     }
