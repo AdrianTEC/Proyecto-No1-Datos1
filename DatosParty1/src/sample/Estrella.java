@@ -95,7 +95,3 @@ public class Estrella {
 
 
 }
-
-
-
-

@@ -4,6 +4,7 @@ import Listas.CasillaSimple;
 import Listas.ListaCircular;
 import Listas.ListaLineal;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
@@ -65,91 +66,76 @@ public class Tablero extends Application {
     Image J3=new Image("Imagenes/3.png");
     Image J4=new Image("Imagenes/4.png");
     Pane root = new Pane();
+
     Image estrella = new Image ("Imagenes/Estrella.png");
 
+    Estrella e = new Estrella();
 
-
-    public void generar(Estrella estrella) {
-        estrella.numeroRandom();
-        estrella.setUbicacionEnElMapa(caminoPrincipal.giveMe(estrella.getNumero()));
-        estrella.moverseA((CasillaSimple) estrella.getUbicacionEnElMapa());
-        root.getChildren().add(estrella.getImagen());
-
-    }
-
-    public void revisar(Jugador px, Estrella e){
-        if (px.getUbicacionEnElMapa() == e.getUbicacionEnElMapa()){
-            if (px.getMonedas() > 2){
-                generar(e);
-                px.setEstrellas(px.getEstrellas() + 1);
-                System.out.println(px.getEstrellas());
-            }
-
+    public void generar(Estrella es) {
+        if(rondasJugadas>=2) {
+            es.numeroRandom();
+            es.setUbicacionEnElMapa(caminoPrincipal.giveMe(es.getNumero()));
+            es.moverseA((CasillaSimple) es.getUbicacionEnElMapa());
+            root.getChildren().add(es.getImagen());
         }
     }
 
-    public void primera(Estrella e){        //genera la primera estrella cuando empieza el segundo turno
-        while (e.getPrimero() != true){
-            if (cantidadDeTurnos > 1){
-                generar(e);
-                e.setPrimero(true);
-                break;
-            }
-            }
-        }
-
+    public void MoverEstrella(){
+        e.numeroRandom();
+        e.setUbicacionEnElMapa(caminoPrincipal.giveMe(e.getNumero()));
+        e.moverseA((CasillaSimple) e.getUbicacionEnElMapa());
+    }
 
     /*This funtion is in charge of controlling the game boards
      *@author Adrián González Jiménez
      *@Version 02/05/2020
      * @param Stage
      */
-    private void moverPersonaje(Jugador px,int numDado,int puntero, Estrella e)
+    private void moverPersonaje(Jugador px,int numDado,int puntero)
         {
             Partida.reproducirSonido("paso");
             if( puntero <numDado) {
-                revisar(px,e);
+                if(px.getUbicacionEnElMapa()==e.getUbicacionEnElMapa())
+                    {
+                        Platform.runLater(new Runnable(){
+                            @Override
+                            public void run() {
+                                MoverEstrella();
 
+                            }
+// ...
+                    });
+                    }
                 new java.util.Timer().schedule(
 
                         new java.util.TimerTask() {
                             @Override
-                                public void run() {
+                            public void run() {
 
                                 if(px.getUbicacionEnElMapa() instanceof  CasillaDoble)
-
                                     {
                                         if(px.getDirection()) {
                                             px.moverseA((CasillaSimple) ((CasillaDoble) px.getUbicacionEnElMapa()).getSiguiente());
-
-
                                         }
                                         else {
                                             px.moverseA((CasillaSimple) ((CasillaDoble) px.getUbicacionEnElMapa()).getAnterior());
-
-
 
                                         }
                                     }
 
 
                                 else  {
-
                                         System.out.println(px.getUbicacionEnElMapa());
                                         if (((CasillaSimple) px.getUbicacionEnElMapa()).getSiguiente() instanceof CasillaSimple) {
                                             px.moverseA((CasillaSimple) ((CasillaSimple) px.getUbicacionEnElMapa()).getSiguiente());
-
-
 
                                         }
                                         else {
                                             px.moverseA((CasillaDoble) ((CasillaSimple) px.getUbicacionEnElMapa()).getSiguiente());
 
-
-
                                         }
                                     }
-                                    moverPersonaje(px,numDado,puntero+1, e);
+                                    moverPersonaje(px,numDado,puntero+1);
 
 
 
@@ -174,7 +160,7 @@ public class Tablero extends Application {
                 }
             }
         }
-    public void lanzarDados(Jugador px, Estrella e)
+    public void lanzarDados(Jugador px)
         {
             /*This funtion throw the dices and ask players to move
          *@author Adrián González Jiménez
@@ -195,12 +181,12 @@ public class Tablero extends Application {
             //Entonces ellas tendran de atributo de tipo OBJETO entonces hacemos doble casteo primero por "UBICACION EN EL MAPA"
             //            //Luego lo hacemos por "SIGUIENTE"
 
-                moverPersonaje(px, dado1.getNumero() + dado2.getNumero(), 0,e);
+                moverPersonaje(px, dado1.getNumero() + dado2.getNumero(), 0);
             }
             else
                 {
 
-                    moverPersonaje(px, 1, 0,e);
+                    moverPersonaje(px, 1, 0);
 
                 }
         }
@@ -215,7 +201,7 @@ public class Tablero extends Application {
 
         eventManager= new EventManager(); //creo una instancia manejadora de eventos
 
-
+        e.setImagen(new ImageView(estrella));
 
 
 
@@ -306,11 +292,6 @@ public class Tablero extends Application {
         Jugador p4 = new Jugador();
         p4.setImagen(new ImageView(J4));
 
-
-        Estrella e = new Estrella();
-        e.setImagen(new ImageView(estrella));
-
-
         p1.moverseA((CasillaSimple) caminoPrincipal.primero);
         p2.moverseA((CasillaSimple)caminoPrincipal.primero);
         p3.moverseA((CasillaSimple)caminoPrincipal.primero);
@@ -345,20 +326,19 @@ public class Tablero extends Application {
                 Jugador px= new Jugador();
 
 
-
                 if (turnodeJugador==1) {
-                    lanzarDados(p1,e);
+                    lanzarDados(p1);
                   }
                 if (turnodeJugador==2) {
-                    lanzarDados(p2,e);
+                    lanzarDados(p2);
 
                 }
                 if (turnodeJugador==3) {
-                    lanzarDados(p3,e);
+                    lanzarDados(p3);
 
                 }
                 if (turnodeJugador==4) {
-                    lanzarDados(p4,e);
+                    lanzarDados(p4);
 
 
                 }
@@ -437,9 +417,13 @@ public class Tablero extends Application {
 
                 if (turnodeJugador == numeroDeJugadores+1) {
                     if (rondasJugadas<cantidadDeTurnos) {
+
                             turnodeJugador = 1;
                             rondasJugadas += 1;
-                            primera(e);
+                        if (rondasJugadas==2)
+                        {
+                            generar(e);
+                        }
                             ronda.setText(rondasJugadas + "/" + cantidadDeTurnos);
 
                     }
