@@ -24,7 +24,7 @@ import java.io.File;
 import java.io.IOException;
 
 
-public class Partida extends Application {
+public class   Partida extends Application {
     // there is the class atributes and encapsulation levels
     public int numeroDeRondas = 1;
     public int cantidadDeJugadores = 2;
@@ -140,6 +140,7 @@ public class Partida extends Application {
                 }
             }
         });
+
         ///////////////////////////////////////////////////
         Label advertencia = new Label();
         advertencia.setText("Ingrese una cantidad de"+"\n"+ "jugadores y rondas para empezar");
@@ -184,7 +185,6 @@ public class Partida extends Application {
 
             }
         });
-
 
 
 

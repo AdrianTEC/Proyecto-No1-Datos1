@@ -5,7 +5,7 @@ import Listas.CasillaDoble;
 import Listas.CasillaSimple;
 import javafx.scene.image.ImageView;
 
-public class Jugador
+public class    Jugador
 {   // ATRIBUTOS DEL JUGADOR
     private   String nombre;
     private   float posX;  //estos valores se consideran que deben de ser publicos para luego utilizarlos en eventos (QUIZA)
@@ -86,7 +86,7 @@ public class Jugador
          * @param nothing
          */
             estrellas= 0;
-            monedas=0;
+            monedas=5;
             nombre="";
             posY=0;
             posX=0;
@@ -138,4 +138,10 @@ public class Jugador
         }
 
 
+
+
+    public void comprarEstrella(){
+
+
+    }
 }
