@@ -14,6 +14,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
@@ -37,6 +38,10 @@ public class Tablero extends Application {
    private int turnodeJugador = 1;
    private Dado dado1;
    private Dado dado2;
+   private Baraja barajaVerde;
+   private Baraja barajaAzul;
+   private Baraja barajaRoja;
+   public int tipoCasilla = 4;
 
     public  Tablero()
     {
@@ -75,6 +80,7 @@ public class Tablero extends Application {
      */
     private void moverPersonaje(Jugador px,int numDado,int puntero)
         {
+
             Partida.reproducirSonido("paso");
             if( puntero <numDado) {
 
@@ -121,17 +127,29 @@ public class Tablero extends Application {
 
             else {
 
+                String x=((CasillaSimple) px.getUbicacionEnElMapa()).getTipo();
                 if (px.getUbicacionEnElMapa() instanceof CasillaDoble) {
 
-                    String x=((CasillaDoble) px.getUbicacionEnElMapa()).getTipo();
+
                     if (x=="Vi"|| x=="Ri" ||x=="Ai") {
                         System.out.println("se ha cambiado la orientación");
-                        px.setDirection(   ((CasillaDoble) px.getUbicacionEnElMapa()).getRight()          );
+                        px.setDirection(((CasillaDoble) px.getUbicacionEnElMapa()).getRight());
                         ((CasillaDoble) px.getUbicacionEnElMapa()).changeDirection();
                     }
+
                 }
+                    if (x == "V"){
+                        tipoCasilla = 1;
+                    }
+                    if (x == "R"){
+                        tipoCasilla = 2;
+                    }
+                    if (x == "A") {
+                        tipoCasilla = 3;
+                    }
+                }
+
             }
-        }
     public void lanzarDados(Jugador px)
         {
             /*This funtion throw the dices and ask players to move
@@ -173,13 +191,35 @@ public class Tablero extends Application {
 
 
 
+        //Image cartaVerde=new Image("Imagenes/Cartas/baraja(V).png");
+        //Image cartaRoja=new Image("Imagenes/Cartas/baraja(R).png");
+        //Image cartaAzul=new Image("Imagenes/Cartas/baraja(A).png");
 
 
+        //public
 
+        barajaVerde = new Baraja();
+        barajaVerde.setTipoBaraja("V");
+        //barajaVerde.setBaraja(new ImageView(cartaVerde));
+        //barajaVerde.getBaraja().setFitWidth(90);
+        //barajaVerde.getBaraja().setFitHeight(90);
+        //barajaVerde.getBaraja().setLayoutY(610);
 
+        barajaAzul = new Baraja();
+        barajaAzul.setTipoBaraja("A");
+        //barajaAzul.setBaraja(new ImageView(cartaAzul));
+        //barajaAzul.getBaraja().setFitWidth(90);
+        //barajaAzul.getBaraja().setFitHeight(90);
+        //barajaAzul.getBaraja().setLayoutY(610);
+        //barajaAzul.getBaraja().setLayoutX(720);
 
-
-
+        barajaRoja = new Baraja();
+        barajaRoja.setTipoBaraja("R");
+        //barajaRoja.setBaraja(new ImageView(cartaRoja));
+        //barajaRoja.getBaraja().setFitWidth(90);
+        //barajaRoja.getBaraja().setFitHeight(90);
+        //barajaRoja.getBaraja().setLayoutY(610);
+        //barajaRoja.getBaraja().setLayoutX(830);
 
 
 
@@ -417,21 +457,48 @@ public class Tablero extends Application {
 
 
                 @Override // there is overwriting  this  use  handle method from import javafx.scene.input.KeyEvent;
-                public void handle(KeyEvent evt)
-                    {
-                        /*This funtion is in charge of catching key press
-                         *@author Adrián González Jiménez
-                         *@Version 02/05/2020
-                         * @param KeyEvent
-                         */
+                public void handle(KeyEvent evt) {
+                    /*This funtion is in charge of catching key press
+                     *@author Adrián González Jiménez
+                     *@Version 02/05/2020
+                     * @param KeyEvent
+                     */
 
 
-                        if (evt.getCode().equals(KeyCode.ESCAPE))
-                            {
-                                System.out.println(MouseInfo.getPointerInfo().getLocation());
+                    if (evt.getCode().equals(KeyCode.ESCAPE)) {
+                        Carta cartaAuxG = new Carta();
+                        System.out.println(tipoCasilla);
 
-                            }
+                        if (tipoCasilla == 1) {
+                            cartaAuxG = barajaVerde.crearCarta();
+                            root.getChildren().add(cartaAuxG.getCarta());
+
+                        }
+                        if (tipoCasilla == 3){
+                            cartaAuxG = barajaAzul.crearCarta();
+                            root.getChildren().add(cartaAuxG.getCarta());
+
+                        }
+                        if (tipoCasilla == 2){
+                            cartaAuxG = barajaRoja.crearCarta();
+                            root.getChildren().add(cartaAuxG.getCarta());
+
+                        }
+
+                        if(cartaAuxG.getCarta()!= null) {
+                            Carta finalCartaAuxG = cartaAuxG;
+                            cartaAuxG.getCarta().addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
+
+                                @Override
+                                public void handle(MouseEvent event) {
+                                    root.getChildren().remove(finalCartaAuxG.getCarta());
+                                }
+                            });
+                        }
+
+
                     }
+                }
             });
         primaryStage.show();
 

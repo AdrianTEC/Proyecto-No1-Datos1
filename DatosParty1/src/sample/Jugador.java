@@ -78,6 +78,8 @@ public class Jugador
 
 
 
+
+
     public Jugador ()
         {
          /*This funtion is the constructor of the class
