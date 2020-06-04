@@ -19,10 +19,15 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
 
+import java.awt.*;
+
 public class Tablero extends Application {
     // there is the class atributes and encapsulation levels  (private and public)
-    public ListaCircular caminoPrincipal;
-    public ListaLineal caminoC;
+    private ListaCircular caminoPrincipal;
+    private ListaLineal caminoC;
+    private ListaLineal caminoA;
+    private ListaLineal caminoB;
+    private EventManager eventManager;
 
     // private fases
 
@@ -208,6 +213,18 @@ public class Tablero extends Application {
          */
         //CREO EL PANE  EN EL AGREGARE COSAS COMO BOTONES IMAGENES O LABELES
 
+        eventManager= new EventManager(); //creo una instancia manejadora de eventos
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -232,11 +249,24 @@ public class Tablero extends Application {
 
             caminoPrincipal= (ListaCircular) FaseInicial.convertirMatrizALista(new ListaCircular());   //extraigo la lista circular
 
-            caminoPrincipal.aplicarPropiedades(new String[]{"D","V","R","A","R","V","A","R","D","Vi","A","R","A","Vi","R","D","R","A","R","V","R","V","A","D","A","V","R","V","A","V","Ai","R"});
+            caminoPrincipal.aplicarPropiedades(new String[]{"D","V","R","A","R","V","A","R","D","Vi","A","R","A","Vi","R","D","R","A","R","V","R","Vi","A","D","A","V","R","V","A","V","Ai","R"});
             caminoPrincipal.remplazarCasillaSimple(10);
             caminoPrincipal.remplazarCasillaSimple(31);
+            caminoPrincipal.remplazarCasillaSimple(14);
+            caminoPrincipal.remplazarCasillaSimple(22);
 
-
+        //CREO LA FASE A
+            Camino FaseA= new Camino();
+            FaseA.matrizPosiciones= new float[][]{{129,270},{179,251},{205,203}};
+            caminoA= (ListaLineal) FaseA.convertirMatrizALista(new ListaLineal());
+           ((CasillaDoble) caminoPrincipal.giveMe(14)).setAnterior((caminoA.primero));
+           ((CasillaSimple)caminoA.ultimo).setSiguiente(caminoPrincipal.giveMe(19));
+        //CREO LA FASE B
+            Camino FaseB= new Camino();
+            FaseB.matrizPosiciones= new float[][]{{330,203},{355,251},{402,270}};
+            caminoB= (ListaLineal) FaseB.convertirMatrizALista(new ListaLineal());
+            ((CasillaDoble) caminoPrincipal.giveMe(22)).setAnterior((caminoB.primero));
+            ((CasillaSimple)caminoB.ultimo).setSiguiente(caminoPrincipal.giveMe(27));
 
         //CREO LA FASE C
 
@@ -245,7 +275,7 @@ public class Tablero extends Application {
             FaseC.matrizPosiciones= new float[][]{{142, 445},{210, 445},{272, 445},{334, 445},{386, 445}};
             caminoC= (ListaLineal) FaseC.convertirMatrizALista(new ListaLineal());
             ((CasillaDoble) caminoPrincipal.giveMe(10)).setAnterior((caminoC.primero));
-             ((CasillaDoble)caminoC.primero).setAnterior(caminoPrincipal.giveMe(10));
+            ((CasillaDoble)caminoC.primero).setAnterior(caminoPrincipal.giveMe(10));
             ((CasillaDoble)caminoC.ultimo).setSiguiente(caminoPrincipal.giveMe(31));
             ((CasillaDoble) caminoPrincipal.giveMe(31)).setAnterior(caminoC.ultimo);
             ((CasillaDoble) caminoPrincipal.giveMe(31)).setRight(false);
@@ -358,6 +388,30 @@ public class Tablero extends Application {
             }
         });
 
+        Button EVENT = new Button("", new ImageView(btn));
+
+        EVENT.setStyle("-fx-background-color:transparent;-fx-background-radius: 30");
+        //POSICION
+        EVENT.setLayoutX(400);
+        EVENT.setLayoutY(10);
+        //POSICION
+        EVENT.setScaleX(0.5);
+        EVENT.setScaleY(0.5);
+        EVENT.setFont(Font.font("Verdana", FontWeight.BOLD, 30));
+        EVENT.setText("Event");
+        EVENT.setContentDisplay(ContentDisplay.CENTER);
+        EVENT.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                try {
+                    eventManager.generarJuego();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
+
 
 
         // Controlar de quien es turno
@@ -404,7 +458,7 @@ public class Tablero extends Application {
 
         //AQUI SE AGREGAN LOS COMPONENTES
 
-        root.getChildren().addAll(tableroImagen, Move, Turno, ronda,victoria,Moved);
+        root.getChildren().addAll(tableroImagen, Move, Turno, ronda,victoria,Moved,EVENT);
 
 
         if(numeroDeJugadores>=2) {
@@ -446,8 +500,8 @@ public class Tablero extends Application {
 
                         if (evt.getCode().equals(KeyCode.ESCAPE))
                             {
-                                DevMOVING=!DevMOVING;
-                                System.out.println("El movimiento unitario es ahora:  "+ DevMOVING);
+                                System.out.println(MouseInfo.getPointerInfo().getLocation());
+
                             }
                     }
             });
