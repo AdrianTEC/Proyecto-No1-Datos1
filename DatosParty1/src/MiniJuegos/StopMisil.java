@@ -116,54 +116,54 @@ public class StopMisil extends Application implements  Observador
 
     }
     @Override
-    public void start(Stage stage) throws Exception {
+public void start(Stage stage) throws Exception {
 
-        fondo= new ImageView(new Image("Imagenes/Minijuegos/D3-1.png.png"));
-        fondo.setFitWidth(400);
-        fondo.setFitHeight(700);
-        root.setStyle("-fx-background-color: #202f4a");
-
-
-        puntaje.setText("Puntaje:");
-        puntaje.setLayoutX(400);
-        puntaje.setLayoutY(30);
-        puntaje.setPrefSize(300,80);
-        puntaje.setStyle("-fx-background-color: #535c94;-fx-background-radius: 30");
-        puntaje.setFont(Font.font("Verdana", FontWeight.BOLD, 20));
-
-        Label indic = new Label();
-        indic.setText("Ganas monedas cada 100 puntos");
-        indic.setLayoutX(400);
-        indic.setLayoutY(170);
-        indic.setPrefSize(300,100);
-        indic.setStyle("-fx-background-color: #535c94");
-        indic.setFont(Font.font("Verdana", FontWeight.BOLD, 20));
-
-        velocidadMisil.setText("Velocidad actual: 10");
-        velocidadMisil.setLayoutX(400);
-        velocidadMisil.setLayoutY(570);
-        velocidadMisil.setPrefSize(300,50);
-        velocidadMisil.setStyle("-fx-background-color: #535c94");
-        velocidadMisil.setFont(Font.font("Verdana", FontWeight.BOLD, 12));
-
-        Destruidos.setText("Destruidos:");
-        Destruidos.setLayoutX(400);
-        Destruidos.setLayoutY(300);
-        Destruidos.setPrefSize(300,80);
-        Destruidos.setStyle("-fx-background-color: #535c94;-fx-background-radius: 30");
-        Destruidos.setFont(Font.font("Verdana", FontWeight.BOLD, 20));
+    fondo= new ImageView(new Image("Imagenes/Minijuegos/D3-1.png.png"));
+    fondo.setFitWidth(400);
+    fondo.setFitHeight(700);
+    root.setStyle("-fx-background-color: #202f4a");
 
 
-        stage.setResizable(false);
-        stage.setTitle("Datos Party 1");
-        stage.setScene(new Scene(root, 700, 700));
-        root.getChildren().addAll(fondo,Destruidos,puntaje,velocidadMisil,indic);
-        crearMisil();
+    puntaje.setText("Puntaje:");
+    puntaje.setLayoutX(400);
+    puntaje.setLayoutY(30);
+    puntaje.setPrefSize(300,80);
+    puntaje.setStyle("-fx-background-color: #535c94;-fx-background-radius: 30");
+    puntaje.setFont(Font.font("Verdana", FontWeight.BOLD, 20));
 
-        stage.show();
-        stage.setOnCloseRequest(event -> { System.exit(1);});
+    Label indic = new Label();
+    indic.setText("Ganas monedas cada 100 puntos");
+    indic.setLayoutX(400);
+    indic.setLayoutY(170);
+    indic.setPrefSize(300,100);
+    indic.setStyle("-fx-background-color: #535c94");
+    indic.setFont(Font.font("Verdana", FontWeight.BOLD, 20));
 
-    }
+    velocidadMisil.setText("Velocidad actual: 10");
+    velocidadMisil.setLayoutX(400);
+    velocidadMisil.setLayoutY(570);
+    velocidadMisil.setPrefSize(300,50);
+    velocidadMisil.setStyle("-fx-background-color: #535c94");
+    velocidadMisil.setFont(Font.font("Verdana", FontWeight.BOLD, 12));
+
+    Destruidos.setText("Destruidos:");
+    Destruidos.setLayoutX(400);
+    Destruidos.setLayoutY(300);
+    Destruidos.setPrefSize(300,80);
+    Destruidos.setStyle("-fx-background-color: #535c94;-fx-background-radius: 30");
+    Destruidos.setFont(Font.font("Verdana", FontWeight.BOLD, 20));
+
+
+    stage.setResizable(false);
+    stage.setTitle("Save D3");
+    stage.setScene(new Scene(root, 700, 700));
+    root.getChildren().addAll(fondo,Destruidos,puntaje,velocidadMisil,indic);
+    crearMisil();
+
+    stage.show();
+    stage.setOnCloseRequest(event -> { System.exit(1);});
+
+}
 
     @Override
     public void Update() {
