@@ -1,47 +1,75 @@
 package MiniJuegos;
-import javafx.event.ActionEvent;
-import javafx.event.Event;
-import javafx.event.EventHandler;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseEvent;
+import sample.Partida;
 
 
-public class Misil  {
+public class Misil implements Observado {
+
+
     private ImageView imagen = new ImageView(new Image("Imagenes/Minijuegos/misil.png"));
-    private int MaximoY;
-    private int Velocidad;
-
-
-    public void explotar(){
-        System.out.println("kabun!");
+    private Image exp= new Image("Imagenes/Minijuegos/Expl.png");
+    private int MaximoY=600;
+    private float Velocidad=10;
+    private boolean sinExplotar= true;
+    private Observador observer;
+    public void setVelocidad(float velocidad) {
+        Velocidad = velocidad;
     }
 
+    public ImageView getImagen() {
+        return imagen;
+    }
+
+    public void explotar(){
+        imagen.setImage(exp);
+        sinExplotar=false;
+        Partida.reproducirSonido("exp");
+    }
+
+    public void myObserverIs(Observador o)
+        {
+            observer=o;
+        }
     public void moverse(Double puntero){
 
 
-        imagen.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
 
-            @Override
-            public void handle(MouseEvent event) {
-                System.out.println("Tile pressed ");
-            }
-        });
-
-        if(puntero<MaximoY)
+        if(puntero<MaximoY && sinExplotar)
             {    puntero=imagen.getLayoutY()+Velocidad;
                  imagen.setLayoutY(puntero);
-                 moverse(puntero);
+
+                Double finalPuntero = puntero;
+                new java.util.Timer().schedule(
+
+                        new java.util.TimerTask() {
+                            @Override
+                            public void run() {
+
+
+                                moverse(finalPuntero);
+
+
+
+                            }
+                        },
+                        50
+                );
+
+
 
 
             }
         else
-        {explotar();}
+        {explotar();
+         notificar();
+        }
 
     }
 
 
-
-
-
+    @Override
+    public void notificar() {
+        observer.Update();
+    }
 }

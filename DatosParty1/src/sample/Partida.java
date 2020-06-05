@@ -225,6 +225,16 @@ public class   Partida extends Application {
             nombreSonido="DatosParty1/src/Media/Dado.wav";
 
         }
+        if(nombre=="exp")
+        {
+            nombreSonido="DatosParty1/src/Media/Exp.wav";
+
+        }
+        if(nombre=="fall")
+        {
+            nombreSonido="DatosParty1/src/Media/caida.wav";
+
+        }
         try {
             AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File(nombreSonido).getAbsoluteFile());
             Clip clip = AudioSystem.getClip();
