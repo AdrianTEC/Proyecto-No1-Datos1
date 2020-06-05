@@ -1,5 +1,10 @@
 package sample;
 
+import MiniJuegos.StopMisil;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.stage.Stage;
+
 public class EventManager {
     // Yo soy un asistente que trabaja tras el telón asegurandose de qué metodos requieren los actores( eventos)
 
@@ -28,11 +33,12 @@ public class EventManager {
 
 
 
-    public void generarJuego() {
+    public void generarJuego() throws Exception {
         int numero = (int) (Math.random() * 3);
-
+        Stage ventana= new Stage();
         if (numero == 0) {
-
+            StopMisil stopMisil= new StopMisil();
+            stopMisil.start(ventana);
         }
 
     }

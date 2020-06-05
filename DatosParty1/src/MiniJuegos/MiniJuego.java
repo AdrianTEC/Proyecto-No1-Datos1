@@ -1,5 +1,6 @@
 package MiniJuegos;
 
+import javafx.scene.image.ImageView;
 import sample.Jugador;
 
 public class MiniJuego
@@ -8,7 +9,6 @@ public class MiniJuego
     private Jugador j1;
     private int tiempo;
     private  int recompensa;
-
 
     public String getNombre() {
         return nombre;
