@@ -38,6 +38,10 @@ public class Tablero extends Application {
    private int turnodeJugador = 1;
    private Dado dado1;
    private Dado dado2;
+   private Baraja barajaVerde;
+   private Baraja barajaAzul;
+   private Baraja barajaRoja;
+   public int tipoCasilla = 4;
 
     public  Tablero()
     {
@@ -149,17 +153,29 @@ public class Tablero extends Application {
 
             else {
 
+                String x=((CasillaSimple) px.getUbicacionEnElMapa()).getTipo();
                 if (px.getUbicacionEnElMapa() instanceof CasillaDoble) {
 
-                    String x=((CasillaDoble) px.getUbicacionEnElMapa()).getTipo();
+
                     if (x=="Vi"|| x=="Ri" ||x=="Ai") {
                         System.out.println("se ha cambiado la orientación");
-                        px.setDirection(   ((CasillaDoble) px.getUbicacionEnElMapa()).getRight()          );
+                        px.setDirection(((CasillaDoble) px.getUbicacionEnElMapa()).getRight());
                         ((CasillaDoble) px.getUbicacionEnElMapa()).changeDirection();
                     }
+
                 }
+                    if (x == "V"){
+                        tipoCasilla = 1;
+                    }
+                    if (x == "R"){
+                        tipoCasilla = 2;
+                    }
+                    if (x == "A") {
+                        tipoCasilla = 3;
+                    }
+                }
+
             }
-        }
     public void lanzarDados(Jugador px)
         {
             /*This funtion throw the dices and ask players to move
@@ -201,13 +217,35 @@ public class Tablero extends Application {
 
         eventManager= new EventManager(); //creo una instancia manejadora de eventos
 
-        e.setImagen(new ImageView(estrella));
+
+        Image cartaVerde=new Image("Imagenes/Cartas/baraja(V).png");
+        Image cartaRoja=new Image("Imagenes/Cartas/baraja(R).png");
+        Image cartaAzul=new Image("Imagenes/Cartas/baraja(A).png");
 
 
 
+        barajaVerde = new Baraja();
+        barajaVerde.setTipoBaraja("V");
+        barajaVerde.setBaraja(new ImageView(cartaVerde));
+        barajaVerde.getBaraja().setFitWidth(90);
+        barajaVerde.getBaraja().setFitHeight(90);
+        barajaVerde.getBaraja().setLayoutY(610);
 
+        barajaAzul = new Baraja();
+        barajaAzul.setTipoBaraja("A");
+        barajaAzul.setBaraja(new ImageView(cartaAzul));
+        barajaAzul.getBaraja().setFitWidth(90);
+        barajaAzul.getBaraja().setFitHeight(90);
+        barajaAzul.getBaraja().setLayoutY(610);
+        barajaAzul.getBaraja().setLayoutX(720);
 
-
+        barajaRoja = new Baraja();
+        barajaRoja.setTipoBaraja("R");
+        barajaRoja.setBaraja(new ImageView(cartaRoja));
+        barajaRoja.getBaraja().setFitWidth(90);
+        barajaRoja.getBaraja().setFitHeight(90);
+        barajaRoja.getBaraja().setLayoutY(610);
+        barajaRoja.getBaraja().setLayoutX(830);
 
 
 
@@ -349,6 +387,7 @@ public class Tablero extends Application {
             }
         });
 
+
         Button Moved = new Button("", new ImageView(btn));
 
         Moved.setStyle("-fx-background-color:transparent;-fx-background-radius: 30");
@@ -439,10 +478,19 @@ public class Tablero extends Application {
             }
         });
 
+        Button cogerCartaV = new Button();
+        cogerCartaV.setStyle("-fx-background-color:transparent;");
+        //POSICION
+        cogerCartaV.setLayoutX(495);
+        Turno.setLayoutY(620);
+        //POSICION
+        cogerCartaV.setScaleX(0.5);
+        cogerCartaV.setScaleY(0.5);
+
 
         //AQUI SE AGREGAN LOS COMPONENTES
 
-        root.getChildren().addAll(tableroImagen, Move, Turno, ronda,victoria,Moved,EVENT);
+        root.getChildren().addAll(tableroImagen, Move, Turno, ronda,victoria,Moved);
 
 
         if(numeroDeJugadores>=2) {
@@ -482,12 +530,29 @@ public class Tablero extends Application {
                          */
 
 
-                        if (evt.getCode().equals(KeyCode.ESCAPE))
-                            {
-                                System.out.println(MouseInfo.getPointerInfo().getLocation());
+                    if (evt.getCode().equals(KeyCode.ESCAPE)) {
+                        Carta cartaAuxG = new Carta();
+                        System.out.println(tipoCasilla);
 
-                            }
+                        if (tipoCasilla == 1) {
+                            cartaAuxG = barajaVerde.crearCarta();
+                            root.getChildren().add(cartaAuxG.getCarta());
+
+                        }
+                        if (tipoCasilla == 3){
+                            cartaAuxG = barajaAzul.crearCarta();
+                            root.getChildren().add(cartaAuxG.getCarta());
+
+                        }
+                        if (tipoCasilla == 2){
+                            cartaAuxG = barajaRoja.crearCarta();
+                            root.getChildren().add(cartaAuxG.getCarta());
+
+                        }
+
+
                     }
+                }
             });
         primaryStage.show();
 
