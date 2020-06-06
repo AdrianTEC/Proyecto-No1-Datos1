@@ -68,7 +68,7 @@ public class EscribirPalabra extends Application implements Observador {
         barrita.getBarra().setLayoutX(150);
         barrita.getBarra().setLayoutY(350);
         barrita.setTamano(400,50);
-        barrita.setTiempo(3000);
+        barrita.setTiempo(5000);
         barrita.encoger();
         barrita.generarContenedor();
         barrita.setObservador(EscribirPalabra.this);

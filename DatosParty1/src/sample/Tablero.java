@@ -15,6 +15,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
@@ -40,6 +41,10 @@ public class Tablero extends Application {
    private Dado dado1;
    private Dado dado2;
    private boolean compraEstrella;
+   private Baraja barajaVerde;
+   private Baraja barajaAzul;
+   private Baraja barajaRoja;
+   public int tipoCasilla = 4;
 
     public  Tablero()
     {
@@ -164,17 +169,28 @@ public class Tablero extends Application {
 
             else {
 
+                String x=((CasillaSimple) px.getUbicacionEnElMapa()).getTipo();
                 if (px.getUbicacionEnElMapa() instanceof CasillaDoble) {
 
-                    String x=((CasillaDoble) px.getUbicacionEnElMapa()).getTipo();
+
                     if (x=="Vi"|| x=="Ri" ||x=="Ai") {
                         System.out.println("se ha cambiado la orientación");
                         px.setDirection(   ((CasillaDoble) px.getUbicacionEnElMapa()).getRight()          );
                         ((CasillaDoble) px.getUbicacionEnElMapa()).changeDirection();
                     }
                 }
+                    if (x == "V"){
+                        tipoCasilla = 1;
+                    }
+                    if (x == "R"){
+                        tipoCasilla = 2;
+                    }
+                    if (x == "A") {
+                        tipoCasilla = 3;
+                    }
+                }
+
             }
-        }
     public void lanzarDados(Jugador px)
         {
             /*This funtion throw the dices and ask players to move
@@ -218,10 +234,22 @@ public class Tablero extends Application {
 
         e.setImagen(new ImageView(estrella));
 
+        Image cartaVerde=new Image("Imagenes/Cartas/barajaV.png");
+        Image cartaRoja=new Image("Imagenes/Cartas/baraja(R).png");
+        Image cartaAzul=new Image("Imagenes/Cartas/baraja(A).png");
 
 
 
+        barajaVerde = new Baraja();
+        barajaVerde.setTipoBaraja("V");
 
+
+        barajaAzul = new Baraja();
+        barajaAzul.setTipoBaraja("A");
+
+
+        barajaRoja = new Baraja();
+        barajaRoja.setTipoBaraja("R");
 
 
 
@@ -295,8 +323,6 @@ public class Tablero extends Application {
         ronda.setLayoutY(130);
         ronda.setFont(Font.font("Verdana", FontWeight.BOLD, 25));
         ronda.setStyle("-fx-background-color: rgba(243,236,250,0.63);");
-
-
 
 
         ///SE CREAN LOS JUGADORES ACÁ //////////////////////////////////////////////////////////////////////////////////
@@ -432,9 +458,9 @@ public class Tablero extends Application {
                 Partida.encojerBoton(Move);
                 Jugador px= new Jugador();
 
+
                 if (turnodeJugador==1) {
                     lanzarDados(p1);
-
                   }
                 if (turnodeJugador==2) {
                     lanzarDados(p2);
@@ -461,7 +487,7 @@ public class Tablero extends Application {
         Moved.setStyle("-fx-background-color:transparent;-fx-background-radius: 30");
         //POSICION
         Moved.setLayoutX(490);
-        Moved.setLayoutY(10);
+        Moved.setLayoutY(-28);
         //POSICION
         Moved.setScaleX(0.5);
         Moved.setScaleY(0.5);
@@ -479,8 +505,8 @@ public class Tablero extends Application {
 
         EVENT.setStyle("-fx-background-color:transparent;-fx-background-radius: 30");
         //POSICION
-        EVENT.setLayoutX(400);
-        EVENT.setLayoutY(10);
+        EVENT.setLayoutX(350);
+        EVENT.setLayoutY(-28);
         //POSICION
         EVENT.setScaleX(0.5);
         EVENT.setScaleY(0.5);
@@ -520,7 +546,6 @@ public class Tablero extends Application {
                 if (turnodeJugador < numeroDeJugadores+1) {
                     turnodeJugador += 1;
                     ronda.setText(rondasJugadas + "/" + cantidadDeTurnos);
-                    compraEstrella = false;
                 }
 
                 if (turnodeJugador == numeroDeJugadores+1) {
@@ -547,10 +572,56 @@ public class Tablero extends Application {
             }
         });
 
+        Button cogerCartaV = new Button("", new ImageView(btn));
+        cogerCartaV.setStyle("-fx-background-color:transparent;-fx-background-radius: 30");
+        //POSICION
+        cogerCartaV.setLayoutX(190);
+        cogerCartaV.setLayoutY(-28);
+        //POSICION
+        cogerCartaV.setScaleX(0.5);
+        cogerCartaV.setScaleY(0.5);
+        cogerCartaV.setFont(Font.font("Verdana", FontWeight.BOLD, 30));
+        cogerCartaV.setText("¡Carta!");
+        cogerCartaV.setContentDisplay(ContentDisplay.CENTER);
+        cogerCartaV.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                Carta cartaAuxG = new Carta();
+                System.out.println(tipoCasilla);
+
+                if (tipoCasilla == 1) {
+                    cartaAuxG = barajaVerde.crearCarta();
+                    root.getChildren().add(cartaAuxG.getCarta());
+
+                }
+                if (tipoCasilla == 3){
+                    cartaAuxG = barajaAzul.crearCarta();
+                    root.getChildren().add(cartaAuxG.getCarta());
+
+                }
+                if (tipoCasilla == 2){
+                    cartaAuxG = barajaRoja.crearCarta();
+                    root.getChildren().add(cartaAuxG.getCarta());
+
+                }
+                Carta finalCartaAuxG = cartaAuxG;
+                cartaAuxG.getCarta().addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
+
+
+                    @Override
+                    public void handle(MouseEvent event) {
+                        root.getChildren().remove(finalCartaAuxG.getCarta());
+
+                    }
+                });
+
+            }
+        });
+
 
         //AQUI SE AGREGAN LOS COMPONENTES
 
-        root.getChildren().addAll(tableroImagen, Move, Turno, ronda,victoria,Moved,EVENT,Compra);
+        root.getChildren().addAll(tableroImagen, Move, Turno, ronda,victoria,Moved,EVENT,Compra,cogerCartaV);
 
 
         if(numeroDeJugadores>=2) {
@@ -576,7 +647,6 @@ public class Tablero extends Application {
             root.getChildren().add(datosP4);
 
 
-
         }
 
 
@@ -599,9 +669,26 @@ public class Tablero extends Application {
                          */
 
 
-                        if (evt.getCode().equals(KeyCode.ESCAPE))
-                            {
-                                System.out.println(MouseInfo.getPointerInfo().getLocation());
+                    if (evt.getCode().equals(KeyCode.ESCAPE)) {
+                        Carta cartaAuxG = new Carta();
+                        System.out.println(tipoCasilla);
+
+                        if (tipoCasilla == 1) {
+                            cartaAuxG = barajaVerde.crearCarta();
+                            root.getChildren().add(cartaAuxG.getCarta());
+
+                        }
+                        if (tipoCasilla == 3){
+                            cartaAuxG = barajaAzul.crearCarta();
+                            root.getChildren().add(cartaAuxG.getCarta());
+
+                        }
+                        if (tipoCasilla == 2){
+                            cartaAuxG = barajaRoja.crearCarta();
+                            root.getChildren().add(cartaAuxG.getCarta());
+
+                        }
+
 
                             }
                     }

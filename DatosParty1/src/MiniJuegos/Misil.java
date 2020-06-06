@@ -62,7 +62,8 @@ public class Misil implements Observado {
             }
         else
         {explotar();
-         notificar();
+        if(puntero>MaximoY){
+         notificar();}
         }
 
     }
