@@ -35,7 +35,6 @@ public class StopMisil extends Application implements  Observador
     }
     public void  cerrarJuego()
         {
-            System.out.println("asd");
             //px.setMonedas(px.getMonedas()+puntos%100);
             System.exit(1);
 

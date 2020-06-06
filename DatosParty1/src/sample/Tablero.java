@@ -233,7 +233,7 @@ public class Tablero extends Application {
 
         e.setImagen(new ImageView(estrella));
 
-        Image cartaVerde=new Image("Imagenes/Cartas/baraja(V).png");
+        Image cartaVerde=new Image("Imagenes/Cartas/barajaV.png");
         Image cartaRoja=new Image("Imagenes/Cartas/baraja(R).png");
         Image cartaAzul=new Image("Imagenes/Cartas/baraja(A).png");
 

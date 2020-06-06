@@ -1,8 +1,7 @@
 package sample;
 
 import MiniJuegos.StopMisil;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
+
 import javafx.stage.Stage;
 
 public class EventManager {
@@ -10,23 +9,28 @@ public class EventManager {
 
 
 
-    private void duelo()//Aparece 10 veces.
+    private void duelo()//Aparece 10 veces.  ///ADRIAN
     {}
-    private void robarMonedas()//Aparece 10 veces
+    private void robarMonedas()//Aparece 10 veces //YORDAN
     {}
-    private void regalarMonedas()//
+    private void regalarMonedas()//  //YORDAN
     {}
-    private void perderUnaEstrella()//
+    private void perderUnaEstrella()// //YORDAN
     {}
-    private void ganar2Estrellas()// Aparece 3 veces.
-    {}
-    private void ganar5Estrellas()//Aparece una vez.
+    public void ganar2Estrellas(Jugador px)// Aparece 3 veces. //YORDAN
+
+
+    {
+        //px+1 estella
+    }
+    private void ganar5Estrellas()//Aparece una vez.//YORDAN
+
     {}
     private void robarEstrella()//Aparece 3 veces
     {}
-    private void teletransporte()//Aparece 10 veces.
+    private void teletransporte()//Aparece 10 veces. /// ANDRES
     {}
-    private void cambioDeLugares()//Aparece 5 veces.
+    private void cambioDeLugares()//Aparece 5 veces. ///
     {}
 
 
