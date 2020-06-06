@@ -30,7 +30,7 @@ public class EventManager extends Tablero{
     //
     public void teletransporte(Jugador px, Object nuevaUbicación)//Aparece 10 veces.
     {
-        px.setUbicacionEnElMapa(nuevaUbicación);
+        px.setUbicacionEnElMapa(nuevaUbicación);  //nuevaUbicación es caminoPrincipal.giveMe(px.numeroRandom())
         px.moverseA((CasillaSimple) px.getUbicacionEnElMapa());
     }
 
