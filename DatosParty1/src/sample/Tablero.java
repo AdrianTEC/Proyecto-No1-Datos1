@@ -15,6 +15,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
@@ -603,7 +604,16 @@ public class Tablero extends Application {
                     root.getChildren().add(cartaAuxG.getCarta());
 
                 }
+                Carta finalCartaAuxG = cartaAuxG;
+                cartaAuxG.getCarta().addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
 
+
+                    @Override
+                    public void handle(MouseEvent event) {
+                        root.getChildren().remove(finalCartaAuxG.getCarta());
+
+                    }
+                });
 
             }
         });
