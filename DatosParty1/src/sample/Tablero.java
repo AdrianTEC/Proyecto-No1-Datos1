@@ -36,8 +36,10 @@ public class Tablero extends Application {
    private int cantidadDeTurnos;
    private int rondasJugadas= 1;
    private int turnodeJugador = 1;
+   private int dato;
    private Dado dado1;
    private Dado dado2;
+   private boolean compraEstrella;
    private Baraja barajaVerde;
    private Baraja barajaAzul;
    private Baraja barajaRoja;
@@ -47,6 +49,7 @@ public class Tablero extends Application {
     {
         numeroDeJugadores=2;
          cantidadDeTurnos=10;
+         compraEstrella = false;
     }
 
     public void setNumeroDeJugadores(int numeroDeJugadores) {
@@ -60,6 +63,11 @@ public class Tablero extends Application {
     public void setCantidadDeTurnos(int cantidadDeTurnos) {
         this.cantidadDeTurnos = cantidadDeTurnos;
     }
+
+    public int getDato(){
+        return dato;
+    }
+
 
     public  boolean DevMOVING =false;
 
@@ -84,6 +92,9 @@ public class Tablero extends Application {
         }
     }
 
+    public void actualizar(){
+    }
+
     public void MoverEstrella(){
         e.numeroRandom();
         e.setUbicacionEnElMapa(caminoPrincipal.giveMe(e.getNumero()));
@@ -104,13 +115,17 @@ public class Tablero extends Application {
                         Platform.runLater(new Runnable(){
                             @Override
                             public void run() {
-                                MoverEstrella();
+                                if(px.getMonedas() > 1) {
+                                    compraEstrella = true;
+                                }
+
 
                             }
 // ...
                     });
                     }
                 new java.util.Timer().schedule(
+
 
                         new java.util.TimerTask() {
                             @Override
@@ -159,10 +174,9 @@ public class Tablero extends Application {
 
                     if (x=="Vi"|| x=="Ri" ||x=="Ai") {
                         System.out.println("se ha cambiado la orientación");
-                        px.setDirection(((CasillaDoble) px.getUbicacionEnElMapa()).getRight());
+                        px.setDirection(   ((CasillaDoble) px.getUbicacionEnElMapa()).getRight()          );
                         ((CasillaDoble) px.getUbicacionEnElMapa()).changeDirection();
                     }
-
                 }
                     if (x == "V"){
                         tipoCasilla = 1;
@@ -217,6 +231,7 @@ public class Tablero extends Application {
 
         eventManager= new EventManager(); //creo una instancia manejadora de eventos
 
+        e.setImagen(new ImageView(estrella));
 
         Image cartaVerde=new Image("Imagenes/Cartas/baraja(V).png");
         Image cartaRoja=new Image("Imagenes/Cartas/baraja(R).png");
@@ -335,6 +350,96 @@ public class Tablero extends Application {
         p3.moverseA((CasillaSimple)caminoPrincipal.primero);
         p4.moverseA((CasillaSimple)caminoPrincipal.primero);
 
+        //////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        // Se muestran datos de P1
+        Label datosP1 = new Label();
+        datosP1.setText(String.valueOf("P1  " + p1.getMonedas()) + "   "+ p1.getEstrellas());
+        datosP1.setLayoutX(565);
+        datosP1.setLayoutY(300);
+        datosP1.setFont(Font.font("Verdana", FontWeight.BOLD, 25));
+        datosP1.setStyle("-fx-background-color: rgba(243,236,250,0.63);");
+
+
+
+
+        // Se muestran datos de P2
+        Label datosP2 = new Label();
+        datosP2.setText(String.valueOf("P2  " + p2.getMonedas()) + "   "+ p2.getEstrellas());
+        datosP2.setLayoutX(565);
+        datosP2.setLayoutY(340);
+        datosP2.setFont(Font.font("Verdana", FontWeight.BOLD, 25));
+        datosP2.setStyle("-fx-background-color: rgba(243,236,250,0.63);");
+
+
+        // Se muestran datos de P3
+        Label datosP3 = new Label();
+        datosP3.setText(String.valueOf("P3  " + p3.getMonedas()) + "   "+ p3.getEstrellas());
+        datosP3.setLayoutX(565);
+        datosP3.setLayoutY(380);
+        datosP3.setFont(Font.font("Verdana", FontWeight.BOLD, 25));
+        datosP3.setStyle("-fx-background-color: rgba(243,236,250,0.63);");
+
+
+
+
+        // Se muestran datos de P4
+        Label datosP4 = new Label();
+        datosP4.setText(String.valueOf("P4  " + p4.getMonedas()) + "   "+ p4.getEstrellas());
+        datosP4.setLayoutX(565);
+        datosP4.setLayoutY(420);
+        datosP4.setFont(Font.font("Verdana", FontWeight.BOLD, 25));
+        datosP4.setStyle("-fx-background-color: rgba(243,236,250,0.63);");
+
+
+
+
+/////////////////////////////////////////////////////////////////////////////
+        //Boton comprar
+        Button Compra = new Button("", new ImageView(btn));
+        Compra.setStyle("-fx-background-color:transparent;-fx-background-radius: 30");
+        //POSICION
+        Compra.setLayoutX(420);
+        Compra.setLayoutY(600);
+        //POSICION
+        Compra.setScaleX(0.5);
+        Compra.setScaleY(0.5);
+        Compra.setFont(Font.font("Verdana", FontWeight.BOLD, 30));
+        Compra.setText("¡Comprar Estrella!");
+        Compra.setContentDisplay(ContentDisplay.CENTER);
+        Compra.setOnAction(new EventHandler<ActionEvent>() {
+            public void handle(ActionEvent event) {
+                if (compraEstrella == true) {
+                    Partida.encojerBoton(Compra);
+                    if (turnodeJugador == 1) {
+                        p1.comprarEstrella();
+                        datosP1.setText(String.valueOf("P1  " + p1.getMonedas()) + "   "+ p1.getEstrellas());
+                        MoverEstrella();
+                    }
+                    if (turnodeJugador == 2) {
+                        p2.comprarEstrella();
+                        datosP2.setText(String.valueOf("P2  " + p2.getMonedas()) + "   "+ p2.getEstrellas());
+                        MoverEstrella();
+                    }
+                    if (turnodeJugador == 3) {
+                        p3.comprarEstrella();
+                        datosP3.setText(String.valueOf("P3  " + p3.getMonedas()) + "   "+ p3.getEstrellas());
+                        MoverEstrella();
+                    }
+                    if (turnodeJugador == 4) {
+                        p4.comprarEstrella();
+                        datosP4.setText(String.valueOf("P4  " + p4.getMonedas()) + "   "+ p4.getEstrellas());
+                        MoverEstrella();
+
+                    }
+                    compraEstrella = false;
+
+                }
+            }
+        });
+
+
+
+
 
 
 //          ______________________________________
@@ -386,7 +491,6 @@ public class Tablero extends Application {
 
             }
         });
-
 
         Button Moved = new Button("", new ImageView(btn));
 
@@ -490,7 +594,7 @@ public class Tablero extends Application {
 
         //AQUI SE AGREGAN LOS COMPONENTES
 
-        root.getChildren().addAll(tableroImagen, Move, Turno, ronda,victoria,Moved);
+        root.getChildren().addAll(tableroImagen, Move, Turno, ronda,victoria,Moved,EVENT,Compra);
 
 
         if(numeroDeJugadores>=2) {
@@ -499,14 +603,23 @@ public class Tablero extends Application {
             root.getChildren().add(p1.getImagen());
             root.getChildren().add(p2.getImagen());
 
+            root.getChildren().add(datosP1);
+
+            root.getChildren().add(datosP2);
 
         }
         if(numeroDeJugadores>=3) {
             root.getChildren().add(p3.getImagen());
 
+            root.getChildren().add(datosP3);
+
         }
         if(numeroDeJugadores==4) {
             root.getChildren().add(p4.getImagen());
+
+            root.getChildren().add(datosP4);
+
+
 
         }
 
@@ -551,8 +664,8 @@ public class Tablero extends Application {
                         }
 
 
+                            }
                     }
-                }
             });
         primaryStage.show();
 
