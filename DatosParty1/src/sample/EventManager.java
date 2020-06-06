@@ -1,12 +1,14 @@
 package sample;
 
+import Listas.CasillaSimple;
 import MiniJuegos.StopMisil;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 
-public class EventManager {
+public class EventManager extends Tablero{
     // Yo soy un asistente que trabaja tras el telón asegurandose de qué metodos requieren los actores( eventos)
+    private Object ubicacion1;
 
 
 
@@ -24,10 +26,22 @@ public class EventManager {
     {}
     private void robarEstrella()//Aparece 3 veces
     {}
-    private void teletransporte()//Aparece 10 veces.
-    {}
-    private void cambioDeLugares()//Aparece 5 veces.
-    {}
+
+    //
+    public void teletransporte(Jugador px, Object nuevaUbicación)//Aparece 10 veces.
+    {
+        px.setUbicacionEnElMapa(nuevaUbicación);
+        px.moverseA((CasillaSimple) px.getUbicacionEnElMapa());
+    }
+
+
+    public void cambioDeLugares(Jugador px1, Jugador px2)//Aparece 5 veces.//
+    {
+        ubicacion1 = px1.getUbicacionEnElMapa();
+        px1.moverseA((CasillaSimple) px2.getUbicacionEnElMapa());
+        px2.moverseA((CasillaSimple) ubicacion1);
+
+    }
 
 
 

@@ -24,7 +24,7 @@ import java.awt.*;
 
 public class Tablero extends Application {
     // there is the class atributes and encapsulation levels  (private and public)
-    private ListaCircular caminoPrincipal;
+    public ListaCircular caminoPrincipal;
     private ListaLineal caminoC;
     private ListaLineal caminoA;
     private ListaLineal caminoB;
@@ -491,7 +491,7 @@ public class Tablero extends Application {
             @Override
             public void handle(ActionEvent event) {
                 try {
-                    eventManager.generarJuego();
+                    eventManager.teletransporte(p1, caminoPrincipal.giveMe(p1.numeroRandom()));
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
