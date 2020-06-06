@@ -241,26 +241,15 @@ public class Tablero extends Application {
 
         barajaVerde = new Baraja();
         barajaVerde.setTipoBaraja("V");
-        barajaVerde.setBaraja(new ImageView(cartaVerde));
-        barajaVerde.getBaraja().setFitWidth(90);
-        barajaVerde.getBaraja().setFitHeight(90);
-        barajaVerde.getBaraja().setLayoutY(610);
+
 
         barajaAzul = new Baraja();
         barajaAzul.setTipoBaraja("A");
-        barajaAzul.setBaraja(new ImageView(cartaAzul));
-        barajaAzul.getBaraja().setFitWidth(90);
-        barajaAzul.getBaraja().setFitHeight(90);
-        barajaAzul.getBaraja().setLayoutY(610);
-        barajaAzul.getBaraja().setLayoutX(720);
+
 
         barajaRoja = new Baraja();
         barajaRoja.setTipoBaraja("R");
-        barajaRoja.setBaraja(new ImageView(cartaRoja));
-        barajaRoja.getBaraja().setFitWidth(90);
-        barajaRoja.getBaraja().setFitHeight(90);
-        barajaRoja.getBaraja().setLayoutY(610);
-        barajaRoja.getBaraja().setLayoutX(830);
+
 
 
 
@@ -497,7 +486,7 @@ public class Tablero extends Application {
         Moved.setStyle("-fx-background-color:transparent;-fx-background-radius: 30");
         //POSICION
         Moved.setLayoutX(490);
-        Moved.setLayoutY(10);
+        Moved.setLayoutY(-28);
         //POSICION
         Moved.setScaleX(0.5);
         Moved.setScaleY(0.5);
@@ -515,8 +504,8 @@ public class Tablero extends Application {
 
         EVENT.setStyle("-fx-background-color:transparent;-fx-background-radius: 30");
         //POSICION
-        EVENT.setLayoutX(400);
-        EVENT.setLayoutY(10);
+        EVENT.setLayoutX(350);
+        EVENT.setLayoutY(-28);
         //POSICION
         EVENT.setScaleX(0.5);
         EVENT.setScaleY(0.5);
@@ -582,19 +571,47 @@ public class Tablero extends Application {
             }
         });
 
-        Button cogerCartaV = new Button();
-        cogerCartaV.setStyle("-fx-background-color:transparent;");
+        Button cogerCartaV = new Button("", new ImageView(btn));
+        cogerCartaV.setStyle("-fx-background-color:transparent;-fx-background-radius: 30");
         //POSICION
-        cogerCartaV.setLayoutX(495);
-        Turno.setLayoutY(620);
+        cogerCartaV.setLayoutX(190);
+        cogerCartaV.setLayoutY(-28);
         //POSICION
         cogerCartaV.setScaleX(0.5);
         cogerCartaV.setScaleY(0.5);
+        cogerCartaV.setFont(Font.font("Verdana", FontWeight.BOLD, 30));
+        cogerCartaV.setText("¡Carta!");
+        cogerCartaV.setContentDisplay(ContentDisplay.CENTER);
+        cogerCartaV.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                Carta cartaAuxG = new Carta();
+                System.out.println(tipoCasilla);
+
+                if (tipoCasilla == 1) {
+                    cartaAuxG = barajaVerde.crearCarta();
+                    root.getChildren().add(cartaAuxG.getCarta());
+
+                }
+                if (tipoCasilla == 3){
+                    cartaAuxG = barajaAzul.crearCarta();
+                    root.getChildren().add(cartaAuxG.getCarta());
+
+                }
+                if (tipoCasilla == 2){
+                    cartaAuxG = barajaRoja.crearCarta();
+                    root.getChildren().add(cartaAuxG.getCarta());
+
+                }
+
+
+            }
+        });
 
 
         //AQUI SE AGREGAN LOS COMPONENTES
 
-        root.getChildren().addAll(tableroImagen, Move, Turno, ronda,victoria,Moved,EVENT,Compra);
+        root.getChildren().addAll(tableroImagen, Move, Turno, ronda,victoria,Moved,EVENT,Compra,cogerCartaV);
 
 
         if(numeroDeJugadores>=2) {
@@ -618,7 +635,6 @@ public class Tablero extends Application {
             root.getChildren().add(p4.getImagen());
 
             root.getChildren().add(datosP4);
-
 
 
         }

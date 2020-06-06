@@ -33,38 +33,20 @@ public class Baraja {
     public Carta crearCarta(){
         Carta cartita = new Carta();
 
+        if (tipoBaraja == "V"){ cartita.setCarta(new ImageView(verde));}
 
-        if (tipoBaraja == "V"){
+        if (tipoBaraja == "A"){ cartita.setCarta(new ImageView(azul));}
 
-            cartita.setCarta(new ImageView(verde));
-            cartita.getCarta().setFitWidth(300);
-            cartita.getCarta().setFitHeight(300);
+        if (tipoBaraja == "R"){ cartita.setCarta(new ImageView(rojo));}
 
-
-        }
-        if (tipoBaraja == "A"){
-
-            cartita.setCarta(new ImageView(azul));
-            cartita.getCarta().setFitWidth(300);
-            cartita.getCarta().setFitHeight(300);
-
-
-        }
-        if (tipoBaraja == "R"){
-
-            cartita.setCarta(new ImageView(rojo));
-            cartita.getCarta().setFitWidth(300);
-            cartita.getCarta().setFitHeight(300);
-
-
-        }
+        cartita.getCarta().setFitWidth(400);
+        cartita.getCarta().setFitHeight(400);
+        cartita.getCarta().setLayoutX(155);
+        cartita.getCarta().setLayoutY(175);
 
 
         return cartita;
     }
-
-
-
 
 
 }
