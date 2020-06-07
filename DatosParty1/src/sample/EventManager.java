@@ -1,37 +1,47 @@
 package sample;
 
+import Listas.CasillaSimple;
 import MiniJuegos.StopMisil;
-
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 
-public class EventManager {
+public class EventManager extends Tablero{
     // Yo soy un asistente que trabaja tras el telón asegurandose de qué metodos requieren los actores( eventos)
+    private Object ubicacion1;
 
 
 
-    private void duelo()//Aparece 10 veces.  ///ADRIAN
+    private void duelo()//Aparece 10 veces.
     {}
-    private void robarMonedas()//Aparece 10 veces //YORDAN
+    private void robarMonedas()//Aparece 10 veces
     {}
-    private void regalarMonedas()//  //YORDAN
+    private void regalarMonedas()//
     {}
-    private void perderUnaEstrella()// //YORDAN
+    private void perderUnaEstrella()//
     {}
-    public void ganar2Estrellas(Jugador px)// Aparece 3 veces. //YORDAN
-
-
-    {
-        //px+1 estella
-    }
-    private void ganar5Estrellas()//Aparece una vez.//YORDAN
-
+    private void ganar2Estrellas()// Aparece 3 veces.
+    {}
+    private void ganar5Estrellas()//Aparece una vez.
     {}
     private void robarEstrella()//Aparece 3 veces
     {}
-    private void teletransporte()//Aparece 10 veces. /// ANDRES
-    {}
-    private void cambioDeLugares()//Aparece 5 veces. ///
-    {}
+
+    //
+    public void teletransporte(Jugador px, Object nuevaUbicación)//Aparece 10 veces.
+    {
+        px.setUbicacionEnElMapa(nuevaUbicación);  //nuevaUbicación es caminoPrincipal.giveMe(px.numeroRandom())
+        px.moverseA((CasillaSimple) px.getUbicacionEnElMapa());
+    }
+
+
+    public void cambioDeLugares(Jugador px1, Jugador px2)//Aparece 5 veces.//
+    {
+        ubicacion1 = px1.getUbicacionEnElMapa();
+        px1.moverseA((CasillaSimple) px2.getUbicacionEnElMapa());
+        px2.moverseA((CasillaSimple) ubicacion1);
+
+    }
 
 
 

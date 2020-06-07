@@ -14,6 +14,7 @@ public class    Jugador {   // ATRIBUTOS DEL JUGADOR
     private ImageView imagen;
     private Object ubicacionEnElMapa;
     private boolean direction = true;
+    private int numero;
 
     public boolean getDirection() {
         return direction;
@@ -73,6 +74,10 @@ public class    Jugador {   // ATRIBUTOS DEL JUGADOR
 
     public Object getUbicacionEnElMapa() {
         return ubicacionEnElMapa;
+    }
+
+    public void setUbicacionEnElMapa(Object newUbicacion){
+        this.ubicacionEnElMapa = newUbicacion;
     }
 
 
@@ -136,8 +141,9 @@ public class    Jugador {   // ATRIBUTOS DEL JUGADOR
 
     }
 
-    public void actualizar(){
-
+    public int numeroRandom() {
+        numero = (int)(Math.random()*31) + 1;
+        return numero;
     }
 
 }
