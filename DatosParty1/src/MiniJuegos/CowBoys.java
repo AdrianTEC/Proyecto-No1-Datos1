@@ -2,7 +2,6 @@ package MiniJuegos;
 
 import javafx.application.Application;
 import javafx.application.Platform;
-import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
@@ -23,25 +22,22 @@ public class CowBoys extends Application {
 
     private Jugador px1;
     private Jugador px2;
-    private Boolean timeForShoot= false;
-    private ImageView flag= new ImageView("Imagenes/Minijuegos/flag.png");
-    private Pane root = new Pane();
+    private Boolean timeForShoot;
+    private ImageView flag;
+    private Pane root;
 
-/*    public CowBoys(Jugador px1, Jugador px2) {
-        this.px1 = px1;
-        this.px2 = px2;
+   public CowBoys() {
+        px1= new Jugador();
+        px2= new Jugador();
+        timeForShoot= false;
+        flag= new ImageView("Imagenes/Minijuegos/flag.png");
+        root = new Pane();
     }
-*/
     private  void shoot()
         {
             timeForShoot=true;
             Partida.reproducirSonido("alert");
-            Platform.runLater(new Runnable() {
-                @Override
-                public void run() {
-                    root.getChildren().add(flag);
-                }
-            });
+            Platform.runLater(() -> root.getChildren().add(flag));
 
             new java.util.Timer().schedule(
 
@@ -49,12 +45,7 @@ public class CowBoys extends Application {
                         @Override
                         public void run() {
 
-                            Platform.runLater(new Runnable() {
-                                @Override
-                                public void run() {
-                                    root.getChildren().remove(flag);
-                                }
-                            });
+                            Platform.runLater(() -> root.getChildren().remove(flag));
 
                         }
                     },
@@ -64,7 +55,7 @@ public class CowBoys extends Application {
         }
 
     @Override
-    public void start(Stage stage) throws Exception {
+    public void start(Stage stage)  {
         ImageView fondo= new ImageView("Imagenes/Minijuegos/Dessert.png");
 
         //creo los vaqueros
@@ -91,27 +82,22 @@ public class CowBoys extends Application {
         root.setStyle("-fx-background-color: #202f4a");
 
         stage.show();
-        stage.addEventFilter(KeyEvent.KEY_PRESSED, new EventHandler<KeyEvent>()
-
-
-
-
-        {   @Override
-        public void handle(KeyEvent evt)
-        {
-            Label vic= new Label();
+        stage.addEventFilter(KeyEvent.KEY_PRESSED, evt -> {
+            Label vic = new Label();
             vic.setLayoutX(300);
             vic.setLayoutY(100);
             vic.setFont(Font.font("Verdana", FontWeight.BOLD, 50));
             if (evt.getCode().equals(KeyCode.S)) {
 
-                if(timeForShoot)
-                {                Partida.reproducirSonido("shoot");
+                if (timeForShoot) {
+                    Partida.reproducirSonido("shoot");
 
-                    timeForShoot=false;
+                    timeForShoot = false;
                     v2.dead();
-                    vic.setText("El jugador :"+ px1.getNombre() +" ha ganado!!");
-                    px1.setEstrellas(px1.getMonedas()+1);
+                    vic.setText("El jugador :" + px1.getNombre() + " ha ganado!!");
+                    px1.setMonedas(px1.getMonedas() + 1);
+                    px2.setMonedas(px2.getMonedas() - 1);
+
 
                 }
 
@@ -119,14 +105,16 @@ public class CowBoys extends Application {
             }
             if (evt.getCode().equals(KeyCode.K)) {
 
-                if(timeForShoot)
-                {                Partida.reproducirSonido("shoot");
+                if (timeForShoot) {
+                    Partida.reproducirSonido("shoot");
 
-                    timeForShoot=false;
+                    timeForShoot = false;
 
                     v1.dead();
-                    vic.setText("El jugador :"+ px2.getNombre() +" ha ganado!!");
-                    px2.setEstrellas(px1.getMonedas()+1);
+                    vic.setText("El jugador :" + px2.getNombre() + " ha ganado!!");
+                    px2.setEstrellas(px2.getMonedas() + 1);
+                    px1.setMonedas(px1.getMonedas() - 1);
+
 
                 }
 
@@ -137,29 +125,23 @@ public class CowBoys extends Application {
             root.getChildren().add(vic);
 
 
-
             new java.util.Timer().schedule(
 
                     new java.util.TimerTask() {
                         @Override
                         public void run() {
 
-                            Platform.runLater(new Runnable() {
-                                @Override
-                                public void run() {
-                                    System.exit(1);
-                                }
-                            });
+                            Platform.runLater(() -> System.exit(1));
 
                         }
                     },
                     2000
             );
 
-        }  });
+        });
 
 
-        stage.setOnCloseRequest(event -> { System.exit(1);});
+        stage.setOnCloseRequest(event -> System.exit(1));
         new java.util.Timer().schedule(
 
                 new java.util.TimerTask() {
@@ -172,7 +154,7 @@ public class CowBoys extends Application {
 
                     }
                 },
-                1000
+                (long) (1000*Math.random()*10)
         );
 
 

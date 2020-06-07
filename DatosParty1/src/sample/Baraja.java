@@ -31,6 +31,12 @@ public class Baraja {
     Image azul=new Image("Imagenes/Cartas/CAZUL.png");
 
     public Carta crearCarta(){
+        /*This function creates a card an return it
+         *@author Yordan Rojas
+         *@Version 02/05/2020
+         * @param nothing
+         * @return Carta cartita
+         */
         Carta cartita = new Carta();
 
         if (tipoBaraja == "V"){ cartita.setCarta(new ImageView(verde));}

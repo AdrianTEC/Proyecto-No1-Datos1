@@ -62,8 +62,10 @@ public class Misil implements Observado {
             }
         else
         {explotar();
-        if(puntero>MaximoY){
+        if(puntero>MaximoY-100){
+            System.out.println("explosion");
          notificar();}
+
         }
 
     }

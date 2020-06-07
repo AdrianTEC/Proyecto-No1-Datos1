@@ -2,8 +2,7 @@ package sample;
 
 
 import javafx.application.Application;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
+
 
 import javafx.scene.control.Button;
 import javafx.scene.Scene;
@@ -22,15 +21,23 @@ import javafx.stage.Stage;
 import javax.sound.sampled.*;
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 
 
 public class   Partida extends Application {
     // there is the class atributes and encapsulation levels
-    public int numeroDeRondas = 1;
-    public int cantidadDeJugadores = 2;
+    private int numeroDeRondas ;
+    private int cantidadDeJugadores ;
+
+    public  Partida()
+        {
+            numeroDeRondas = 1;
+            cantidadDeJugadores = 2;
+        }
+
 
     @Override// there is overwriting  this  use  handle method from other class
-    public void start(Stage primaryStage) throws Exception {
+    public void start(Stage primaryStage)  {
 
         /*This function is in charge of window building and window managing, next you will find some boring graphics configurations
          * this is the principal menu's window
@@ -42,7 +49,7 @@ public class   Partida extends Application {
 
         ///////////////////////////////////////////////////
         Label CampoNumeroJugadores = new Label();
-        CampoNumeroJugadores.setText("Cantidad de jugadores : " + String.valueOf(cantidadDeJugadores));
+        CampoNumeroJugadores.setText("Cantidad de jugadores : " + cantidadDeJugadores);
         CampoNumeroJugadores.setLayoutX(350);
         CampoNumeroJugadores.setLayoutY(270);
         CampoNumeroJugadores.setFont(Font.font("Verdana", FontWeight.BOLD, 20));
@@ -57,16 +64,13 @@ public class   Partida extends Application {
         UnoJugadorMas.setFont(Font.font("Verdana", FontWeight.BOLD, 30));
         UnoJugadorMas.setText("1+");
         UnoJugadorMas.setContentDisplay(ContentDisplay.CENTER);
-        UnoJugadorMas.setOnAction(new EventHandler<ActionEvent>() {
-            @Override//there is overwriting handle function is imported from another class
+        //there is overwriting handle function is imported from another class
+        UnoJugadorMas.setOnAction(event -> {
+            encojerBoton(UnoJugadorMas);
 
-            public void handle(ActionEvent event) {
-                encojerBoton(UnoJugadorMas);
-
-                if (cantidadDeJugadores < 4) {
-                    cantidadDeJugadores += 1;
-                    CampoNumeroJugadores.setText("Cantidad de jugadores : " + String.valueOf(cantidadDeJugadores));
-                }
+            if (cantidadDeJugadores < 4) {
+                cantidadDeJugadores += 1;
+                CampoNumeroJugadores.setText("Cantidad de jugadores : " + cantidadDeJugadores);
             }
         });
         ///////////////////////////////////////////////////
@@ -79,20 +83,18 @@ public class   Partida extends Application {
         UnJugadorMenos.setFont(Font.font("Verdana", FontWeight.BOLD, 30));
         UnJugadorMenos.setText("1-");
         UnJugadorMenos.setContentDisplay(ContentDisplay.CENTER);
-        UnJugadorMenos.setOnAction(new EventHandler<ActionEvent>() {
-            @Override //there is overwriting handle function is imported from another class
-            public void handle(ActionEvent event) {
-                encojerBoton(UnJugadorMenos);
+        //there is overwriting handle function is imported from another class
+        UnJugadorMenos.setOnAction(event -> {
+            encojerBoton(UnJugadorMenos);
 
-                if (cantidadDeJugadores > 2) {
-                    cantidadDeJugadores -= 1;
-                    CampoNumeroJugadores.setText("Cantidad de jugadores : " + String.valueOf(cantidadDeJugadores));
-                }
+            if (cantidadDeJugadores > 2) {
+                cantidadDeJugadores -= 1;
+                CampoNumeroJugadores.setText("Cantidad de jugadores : " + cantidadDeJugadores);
             }
         });
         ///////////////////////////////////////////////////
         Label campoNumeroDeRondas = new Label();
-        campoNumeroDeRondas.setText("Cantidad de rondas : " + String.valueOf(numeroDeRondas));
+        campoNumeroDeRondas.setText("Cantidad de rondas : " + numeroDeRondas);
         campoNumeroDeRondas.setLayoutX(350);
         campoNumeroDeRondas.setLayoutY(400);
         campoNumeroDeRondas.setFont(Font.font("Verdana", FontWeight.BOLD, 20));
@@ -107,15 +109,13 @@ public class   Partida extends Application {
         UnoMas.setFont(Font.font("Verdana", FontWeight.BOLD, 30));
         UnoMas.setText("1+");
         UnoMas.setContentDisplay(ContentDisplay.CENTER);
-        UnoMas.setOnAction(new EventHandler<ActionEvent>() {
-            @Override //there is overwriting handle function is imported from another class
-            public void handle(ActionEvent event) {
-                encojerBoton(UnoMas);
+        //there is overwriting handle function is imported from another class
+        UnoMas.setOnAction(event -> {
+            encojerBoton(UnoMas);
 
-                numeroDeRondas += 1;
-                campoNumeroDeRondas.setText("Cantidad de rondas : " + String.valueOf(numeroDeRondas));
+            numeroDeRondas += 1;
+            campoNumeroDeRondas.setText("Cantidad de rondas : " + numeroDeRondas);
 
-            }
         });
         ///////////////////////////////////////////////////
         Button UnoMenos = new Button("", new ImageView(btn));
@@ -127,17 +127,14 @@ public class   Partida extends Application {
         UnoMenos.setFont(Font.font("Verdana", FontWeight.BOLD, 30));
         UnoMenos.setText("1-");
         UnoMenos.setContentDisplay(ContentDisplay.CENTER);
-        UnoMenos.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                    encojerBoton(UnoMenos);
+        UnoMenos.setOnAction(event -> {
+                encojerBoton(UnoMenos);
 
 
 
-                if (numeroDeRondas > 1) {
-                    numeroDeRondas -= 1;
-                    campoNumeroDeRondas.setText("Cantidad de rondas : " + String.valueOf(numeroDeRondas));
-                }
+            if (numeroDeRondas > 1) {
+                numeroDeRondas -= 1;
+                campoNumeroDeRondas.setText("Cantidad de rondas : " + numeroDeRondas);
             }
         });
 
@@ -161,29 +158,25 @@ public class   Partida extends Application {
         Empezar.setFont(Font.font("Verdana", FontWeight.BOLD, 30));
         Empezar.setText("NuevaPartida");
         Empezar.setContentDisplay(ContentDisplay.CENTER);
-        Empezar.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
+        Empezar.setOnAction(event -> {
+            encojerBoton(Empezar);
 
-            public void handle(ActionEvent event) {
-                encojerBoton(Empezar);
+            /*This funtion is in charge of opening the game window
+             *@author Adrián González Jiménez
+             *@Version 02/05/2020
+             * @param Event
+             */
 
-                /*This funtion is in charge of opening the game window
-                 *@author Adrián González Jiménez
-                 *@Version 02/05/2020
-                 * @param Event
-                 */
-
-                if (numeroDeRondas !=0 && cantidadDeJugadores!=0) {
-                    try {
-                        crearTablero();
-                        primaryStage.close();
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
+            if (numeroDeRondas !=0 && cantidadDeJugadores!=0) {
+                try {
+                    crearTablero();
+                    primaryStage.close();
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
-
-
             }
+
+
         });
 
 
@@ -204,6 +197,7 @@ public class   Partida extends Application {
 
 
     }
+
     public  static void reproducirSonido(String nombre) {
         /*This funtion play different types of sounds
          *@author Adrián González Jiménez
@@ -211,53 +205,49 @@ public class   Partida extends Application {
          * @param nothing
          */
         String nombreSonido="";
-        if(nombre=="boton") {
+        if(nombre.equals("boton")) {
             nombreSonido="DatosParty1/src/Media/Button.wav";
 
         }
-        if(nombre=="paso") {
+        if(nombre.equals("paso")) {
             nombreSonido="DatosParty1/src/Media/Step.wav";
 
 
         }
-        if(nombre=="dado")
-        {
+        if(nombre.equals("dado")) {
             nombreSonido="DatosParty1/src/Media/Dado.wav";
 
         }
-        if(nombre=="exp")
-        {
+        if(nombre.equals("exp")) {
             nombreSonido="DatosParty1/src/Media/Exp.wav";
 
         }
-        if(nombre=="fall")
-        {
+        if(nombre.equals("fall")) {
             nombreSonido="DatosParty1/src/Media/caida.wav";
 
         }
-        if(nombre=="shoot")
-        {
+        if(nombre.equals("shoot")) {
             nombreSonido="DatosParty1/src/Media/Shoot.wav";
 
         }
-        if(nombre=="star")
-        {
+        if(nombre.equals("star")) {
             nombreSonido="DatosParty1/src/Media/tada.wav";
 
         }
-        if(nombre=="win")
-        {
+        if(nombre.equals("win")) {
             nombreSonido="DatosParty1/src/Media/Succes.wav";
 
         }
-        if(nombre=="fail")
-        {
+        if(nombre.equals("fail")) {
             nombreSonido="DatosParty1/src/Media/fail.wav";
 
         }
-        if(nombre=="alert")
-        {
+        if(nombre.equals("alert")) {
             nombreSonido="DatosParty1/src/Media/alert.wav";
+
+        }
+        if(nombre.equals("bip")) {
+            nombreSonido="DatosParty1/src/Media/hit.wav";
 
         }
         try {
@@ -269,8 +259,6 @@ public class   Partida extends Application {
             System.out.println(ex);
         }
     }
-
-
 
 
     public static void  encojerBoton (Button boton){
@@ -298,7 +286,7 @@ public class   Partida extends Application {
         );
 
     }
-    public  void crearTablero() throws Exception {
+    public  void crearTablero() throws ClassNotFoundException, NoSuchMethodException, IllegalAccessException, InvocationTargetException {
         /*This funtion is instantiate a Tablero Object
          *@author Adrián González Jiménez
          *@Version 02/05/2020
@@ -313,8 +301,4 @@ public class   Partida extends Application {
 
         }
 
-    public static void main(String[] args) {
-        launch(args);
-    }
 }
-    //Comentario de seguridad
