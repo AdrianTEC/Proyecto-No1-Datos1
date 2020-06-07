@@ -39,6 +39,10 @@ public class Tablero extends Application {
     private Baraja barajaAzul;
     private Baraja barajaRoja;
 
+    private Jugador pxA;
+
+
+
     private boolean DevMOVING;
     private boolean compraEstrella;
 
@@ -54,6 +58,7 @@ public class Tablero extends Application {
          DevMOVING =false;
          root = new Pane();
          e = new Estrella();
+         pxA = new Jugador();
 
     }
     public void setNumeroDeJugadores(int numeroDeJugadores) {
@@ -84,7 +89,7 @@ public class Tablero extends Application {
      * @param Stage
      */
     private void moverPersonaje(Jugador px,int numDado,int puntero)
-        {
+        {   pxA = px;
             Partida.reproducirSonido("paso");
             if( puntero <numDado) {
                 if(px.getUbicacionEnElMapa()==e.getUbicacionEnElMapa())
@@ -260,40 +265,33 @@ public class Tablero extends Application {
 
         //////////////////////////////////////////////////////////////////////////////////////////////////////////////
         // Se muestran datos de P1
-        Label datosP1 = new Label();
-        datosP1.setText("P1  " + p1.getMonedas() + "   "+ p1.getEstrellas());
-        datosP1.setLayoutX(565);datosP1.setLayoutY(300);
-        datosP1.setFont(Font.font("Verdana", FontWeight.BOLD, 25));
-        datosP1.setStyle("-fx-background-color: rgba(243,236,250,0.63);");
+
+        p1.getRecursos().setLayoutX(565);p1.getRecursos().setLayoutY(300);
+        p1.setNombre("1");
+        p1.        actualizarRecursos();
 
 
         //////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
         // Se muestran datos de P2
-        Label datosP2 = new Label();
-        datosP2.setLayoutX(565);datosP2.setLayoutY(340);
-        datosP2.setText("P2  " + p2.getMonedas() + "   "+ p2.getEstrellas());
-        datosP2.setFont(Font.font("Verdana", FontWeight.BOLD, 25));
-        datosP2.setStyle("-fx-background-color: rgba(243,236,250,0.63);");
+
+        p2.getRecursos().setLayoutX(565);p2.getRecursos().setLayoutY(340);
+        p2.setNombre("2");
+        p2.        actualizarRecursos();
 
         //////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
         // Se muestran datos de P3
-        Label datosP3 = new Label();
-        datosP3.setLayoutX(565);datosP3.setLayoutY(380);
-        datosP3.setText("P3  " + p3.getMonedas() + "   "+ p3.getEstrellas());
-        datosP3.setFont(Font.font("Verdana", FontWeight.BOLD, 25));
-        datosP3.setStyle("-fx-background-color: rgba(243,236,250,0.63);");
-
+        p3.getRecursos().setLayoutX(565);p3.getRecursos().setLayoutY(380);
+        p3.setNombre("3");
+        p3.        actualizarRecursos();
 
         //////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
         // Se muestran datos de P4
-        Label datosP4 = new Label();
-        datosP4.setLayoutX(565);datosP4.setLayoutY(420);
-        datosP4.setText("P4  " + p4.getMonedas() + "   "+ p4.getEstrellas());
-        datosP4.setFont(Font.font("Verdana", FontWeight.BOLD, 25));
-        datosP4.setStyle("-fx-background-color: rgba(243,236,250,0.63);");
+        p4.getRecursos().setLayoutX(565);p4.getRecursos().setLayoutY(420);
+        p4.setNombre("4");
+        p4.        actualizarRecursos();
 
         /////////////////////////////////////////////////////////////////////////////      /////////////////////////////////////////////////////////////////////////////
         //Boton comprar
@@ -311,16 +309,16 @@ public class Tablero extends Application {
                 Partida.encojerBoton(Compra);
                 if (turnodeJugador == 1) {
                     p1.comprarEstrella();
-                    datosP1.setText("P1  " + p1.getMonedas() + "   "+ p1.getEstrellas()); }
+                    p1.getRecursos().setText("P1  " + p1.getMonedas() + "   "+ p1.getEstrellas()); }
                 if (turnodeJugador == 2) {
                     p2.comprarEstrella();
-                    datosP2.setText("P2  " + p2.getMonedas() + "   "+ p2.getEstrellas()); }
+                    p2.getRecursos().setText("P2  " + p2.getMonedas() + "   "+ p2.getEstrellas()); }
                 if (turnodeJugador == 3) {
                     p3.comprarEstrella();
-                    datosP3.setText("P3  " + p3.getMonedas() + "   "+ p3.getEstrellas()); }
+                    p3.getRecursos().setText("P3  " + p3.getMonedas() + "   "+ p3.getEstrellas()); }
                 if (turnodeJugador == 4) {
                     p4.comprarEstrella();
-                    datosP4.setText("P4  " + p4.getMonedas() + "   "+ p4.getEstrellas()); }
+                    p4.getRecursos().setText("P4  " + p4.getMonedas() + "   "+ p4.getEstrellas()); }
 
                 MoverEstrella();
                 compraEstrella = false;
@@ -441,6 +439,9 @@ public class Tablero extends Application {
             if (tipoCasilla == 1) {
                 cartaAuxG = barajaVerde.crearCarta();
                 cartaAuxG.setDescripcion(tipoCasilla);
+                pxA.setMonedas(pxA.getMonedas()+1);
+
+
                 root.getChildren().addAll(cartaAuxG.getCarta(),cartaAuxG.getDescripcion());
 
             }
@@ -454,11 +455,12 @@ public class Tablero extends Application {
             if (tipoCasilla == 2){
                 cartaAuxG = barajaRoja.crearCarta();
                 cartaAuxG.setDescripcion(tipoCasilla);
+                pxA.setMonedas(pxA.getMonedas()-1);
                 root.getChildren().addAll(cartaAuxG.getCarta(),cartaAuxG.getDescripcion());
             }
+            pxA.actualizarRecursos();
             Carta finalCartaAuxG = cartaAuxG;
-            cartaAuxG.getCarta().addEventHandler(MouseEvent.MOUSE_CLICKED, event -> root.getChildren().remove(finalCartaAuxG.getCarta()));
-
+            cartaAuxG.getCarta().addEventHandler(MouseEvent.MOUSE_CLICKED, event -> root.getChildren().removeAll(finalCartaAuxG.getCarta(), finalCartaAuxG.getDescripcion()));
         });
         ///////////////////////////////////////////////////////////////////////        ///////////////////////////////////////////////////////////////////////
         ///////////////////////////////////////////////////////////////////////
@@ -475,18 +477,18 @@ public class Tablero extends Application {
             root.getChildren().add(p1.getImagen());
             root.getChildren().add(p2.getImagen());
 
-            root.getChildren().add(datosP1);
-            root.getChildren().add(datosP2);
+            root.getChildren().add(p1.getRecursos());
+            root.getChildren().add(p2.getRecursos());
 
         }
         if(numeroDeJugadores>=3) {
             root.getChildren().add(p3.getImagen());
-            root.getChildren().add(datosP3);
+            root.getChildren().add(p3.getRecursos());
 
         }
         if(numeroDeJugadores==4) {
             root.getChildren().add(p4.getImagen());
-            root.getChildren().add(datosP4);
+            root.getChildren().add(p4.getRecursos());
         }
         primaryStage.setResizable(false);
         primaryStage.setTitle("Datos Party 1");
