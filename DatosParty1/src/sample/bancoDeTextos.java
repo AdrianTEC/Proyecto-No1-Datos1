@@ -4,24 +4,25 @@ public class bancoDeTextos {
 
     public String textoDeCartaTipo(int tipo){
         String random = new String();
+        int x = (int)(Math.random()*3);
         if (tipo == 1){
 
-            random = cartasVERDES [(int)Math.random()*3];
+            random = cartasVERDES [x];
 
         }
         if (tipo == 3){
 
-            random = cartasAZULES [(int)Math.random()*3];
+            random = cartasAZULES [x];
 
         }
         if (tipo == 2){
 
-            random = cartasROJAS [(int)Math.random()*3];
+            random = cartasROJAS [x];
 
         }
         if (tipo == 4){
 
-            random = cartasDORADAS [(int)Math.random()*3];
+            random = cartasDORADAS [x];
 
         }
         return random;
