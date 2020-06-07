@@ -31,12 +31,23 @@ public class StopMisil extends Application implements  Observador
         px= new Jugador();
     }
     private void destruirMisil(Misil exp)
+
     {
+        /*This destroy a misil when its click on
+         *@author Adrián González
+         *@Version 06/06/2020
+         * @param nothing
+         */
         root.getChildren().remove(exp.getImagen());
 
     }
     public void  cerrarJuego()
         {
+            /*This closes the game when a misil falls in the ground
+             *@author Adrián González
+             *@Version 06/06/2020
+             * @param nothing
+             */
 
             Label vic= new Label();vic.setLayoutX(0);vic.setLayoutY(100);vic.setFont(Font.font("Verdana", FontWeight.BOLD, 40));vic.setStyle("-fx-background-color: #8fa1bd");vic.setPrefSize(600,500);
 
@@ -80,7 +91,11 @@ public class StopMisil extends Application implements  Observador
         }
     private void crearMisil()
 
-    {
+    {  /*This create new misils
+     *@author Adrián González
+     *@Version 06/06/2020
+     * @param nothing
+     */
 
 
         Partida.reproducirSonido("fall");
@@ -155,7 +170,11 @@ public class StopMisil extends Application implements  Observador
     }
     @Override
 public void start(Stage stage) throws Exception {
-
+        /*This function is extended from application it makes a new window and managed it from javafx thread
+         *@author Adrián González
+         *@Version 06/06/2020
+         * @param Stage stage
+         */
         ImageView fondo = new ImageView(new Image("Imagenes/Minijuegos/D3-1.png.png"));
     fondo.setFitWidth(400);
     fondo.setFitHeight(700);

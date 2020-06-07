@@ -18,10 +18,17 @@ public class Dado {
     private Image D6=new Image("Imagenes/Dados-6.png.png");
 
 
+
+
     public Dado(){
         cara= new ImageView(D1);
     }
     public  void tirar(){
+        /*This returns a random number and change the dices face
+         *@author Andrés Quirós
+         *@Version 01/05/2020
+         * @param nothing
+         */
         //Función para "tirar" el dado
         Partida.reproducirSonido("dado");
         numero = (int)(Math.random()*6) + 1;

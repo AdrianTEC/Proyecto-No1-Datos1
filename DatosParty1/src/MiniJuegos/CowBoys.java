@@ -22,14 +22,16 @@ public class CowBoys extends Application {
 
     private Jugador px1;
     private Jugador px2;
-    private Boolean timeForShoot= false;
-    private ImageView flag= new ImageView("Imagenes/Minijuegos/flag.png");
-    private Pane root = new Pane();
-   public CowBoys(Jugador px1, Jugador px2) {
+    private Boolean timeForShoot;
+    private ImageView flag;
+    private Pane root;
 
-
-       this.px1 = px1;
-        this.px2 = px2;
+   public CowBoys() {
+        px1= new Jugador();
+        px2= new Jugador();
+        timeForShoot= false;
+        flag= new ImageView("Imagenes/Minijuegos/flag.png");
+        root = new Pane();
     }
     private  void shoot()
         {
@@ -152,7 +154,7 @@ public class CowBoys extends Application {
 
                     }
                 },
-                1000
+                (long) (1000*Math.random()*10)
         );
 
 

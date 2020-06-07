@@ -8,6 +8,15 @@ public class CasillaSimple {
        private String tipo;        //Sin desarrollar
        private Object siguiente;  //Indica cual es la casilla siguiente
 
+    public CasillaSimple()
+        {
+            INDEX=0;
+            posicion=new float[]{0,0};
+            tipo="sin tipo";
+            siguiente= null;
+
+        }
+
     public int getINDEX() {
         return INDEX;
     }

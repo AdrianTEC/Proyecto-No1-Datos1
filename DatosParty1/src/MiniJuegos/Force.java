@@ -22,15 +22,20 @@ public class Force extends Application {
 
     private Jugador px1;
     private Jugador px2;
-    private  int key1=0;
-    private int key2=0;
-    private Boolean timeForShoot= false;
-    private ImageView flag= new ImageView("Imagenes/Minijuegos/flag.png");
-    private Pane root = new Pane();
+    private  int key1;
+    private int key2;
+    private Boolean timeForShoot;
+    private ImageView flag;
+    private Pane root ;
 
-    public Force(Jugador px1, Jugador px2) {
-        this.px1 = px1;
-        this.px2 = px2;
+    public Force() {
+        px1= new Jugador();
+        px2= new Jugador();
+        key1=0;
+        key2=0;
+        timeForShoot=false;
+        flag= new ImageView("Imagenes/Minijuegos/flag.png");
+        root = new Pane();
     }
 
     private  void shoot()
@@ -187,7 +192,7 @@ public class Force extends Application {
 
                     }
                 },
-                1000
+                (long) (1000*Math.random()*5)
         );
 
 

@@ -16,6 +16,24 @@ public class    Jugador {   // ATRIBUTOS DEL JUGADOR
     private boolean direction = true;
     private int numero;
 
+
+    public Jugador() {
+        /*This funtion is the constructor of the class
+         *@author Adrián González Jiménez
+         *@Version 02/05/2020
+         * @param nothing
+         */
+        estrellas = 0;
+        monedas = 11;
+        nombre = "vacio";
+        posY = 0;
+        posX = 0;
+
+
+    }
+
+
+
     public boolean getDirection() {
         return direction;
     }
@@ -32,21 +50,7 @@ public class    Jugador {   // ATRIBUTOS DEL JUGADOR
         this.nombre = nombre;
     }
 
-    public float getPosX() {
-        return posX;
-    }
 
-    public void setPosX(float posX) {
-        this.posX = posX;
-    }
-
-    public float getPosY() {
-        return posY;
-    }
-
-    public void setPosY(float posY) {
-        this.posY = posY;
-    }
 
     public int getEstrellas() {
         return estrellas;
@@ -81,20 +85,7 @@ public class    Jugador {   // ATRIBUTOS DEL JUGADOR
     }
 
 
-    public Jugador() {
-        /*This funtion is the constructor of the class
-         *@author Adrián González Jiménez
-         *@Version 02/05/2020
-         * @param nothing
-         */
-        estrellas = 0;
-        monedas = 11;
-        nombre = "";
-        posY = 0;
-        posX = 0;
 
-
-    }
 
 
     public void moverseA(CasillaSimple casillita) {
@@ -127,6 +118,7 @@ public class    Jugador {   // ATRIBUTOS DEL JUGADOR
     }
 
     private void moverAcoordenada(float x, float y) {
+
         posY = y;
         posX = x;
         imagen.setLayoutX(posX);
@@ -136,15 +128,17 @@ public class    Jugador {   // ATRIBUTOS DEL JUGADOR
 
 
     public void comprarEstrella() {
+        /*This allows player to buy a star
+         *@author Andrés Quirós
+         *@Version 02/05/2020
+         * @param nothing
+         */
         setEstrellas(getEstrellas() + 1);
         setMonedas(getMonedas() - 2);
 
     }
 
-    public int numeroRandom() {
-        numero = (int)(Math.random()*31) + 1;
-        return numero;
-    }
+
 
 }
 
