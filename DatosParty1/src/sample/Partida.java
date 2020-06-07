@@ -235,6 +235,31 @@ public class   Partida extends Application {
             nombreSonido="DatosParty1/src/Media/caida.wav";
 
         }
+        if(nombre=="shoot")
+        {
+            nombreSonido="DatosParty1/src/Media/Shoot.wav";
+
+        }
+        if(nombre=="star")
+        {
+            nombreSonido="DatosParty1/src/Media/tada.wav";
+
+        }
+        if(nombre=="win")
+        {
+            nombreSonido="DatosParty1/src/Media/Succes.wav";
+
+        }
+        if(nombre=="fail")
+        {
+            nombreSonido="DatosParty1/src/Media/fail.wav";
+
+        }
+        if(nombre=="alert")
+        {
+            nombreSonido="DatosParty1/src/Media/alert.wav";
+
+        }
         try {
             AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File(nombreSonido).getAbsoluteFile());
             Clip clip = AudioSystem.getClip();
