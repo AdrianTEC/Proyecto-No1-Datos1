@@ -1,6 +1,5 @@
 package sample;
 
-
 public class bancoDeTextos {
 
     public String textoDeCartaTipo(int tipo){

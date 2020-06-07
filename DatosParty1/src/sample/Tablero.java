@@ -440,17 +440,21 @@ public class Tablero extends Application {
 
             if (tipoCasilla == 1) {
                 cartaAuxG = barajaVerde.crearCarta();
-                root.getChildren().add(cartaAuxG.getCarta());
+                cartaAuxG.setDescripcion(tipoCasilla);
+                root.getChildren().addAll(cartaAuxG.getCarta(),cartaAuxG.getDescripcion());
 
             }
             if (tipoCasilla == 3){
                 cartaAuxG = barajaAzul.crearCarta();
-                root.getChildren().add(cartaAuxG.getCarta());
+                cartaAuxG.setDescripcion(tipoCasilla);
+                root.getChildren().addAll(cartaAuxG.getCarta(),cartaAuxG.getDescripcion());
+
 
             }
             if (tipoCasilla == 2){
                 cartaAuxG = barajaRoja.crearCarta();
-                root.getChildren().add(cartaAuxG.getCarta());
+                cartaAuxG.setDescripcion(tipoCasilla);
+                root.getChildren().addAll(cartaAuxG.getCarta(),cartaAuxG.getDescripcion());
             }
             Carta finalCartaAuxG = cartaAuxG;
             cartaAuxG.getCarta().addEventHandler(MouseEvent.MOUSE_CLICKED, event -> root.getChildren().remove(finalCartaAuxG.getCarta()));
