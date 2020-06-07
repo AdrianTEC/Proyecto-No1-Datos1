@@ -17,6 +17,7 @@ public class CasillaSimple {
 
         }
 
+
     public int getINDEX() {
         return INDEX;
     }
