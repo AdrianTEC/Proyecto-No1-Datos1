@@ -16,11 +16,24 @@ public class Minesweeper extends Application implements Observador {
     private Label cantidadPuntos= new Label();
     private int puntos;
     private float [][] posiciones;
+    private Jugador px;
 
     public Minesweeper (){
         Jugador px = new Jugador();
         puntos = 0;
 
+    }
+
+    public void premio (){
+        if (puntos > 29){
+            px.setMonedas(px.getMonedas() +2);
+        }
+        if (puntos > 60){
+            px.setMonedas(px.getMonedas() +4);
+        }
+        else{
+            px.setMonedas(px.getMonedas() +1);
+        }
     }
 
 
