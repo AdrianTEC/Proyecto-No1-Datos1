@@ -21,6 +21,7 @@ public class Carta {
         descripcion.setLayoutY(270);
         descripcion.setText(banco.textoDeCartaTipo(tipoCarta));
         descripcion.setFont(Font.font("Verdana", FontWeight.BOLD, 14));
+
     }
 
     public ImageView getCarta() {

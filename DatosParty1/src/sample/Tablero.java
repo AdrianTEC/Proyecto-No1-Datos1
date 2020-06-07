@@ -39,6 +39,13 @@ public class Tablero extends Application {
     private Baraja barajaAzul;
     private Baraja barajaRoja;
 
+    private Jugador pxA;
+
+    private Label datosP1;
+    private Label datosP2;
+    private Label datosP3;
+    private Label datosP4;
+
     private boolean DevMOVING;
     private boolean compraEstrella;
 
@@ -54,6 +61,7 @@ public class Tablero extends Application {
          DevMOVING =false;
          root = new Pane();
          e = new Estrella();
+         pxA = new Jugador();
 
     }
     public void setNumeroDeJugadores(int numeroDeJugadores) {
@@ -84,7 +92,7 @@ public class Tablero extends Application {
      * @param Stage
      */
     private void moverPersonaje(Jugador px,int numDado,int puntero)
-        {
+        {   pxA = px;
             Partida.reproducirSonido("paso");
             if( puntero <numDado) {
                 if(px.getUbicacionEnElMapa()==e.getUbicacionEnElMapa())
@@ -441,6 +449,9 @@ public class Tablero extends Application {
             if (tipoCasilla == 1) {
                 cartaAuxG = barajaVerde.crearCarta();
                 cartaAuxG.setDescripcion(tipoCasilla);
+                pxA.setMonedas(pxA.getMonedas()+1);
+
+
                 root.getChildren().addAll(cartaAuxG.getCarta(),cartaAuxG.getDescripcion());
 
             }
@@ -454,11 +465,11 @@ public class Tablero extends Application {
             if (tipoCasilla == 2){
                 cartaAuxG = barajaRoja.crearCarta();
                 cartaAuxG.setDescripcion(tipoCasilla);
+                pxA.setMonedas(pxA.getMonedas()-1);
                 root.getChildren().addAll(cartaAuxG.getCarta(),cartaAuxG.getDescripcion());
             }
             Carta finalCartaAuxG = cartaAuxG;
-            cartaAuxG.getCarta().addEventHandler(MouseEvent.MOUSE_CLICKED, event -> root.getChildren().remove(finalCartaAuxG.getCarta()));
-
+            cartaAuxG.getCarta().addEventHandler(MouseEvent.MOUSE_CLICKED, event -> root.getChildren().removeAll(finalCartaAuxG.getCarta(), finalCartaAuxG.getDescripcion()));
         });
         ///////////////////////////////////////////////////////////////////////        ///////////////////////////////////////////////////////////////////////
         ///////////////////////////////////////////////////////////////////////
