@@ -2,14 +2,10 @@ package sample;
 
 import Listas.CasillaSimple;
 import MiniJuegos.StopMisil;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
+
 import javafx.stage.Stage;
 
 public class EventManager extends Tablero{
-    // Yo soy un asistente que trabaja tras el telón asegurandose de qué metodos requieren los actores( eventos)
-    private Object ubicacion1;
-
 
 
     private void duelo()//Aparece 10 veces.
@@ -37,7 +33,8 @@ public class EventManager extends Tablero{
 
     public void cambioDeLugares(Jugador px1, Jugador px2)//Aparece 5 veces.//
     {
-        ubicacion1 = px1.getUbicacionEnElMapa();
+        // Yo soy un asistente que trabaja tras el telón asegurandose de qué metodos requieren los actores( eventos)
+        Object ubicacion1 = px1.getUbicacionEnElMapa();
         px1.moverseA((CasillaSimple) px2.getUbicacionEnElMapa());
         px2.moverseA((CasillaSimple) ubicacion1);
 
@@ -47,7 +44,7 @@ public class EventManager extends Tablero{
 
 
 
-    public void generarJuego() throws Exception {
+    public void generarJuego(Jugador px) throws Exception {
         int numero = (int) (Math.random() * 3);
         Stage ventana= new Stage();
         if (numero == 0) {

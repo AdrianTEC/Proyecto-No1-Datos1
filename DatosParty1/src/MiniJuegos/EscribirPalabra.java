@@ -12,7 +12,7 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
 import sample.Jugador;
-
+import sample.Partida;
 
 
 public class EscribirPalabra extends Application implements Observador {
@@ -22,12 +22,15 @@ public class EscribirPalabra extends Application implements Observador {
     private Jugador px;
     private String currentText="hola";
 
+    public EscribirPalabra(Jugador px) {
+        this.px = px;
 
+    }
 
     public void verificar()
         {   Label victory= new Label();
             victory.setPrefSize(600,200);
-            victory.setLayoutX(100);
+            victory.setLayoutX(50);
             victory.setLayoutY(200);
             victory.setStyle("-fx-background-color: #9cb3d6");
             victory.setFont(Font.font("Verdana", FontWeight.BOLD, 30));
@@ -37,8 +40,9 @@ public class EscribirPalabra extends Application implements Observador {
 
             if (texto_ingresado.equals(currentText))
             {
-              victory.setText("¡CORRECTO!"+"\n"+"Ganaste una estrella");
-                //px.setEstrellas(px.getEstrellas()+1);
+              victory.setText("¡CORRECTO!"+"\n"+"Ganaste 3 monedas");
+                //px.setMonedas(px.getMonedas+3);
+                Partida.reproducirSonido("win");
 
             }
             else {

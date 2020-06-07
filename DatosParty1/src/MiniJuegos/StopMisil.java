@@ -18,7 +18,6 @@ import sample.Partida;
 
 public class StopMisil extends Application implements  Observador
 {
-    private ImageView fondo;
     private Pane root = new Pane();
     private int puntos;
     private int destruidos;
@@ -27,7 +26,10 @@ public class StopMisil extends Application implements  Observador
     private Label velocidadMisil = new Label();
     private Jugador px;
     private float  velocidad=10;
-
+    private boolean canIproduceMoreMisils=true;
+   public StopMisil() {
+        px= new Jugador();
+    }
     private void destruirMisil(Misil exp)
     {
         root.getChildren().remove(exp.getImagen());
@@ -35,9 +37,45 @@ public class StopMisil extends Application implements  Observador
     }
     public void  cerrarJuego()
         {
-            //px.setMonedas(px.getMonedas()+puntos%100);
-            System.exit(1);
 
+            Label vic= new Label();vic.setLayoutX(0);vic.setLayoutY(100);vic.setFont(Font.font("Verdana", FontWeight.BOLD, 40));vic.setStyle("-fx-background-color: #8fa1bd");vic.setPrefSize(600,500);
+
+            if(puntos>=100)  {
+                Partida.reproducirSonido("win");
+                vic.setText("felicidades has ganado la"+"\n"+ "siguiente cantidad"+"\n"+ "de monedas: "+ (int) puntos/100);
+            }
+            if (puntos<100){
+                Partida.reproducirSonido("fail");
+                vic.setText("Mal, no ganas nada");
+
+
+            }
+            Platform.runLater(new Runnable()
+            {@Override public void run() { root.getChildren().add(vic); }});
+
+
+
+            px.setMonedas(px.getMonedas()+puntos/100);
+            new java.util.Timer().schedule(
+
+                    new java.util.TimerTask()
+                    {
+                        @Override
+                        public void run()
+                        {
+                            Platform.runLater(new Runnable()
+                            {
+                                @Override
+                                public void run()
+                                {
+                                    System.exit(1);
+
+                                }
+                            });
+                        }
+                    },
+                    3000
+            );
 
         }
     private void crearMisil()
@@ -91,33 +129,34 @@ public class StopMisil extends Application implements  Observador
 
 
         root.getChildren().add(bomba.getImagen());
+        if( canIproduceMoreMisils) {
+            new java.util.Timer().schedule(
 
-        new java.util.Timer().schedule(
+                    new java.util.TimerTask() {
+                        @Override
+                        public void run() {
 
-                new java.util.TimerTask() {
-                    @Override
-                    public void run() {
-
-                        Platform.runLater(new Runnable(){
-                            @Override
-                            public void run() {
-                                crearMisil();
-
-                            }
-                            // ...
-                        });
+                            Platform.runLater(new Runnable() {
+                                @Override
+                                public void run() {
+                                    if (canIproduceMoreMisils) {
+                                        crearMisil();
+                                    }
+                                }
+                                // ...
+                            });
 
 
-                    }
-                },
-                1500
-        );
-
+                        }
+                    },
+                    1500
+            );
+        }
     }
     @Override
 public void start(Stage stage) throws Exception {
 
-    fondo= new ImageView(new Image("Imagenes/Minijuegos/D3-1.png.png"));
+        ImageView fondo = new ImageView(new Image("Imagenes/Minijuegos/D3-1.png.png"));
     fondo.setFitWidth(400);
     fondo.setFitHeight(700);
     root.setStyle("-fx-background-color: #202f4a");
@@ -166,6 +205,9 @@ public void start(Stage stage) throws Exception {
 
     @Override
     public void Update() {
-        cerrarJuego();
+        if(canIproduceMoreMisils){
+            canIproduceMoreMisils=false;
+
+            cerrarJuego();}
     }
 }

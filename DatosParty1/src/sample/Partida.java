@@ -260,6 +260,11 @@ public class   Partida extends Application {
             nombreSonido="DatosParty1/src/Media/alert.wav";
 
         }
+        if(nombre=="bip")
+        {
+            nombreSonido="DatosParty1/src/Media/hit.wav";
+
+        }
         try {
             AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File(nombreSonido).getAbsoluteFile());
             Clip clip = AudioSystem.getClip();
