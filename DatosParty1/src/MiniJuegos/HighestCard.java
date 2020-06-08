@@ -1,6 +1,7 @@
 package MiniJuegos;
 
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
@@ -60,7 +61,7 @@ public class HighestCard extends Application {
             carta.getImagen().setLayoutX(i[0]);
             carta.getImagen().setLayoutY(i[1]);
 
-            carta.setTipo((int) (Math.random()*10));
+            carta.setTipo((int) (Math.random()*11));
 
             carta.getImagen().addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
                 if (auxiliar ==1){
@@ -80,6 +81,18 @@ public class HighestCard extends Application {
 
                 else{
                     definirGanador();
+                    new java.util.Timer().schedule(
+
+                            new java.util.TimerTask() {
+                                @Override
+                                public void run() {
+
+                                    Platform.runLater(() -> System.exit(1));
+
+                                }
+                            },
+                            2000
+                    );
                 }
 
             });
@@ -104,13 +117,11 @@ public class HighestCard extends Application {
 
         puntaje1.setLayoutX(30);
         puntaje1.setLayoutY(600);
-        //puntaje1.setPrefSize(1000,50);
         puntaje1.setFont(Font.font("Verdana", FontWeight.BOLD, 20));
 
 
         puntaje2.setLayoutX(350);
         puntaje2.setLayoutY(600);
-        //puntaje2.setPrefSize(1000,50);
         puntaje2.setFont(Font.font("Verdana", FontWeight.BOLD, 20));
 
 
