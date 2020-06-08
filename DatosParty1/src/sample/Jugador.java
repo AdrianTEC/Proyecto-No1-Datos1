@@ -113,7 +113,6 @@ public class    Jugador {   // ATRIBUTOS DEL JUGADOR
 
         ubicacionEnElMapa = casillita;// ahora la nueva casilla donde está el jugador es la introducida
 
-        System.out.println(casillita.getINDEX() + " " + casillita.getTipo());
         moverAcoordenada(casillita.getPosicion()[0], casillita.getPosicion()[1]);
 
 
