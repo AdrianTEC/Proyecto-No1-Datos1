@@ -29,6 +29,7 @@ public class Baraja {
     Image verde=new Image("Imagenes/Cartas/CVERDE.png");
     Image rojo=new Image("Imagenes/Cartas/CROJA.png");
     Image azul=new Image("Imagenes/Cartas/CAZUL.png");
+    Image dorada=new Image("Imagenes/Cartas/CDORADA.png");
 
     public Carta crearCarta(){
         /*This function creates a card an return it
@@ -44,6 +45,8 @@ public class Baraja {
         if (tipoBaraja == "A"){ cartita.setCarta(new ImageView(azul));}
 
         if (tipoBaraja == "R"){ cartita.setCarta(new ImageView(rojo));}
+
+        if (tipoBaraja.equals("D")){ cartita.setCarta(new ImageView(dorada));}
 
         cartita.getCarta().setFitWidth(400);
         cartita.getCarta().setFitHeight(400);
