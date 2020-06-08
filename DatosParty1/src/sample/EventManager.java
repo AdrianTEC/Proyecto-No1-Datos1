@@ -15,6 +15,8 @@ public class EventManager extends Tablero{
     private String[] eventos;
     private Pila barajaDeEventos;
     private String[] memoriaDeInicio;
+
+
     public EventManager() throws ClassNotFoundException, NoSuchMethodException, IllegalAccessException, InvocationTargetException {
 
         barajaDeEventos= new Pila();
@@ -54,22 +56,58 @@ public class EventManager extends Tablero{
         System.out.println("hola");
     }
     public void robarMonedas(Jugador px11, Jugador px22)//Aparece 10 veces
-    {        System.out.println("hola");
+    {
+        int cant1 = 10;
+        while (cant1>0) {
+            int robar = (int) (Math.random() * 3);
+            px11.setMonedas(px11.getMonedas() + robar);
+            px22.setMonedas(px22.getMonedas() - robar);
+            cant1 = cant1 - 1;
+            System.out.println("hola");
+        }
     }
     public void regalarMonedas(Jugador px11, Jugador px22)//
-    {        System.out.println("hola");
+    {
+        int regalo = ((int)(Math.random()*3))*4;
+        px11.setMonedas(px11.getMonedas()-regalo);
+        px22.setMonedas(px22.getMonedas()+regalo);
+        System.out.println("hola");
     }
     public void perderUnaEstrella(Jugador px11, Jugador px22)//
-    {        System.out.println("hola");
+    {
+        if (px11.getEstrellas()>0){
+            px11.setEstrellas(px11.getMonedas()-1);
+            px22.setEstrellas(px22.getMonedas()+1);
+        }
+        System.out.println("hola");
     }
-    public void ganar2Estrellas(Jugador px11, Jugador px22)// Aparece 3 veces.
-    {        System.out.println("hola");
+    public void ganar2Estrellas(Jugador px11)// Aparece 3 veces.
+    {
+        int cant2 = 3;
+        while (cant2 > 0) {
+            px11.setEstrellas(px11.getEstrellas() + 2);
+            cant2 = cant2 - 1;
+            System.out.println("hola");
+        }
     }
     public void ganar5Estrellas(Jugador px11, Jugador px22)//Aparece una vez.
-    {        System.out.println("hola");
+    {
+        int cant3 = 1;
+        while (cant3 > 0) {
+            px11.setEstrellas(px11.getEstrellas() + 5);
+            cant3 = cant3 - 1;
+            System.out.println("hola");
+        }
     }
     public void robarEstrella(Jugador px11, Jugador px22)//Aparece 3 veces
-    {        System.out.println("hola");
+    {
+        int cant4 = 3;
+        while (cant4 > 0) {
+            px11.setEstrellas(px11.getEstrellas() + 1);
+            px22.setEstrellas(px22.getEstrellas() - 1);
+            cant4 = cant4 - 1;
+            System.out.println("hola");
+        }
     }
 
     //

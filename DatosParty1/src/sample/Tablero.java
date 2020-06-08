@@ -30,6 +30,8 @@ public class Tablero extends Application {
     private ListaCircular caminoPrincipal;
     private EventManager eventManager;
 
+
+
     private int numeroDeJugadores;
     private int cantidadDeTurnos;
     private int turnodeJugador ;
@@ -71,6 +73,9 @@ public class Tablero extends Application {
     }
     public void setCantidadDeTurnos(int cantidadDeTurnos) {
         this.cantidadDeTurnos = cantidadDeTurnos;
+    }
+    public int getNumeroDeJugadores() {
+        return numeroDeJugadores;
     }
 
     public void generar(Estrella es) {
@@ -144,11 +149,13 @@ public class Tablero extends Application {
                     if (x.equals("V")||x.equals("Vi")){
                         tipoCasilla = 1;
                             cogerCartaV.setGraphic(new ImageView("Imagenes/Cartas/barajaV.png"));
+                            pxA.setMonedas(pxA.getMonedas()+1);
 
                     }
                     if (x.equals("R")||x.equals("Ri")){
                         tipoCasilla = 2;
                         cogerCartaV.setGraphic(new ImageView("Imagenes/Cartas/baraja(R).png"));
+                        pxA.setMonedas(pxA.getMonedas()-1);
 
 
                     }
@@ -477,6 +484,11 @@ public class Tablero extends Application {
                 cartaAuxG.setDescripcion(tipoCasilla);
                 pxA.setMonedas(pxA.getMonedas()-1);
                 root.getChildren().addAll(cartaAuxG.getCarta(),cartaAuxG.getDescripcion());
+            }
+            if (tipoCasilla == 4){
+                cartaAuxG = barajaDorada.crearCarta();
+                cartaAuxG.setDescripcion(tipoCasilla);
+                root.getChildren().addAll(cartaAuxG.getCarta(), cartaAuxG.getDescripcion());
             }
             Carta finalCartaAuxG = cartaAuxG;
             cartaAuxG.getCarta().addEventHandler(MouseEvent.MOUSE_CLICKED, event -> root.getChildren().removeAll(finalCartaAuxG.getCarta(), finalCartaAuxG.getDescripcion()));
