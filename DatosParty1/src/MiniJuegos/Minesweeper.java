@@ -20,7 +20,7 @@ public class Minesweeper extends Application implements Observador {
     private Jugador px;
 
     public Minesweeper (){
-         px = new Jugador();
+        px = new Jugador();
         puntos = 0;
         root = new Pane();
         puntaje= new Label();
@@ -54,7 +54,6 @@ public class Minesweeper extends Application implements Observador {
 
             mina.getImagen().addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
                 if (mina.getTipo().equals("mina")) {
-                    System.out.println("sirve");
                     mina.explotar();
                     puntos -=15;
 
@@ -71,9 +70,6 @@ public class Minesweeper extends Application implements Observador {
             root.getChildren().add(mina.getImagen());
         }
     }
-
-
-
 
 
     @Override
