@@ -93,8 +93,10 @@ public class Tablero extends Application {
      *@Version 02/05/2020
      * @param Stage
      */
-    private void moverPersonaje(Jugador px,int numDado,int puntero)
-        {   pxA = px;
+    private void moverPersonaje(Jugador px,int numDado,int puntero,boolean hasnotMovingYet)
+        {
+            pxA = px;
+
             Partida.reproducirSonido("paso");
             if( puntero <numDado) {
                 if(px.getUbicacionEnElMapa()==e.getUbicacionEnElMapa())
@@ -110,17 +112,50 @@ public class Tablero extends Application {
                         new java.util.TimerTask() {
                             @Override
                             public void run() {
+
                                 if(px.getUbicacionEnElMapa() instanceof  CasillaDoble)
+                                {       //Estoy en una casilla Doble
+                                    if(! ((CasillaDoble) px.getUbicacionEnElMapa()).getTipo().contains("i")) {
+                                        if (px.getDirection())// VECTOR QUE LE DA UNA CASILLA DE INTERSECCIÓN AL JUGADOR
+                                        {   //SI TRUE AL SIGUIENTE
+                                            px.moverseA((CasillaSimple) ((CasillaDoble) px.getUbicacionEnElMapa()).getSiguiente());
+                                        } else {  //SI FALSE AL ANTERIOR
+                                            px.moverseA((CasillaSimple) ((CasillaDoble) px.getUbicacionEnElMapa()).getAnterior());
+                                        }
+
+                                    }
+                                    else {
+                                        CasillaDoble xx= (CasillaDoble) px.getUbicacionEnElMapa();
+
+                                        if(hasnotMovingYet)
+                                            {
+                                                 px.moverseA((CasillaSimple) ((CasillaDoble) px.getUbicacionEnElMapa()).getSiguiente());
+                                                 px.setDirection(xx.getRight());
+                                                 xx.changeDirection();
+
+                                            }
+                                        else {  px.moverseA((CasillaSimple) ((CasillaDoble) px.getUbicacionEnElMapa()).getSiguiente());
+
+                                             }
+                                        }
+
+
+                                }
+                                else
+                                    //Estoy en una casilla simple
                                     {
-                                        if(px.getDirection()) { px.moverseA((CasillaSimple) ((CasillaDoble) px.getUbicacionEnElMapa()).getSiguiente()); }
-                                        else { px.moverseA((CasillaSimple) ((CasillaDoble) px.getUbicacionEnElMapa()).getAnterior()); }
+                                        if (((CasillaSimple) px.getUbicacionEnElMapa()).getSiguiente() instanceof CasillaDoble)
+                                            {   //ME SIGUE UNA CASILLA DOBLE
+                                                px.moverseA((CasillaDoble) ((CasillaSimple) px.getUbicacionEnElMapa()).getSiguiente());
+                                            }
+                                        else
+                                            {   //ME SIGUE UNA CASILLA SIMPLE
+                                                px.moverseA((CasillaSimple) ((CasillaSimple) px.getUbicacionEnElMapa()).getSiguiente());
+                                            }
                                     }
-                                else  {
-                                        if (((CasillaSimple) px.getUbicacionEnElMapa()).getSiguiente() instanceof CasillaSimple) { px.moverseA((CasillaSimple) ((CasillaSimple) px.getUbicacionEnElMapa()).getSiguiente()); }
-                                        else {px.moverseA((CasillaDoble) ((CasillaSimple) px.getUbicacionEnElMapa()).getSiguiente()); }
-                                    }
+
                                 Platform.runLater(() -> {
-                                    moverPersonaje(px,numDado,puntero+1);
+                                    moverPersonaje(px,numDado,puntero+1,false);
 
                                 });
                             }
@@ -189,9 +224,9 @@ public class Tablero extends Application {
             //Entonces ellas tendran de atributo de tipo OBJETO entonces hacemos doble casteo primero por "UBICACION EN EL MAPA"
             //            //Luego lo hacemos por "SIGUIENTE"
 
-                moverPersonaje(px, dado1.getNumero() + dado2.getNumero(), 0);
+                moverPersonaje(px, dado1.getNumero() + dado2.getNumero(), 0,true);
             }
-            else { moverPersonaje(px, 1, 0); }
+            else { moverPersonaje(px, 1, 0,true); }
         }
 
     @Override// there is overwriting  this  use  handle method from other class;
@@ -238,8 +273,11 @@ public class Tablero extends Application {
         //CREO LA FASE A
             Camino FaseA= new Camino();
             FaseA.matrizPosiciones= new float[][]{{129,270},{179,251},{205,203}};
+
         ListaLineal caminoA = (ListaLineal) FaseA.convertirMatrizALista(new ListaLineal());
-           ((CasillaDoble) caminoPrincipal.giveMe(14)).setAnterior((caminoA.primero));
+        caminoA.aplicarPropiedades(new String[]{"R","V","A"});
+
+        ((CasillaDoble) caminoPrincipal.giveMe(14)).setAnterior((caminoA.primero));
            ((CasillaSimple) caminoA.ultimo).setSiguiente(caminoPrincipal.giveMe(19));
         //////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -247,6 +285,7 @@ public class Tablero extends Application {
             Camino FaseB= new Camino();
             FaseB.matrizPosiciones= new float[][]{{330,203},{355,251},{402,270}};
         ListaLineal caminoB = (ListaLineal) FaseB.convertirMatrizALista(new ListaLineal());
+        caminoB.aplicarPropiedades(new String[]{"D","D","D"});
             ((CasillaDoble) caminoPrincipal.giveMe(22)).setAnterior((caminoB.primero));
             ((CasillaSimple) caminoB.ultimo).setSiguiente(caminoPrincipal.giveMe(27));
         //////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -256,12 +295,16 @@ public class Tablero extends Application {
             Camino FaseC= new Camino();
             FaseC.dobleEnlaze=true;
             FaseC.matrizPosiciones= new float[][]{{142, 445},{210, 445},{272, 445},{334, 445},{386, 445}};
+
         ListaLineal caminoC = (ListaLineal) FaseC.convertirMatrizALista(new ListaLineal());
-            ((CasillaDoble) caminoPrincipal.giveMe(10)).setAnterior((caminoC.primero));
+        caminoC.aplicarPropiedades(new String[]{"R","V","R","V","R"});
+
+        ((CasillaDoble) caminoPrincipal.giveMe(10)).setAnterior((caminoC.primero));
             ((CasillaDoble) caminoC.primero).setAnterior(caminoPrincipal.giveMe(10));
             ((CasillaDoble) caminoC.ultimo).setSiguiente(caminoPrincipal.giveMe(31));
             ((CasillaDoble) caminoPrincipal.giveMe(31)).setAnterior(caminoC.ultimo);
             ((CasillaDoble) caminoPrincipal.giveMe(31)).setRight(false);
+
 
 
         /////////////////////////////////////////////////////////////////////////
@@ -323,10 +366,7 @@ public class Tablero extends Application {
         //Boton comprar
         Button Compra = new Button("", new ImageView(btn));
         Compra.setStyle("-fx-background-color:transparent;-fx-background-radius: 30");
-        Compra.setLayoutX(485);
-        Compra.setLayoutY(600);
-        Compra.setScaleX(0.5);
-        Compra.setScaleY(0.5);
+        Compra.setLayoutX(485);Compra.setLayoutY(600);Compra.setScaleX(0.5);Compra.setScaleY(0.5);
         Compra.setFont(Font.font("Verdana", FontWeight.BOLD, 25));
         Compra.setText("¡Comprar Estrella!");
         Compra.setContentDisplay(ContentDisplay.CENTER);
@@ -355,12 +395,8 @@ public class Tablero extends Application {
         Button Move = new Button("", new ImageView(btn));
 
         Move.setStyle("-fx-background-color:transparent;-fx-background-radius: 30");
-        Move.setLayoutX(490);
-        Move.setLayoutY(500);
-        Move.setScaleX(0.5);
-        Move.setScaleY(0.5);
-        Move.setFont(Font.font("Verdana", FontWeight.BOLD, 30));
-        Move.setText("¡Mover!");
+        Move.setLayoutX(490);Move.setLayoutY(500);Move.setScaleX(0.5);Move.setScaleY(0.5);
+        Move.setFont(Font.font("Verdana", FontWeight.BOLD, 30));Move.setText("¡Mover!");
         Move.setContentDisplay(ContentDisplay.CENTER);
         Move.setOnAction(event -> {
 

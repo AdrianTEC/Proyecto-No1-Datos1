@@ -92,7 +92,7 @@ public class Lista
     public void aplicarPropiedades(String[] propiedades)
         {
             //esta función le va a dar identidad a las celdas "rojo" "verde" "dorado"
-            Object apuntador= new Object(); //nesecito un objeto para explorar la lista
+            Object apuntador; //nesecito un objeto para explorar la lista
             apuntador=primero; //empezaré en el primero
             int i =0;
             while (apuntador!= null )
@@ -103,11 +103,13 @@ public class Lista
 
                                     ((CasillaSimple) apuntador).setTipo(propiedades[i]);
                                     apuntador = ((CasillaSimple) apuntador).getSiguiente();
-                                    if (((CasillaSimple) apuntador).getSiguiente() == primero) {
-                                        apuntador = null;
-                                }
+                                    if(apuntador!=null) {
+                                        if (((CasillaSimple) apuntador).getSiguiente() == primero) {
+                                            apuntador = null;
+                                        }
+                                    }
                             }
-                            if (apuntador instanceof CasillaDoble) {
+                            else  {
 
                                     ((CasillaDoble) apuntador).setTipo(propiedades[i]);
                                     apuntador = ((CasillaDoble) apuntador).getSiguiente();

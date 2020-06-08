@@ -154,7 +154,7 @@ public class CowBoys extends Application {
 
                     }
                 },
-                (long) (1000*Math.random()*10)
+                1000
         );
 
 
