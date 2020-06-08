@@ -9,19 +9,22 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
 import sample.Jugador;
+import sample.Partida;
 
 public class Minesweeper extends Application implements Observador {
-    private Pane root = new Pane();
-    private Label puntaje= new Label();
-    private Label cantidadPuntos= new Label();
+    private Pane root;
+    private Label puntaje;
+    private Label cantidadPuntos;
     private int puntos;
     private float [][] posiciones;
     private Jugador px;
 
     public Minesweeper (){
-        Jugador px = new Jugador();
+         px = new Jugador();
         puntos = 0;
-
+        root = new Pane();
+        puntaje= new Label();
+        cantidadPuntos= new Label();
     }
 
     public void premio (){
@@ -46,6 +49,7 @@ public class Minesweeper extends Application implements Observador {
             mina.getImagen().setLayoutY(i[1]);
             if (Math.random()*10 < 3){
                 mina.setTipo("mina");
+                mina.encoger();
             }
 
             mina.getImagen().addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
@@ -56,8 +60,11 @@ public class Minesweeper extends Application implements Observador {
 
                 }
                 else {
+                    Partida.reproducirSonido("win");
+
                     root.getChildren().remove(mina.getImagen());
                     puntos+=10;
+
                 }
                 cantidadPuntos.setText(String.valueOf(puntos));
             });
@@ -71,7 +78,7 @@ public class Minesweeper extends Application implements Observador {
 
     @Override
     public void start(Stage stage) {
-        ImageView fondo= new ImageView("Imagenes/Minijuegos/FondoMarino.jpeg");
+        ImageView fondo= new ImageView("Imagenes/Minijuegos/FondoMarino.png");
         fondo.setFitWidth(1200);
         fondo.setFitHeight(800);
         puntos = 0;
@@ -91,7 +98,7 @@ public class Minesweeper extends Application implements Observador {
 
         BarraTiempo barrita = new BarraTiempo();
         barrita.getBarra().setLayoutX(150);
-        barrita.getBarra().setLayoutY(750);
+        barrita.getBarra().setLayoutY(650);
         barrita.setTamano(400,30);
         barrita.setTiempo(20000);
         barrita.encoger();
@@ -116,7 +123,7 @@ public class Minesweeper extends Application implements Observador {
         root.setStyle("-fx-background-color: #202f4a");
         stage.setResizable(false);
         stage.setTitle("Minesweeper");
-        stage.setScene(new Scene(root, 1100, 800));
+        stage.setScene(new Scene(root, 1200, 700));
         root.getChildren().addAll(fondo,barrita.getBarra(),puntaje,cantidadPuntos,barrita.getBarraContainer());
         stage.show();
         stage.setOnCloseRequest(event -> System.exit(1));
@@ -134,6 +141,7 @@ public class Minesweeper extends Application implements Observador {
 
     @Override
     public void Update() {
-
+            px.setMonedas(puntos/100);
+            System.exit(1);
     }
 }

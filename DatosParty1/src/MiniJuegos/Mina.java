@@ -11,13 +11,46 @@ public class Mina {
 
 
     public Mina() {
-        imagen = new ImageView(new Image("Imagenes/Minijuegos/Mina.png"));
+        imagen = new ImageView(new Image("Imagenes/Minijuegos/bomb.png"));
         imagen.setFitHeight(50);
         imagen.setFitWidth(50);
         exp = new Image("Imagenes/Minijuegos/Expl.png");
         tipo = "inactiva";
     }
+    public void encoger()
+        {
 
+            new java.util.Timer().schedule(
+
+                    new java.util.TimerTask() {
+                        @Override
+                        public void run() {
+
+
+                            imagen.setScaleX(0.5);
+                            imagen.setScaleY(0.5);
+
+
+                        }
+                    },
+                    200
+            );
+            new java.util.Timer().schedule(
+
+                    new java.util.TimerTask() {
+                        @Override
+                        public void run() {
+
+
+                            imagen.setScaleX(1);
+                            imagen.setScaleY(1);
+
+
+                        }
+                    },
+                     3000
+            );
+        }
     public void setTipo (String tipox){
         tipo = tipox;
     }
