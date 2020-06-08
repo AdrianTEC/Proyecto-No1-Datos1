@@ -3,7 +3,11 @@ package sample;
 
 import Listas.CasillaDoble;
 import Listas.CasillaSimple;
+import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
+
 
 public class    Jugador {   // ATRIBUTOS DEL JUGADOR
     private String nombre;
@@ -15,7 +19,7 @@ public class    Jugador {   // ATRIBUTOS DEL JUGADOR
     private Object ubicacionEnElMapa;
     private boolean direction = true;
     private int numero;
-
+    private Label recursos;
 
     public Jugador() {
         /*This funtion is the constructor of the class
@@ -28,11 +32,22 @@ public class    Jugador {   // ATRIBUTOS DEL JUGADOR
         nombre = "vacio";
         posY = 0;
         posX = 0;
+        recursos= new Label();
+        recursos.setFont(Font.font("Verdana", FontWeight.BOLD, 25));
+        recursos.setStyle("-fx-background-color: rgba(243,236,250,0.63);");
 
 
     }
 
+    public Label getRecursos() {
+        return recursos;
+    }
 
+    public void actualizarRecursos()
+    {
+        recursos.setText("P"+nombre +":"  + monedas+ "   "+ estrellas);
+
+    }
 
     public boolean getDirection() {
         return direction;

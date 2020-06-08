@@ -1,26 +1,40 @@
 package MiniJuegos;
-import Listas.CasillaSimple;
-import Listas.ListaCircular;
 import javafx.application.Application;
-import javafx.event.EventHandler;
 import javafx.scene.Scene;
-
 import javafx.scene.control.Label;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
-import sample.Camino;
 import sample.Jugador;
 
 public class Minesweeper extends Application implements Observador {
     private Pane root = new Pane();
-    private Jugador px;
     private Label puntaje= new Label();
     private Label cantidadPuntos= new Label();
     private int puntos;
     private float [][] posiciones;
+    private Jugador px;
+
+    public Minesweeper (){
+        Jugador px = new Jugador();
+        puntos = 0;
+
+    }
+
+    public void premio (){
+        if (puntos > 29){
+            px.setMonedas(px.getMonedas() +2);
+        }
+        if (puntos > 60){
+            px.setMonedas(px.getMonedas() +4);
+        }
+        else{
+            px.setMonedas(px.getMonedas() +1);
+        }
+    }
 
 
     public  void crearMinas(){
@@ -39,14 +53,13 @@ public class Minesweeper extends Application implements Observador {
                     System.out.println("sirve");
                     mina.explotar();
                     puntos -=15;
-                    cantidadPuntos.setText(String.valueOf(puntos));
 
                 }
                 else {
                     root.getChildren().remove(mina.getImagen());
                     puntos+=10;
-                    cantidadPuntos.setText(String.valueOf(puntos));
                 }
+                cantidadPuntos.setText(String.valueOf(puntos));
             });
             root.getChildren().add(mina.getImagen());
         }
@@ -57,7 +70,10 @@ public class Minesweeper extends Application implements Observador {
 
 
     @Override
-    public void start(Stage stage) throws Exception {
+    public void start(Stage stage) {
+        ImageView fondo= new ImageView("Imagenes/Minijuegos/FondoMarino.jpeg");
+        fondo.setFitWidth(1200);
+        fondo.setFitHeight(800);
         puntos = 0;
 
 
@@ -100,10 +116,10 @@ public class Minesweeper extends Application implements Observador {
         root.setStyle("-fx-background-color: #202f4a");
         stage.setResizable(false);
         stage.setTitle("Minesweeper");
-        stage.setScene(new Scene(root, 800, 800));
-        root.getChildren().addAll(barrita.getBarra(),puntaje,cantidadPuntos,barrita.getBarraContainer());
+        stage.setScene(new Scene(root, 1100, 800));
+        root.getChildren().addAll(fondo,barrita.getBarra(),puntaje,cantidadPuntos,barrita.getBarraContainer());
         stage.show();
-        stage.setOnCloseRequest(event -> { System.exit(1);});
+        stage.setOnCloseRequest(event -> System.exit(1));
 
         crearMinas();
 
