@@ -34,10 +34,12 @@ public class Tablero extends Application {
     private int turnodeJugador ;
     private int rondasJugadas;
     private int tipoCasilla;
+    private Button cogerCartaV;
 
     private Baraja barajaVerde;
     private Baraja barajaAzul;
     private Baraja barajaRoja;
+    private Baraja barajaDorada;
 
     private Jugador pxA;
 
@@ -137,9 +139,45 @@ public class Tablero extends Application {
                         ((CasillaDoble) px.getUbicacionEnElMapa()).changeDirection();
                     }
                 }
-                    if (x.equals("V")||x.equals("Vi")){ tipoCasilla = 1; }
-                    if (x.equals("R")||x.equals("Ri")){ tipoCasilla = 2; }
-                    if (x.equals("A")||x.equals("Ai")) { tipoCasilla = 3; }
+                    if (x.equals("V")||x.equals("Vi")){
+                        tipoCasilla = 1;
+                        cogerCartaV.setGraphic(new ImageView("Imagenes/Cartas/barajaV.png"));
+                        cogerCartaV.setLayoutX(-100);
+                        cogerCartaV.setLayoutY(250);
+                        cogerCartaV.setText("");
+                        cogerCartaV.setScaleX(0.2);
+                        cogerCartaV.setScaleY(0.2);
+
+
+                    }
+                    if (x.equals("R")||x.equals("Ri")){
+                        tipoCasilla = 2;
+                        cogerCartaV.setGraphic(new ImageView("Imagenes/Cartas/baraja(R).png"));
+                        cogerCartaV.setLayoutX(-100);
+                        cogerCartaV.setLayoutY(250);
+                        cogerCartaV.setText("");
+                        cogerCartaV.setScaleX(0.2);
+                        cogerCartaV.setScaleY(0.2);
+
+                    }
+                    if (x.equals("A")||x.equals("Ai")) {
+                        tipoCasilla = 3;
+                        cogerCartaV.setGraphic(new ImageView("Imagenes/Cartas/baraja(A).png"));
+                        cogerCartaV.setLayoutX(-100);
+                        cogerCartaV.setLayoutY(250);
+                        cogerCartaV.setText("");
+                        cogerCartaV.setScaleX(0.2);
+                        cogerCartaV.setScaleY(0.2);
+                    }
+                    if (x.equals("D")){
+                        tipoCasilla = 4;
+                        cogerCartaV.setGraphic(new ImageView("Imagenes/Cartas/baraja(D).png"));
+                        cogerCartaV.setLayoutX(-100);
+                        cogerCartaV.setLayoutY(250);
+                        cogerCartaV.setText("");
+                        cogerCartaV.setScaleX(0.2);
+                        cogerCartaV.setScaleY(0.2);
+                }
                 }
 
             }
@@ -182,15 +220,15 @@ public class Tablero extends Application {
 
         e.setImagen(new ImageView("Imagenes/Estrella.png"));
 
-        Image cartaVerde=new Image("Imagenes/Cartas/barajaV.png");
-        Image cartaRoja=new Image("Imagenes/Cartas/baraja(R).png");
-        Image cartaAzul=new Image("Imagenes/Cartas/baraja(A).png");
+
 
         barajaVerde = new Baraja();barajaVerde.setTipoBaraja("V");
 
         barajaAzul = new Baraja();barajaAzul.setTipoBaraja("A");
 
         barajaRoja = new Baraja();barajaRoja.setTipoBaraja("R");
+
+        barajaDorada = new Baraja();barajaDorada.setTipoBaraja("D");
 
         //CREO LOS DOS DADOS
          dado1= new Dado();
@@ -458,7 +496,6 @@ public class Tablero extends Application {
                 pxA.setMonedas(pxA.getMonedas()-1);
                 root.getChildren().addAll(cartaAuxG.getCarta(),cartaAuxG.getDescripcion());
             }
-            pxA.actualizarRecursos();
             Carta finalCartaAuxG = cartaAuxG;
             cartaAuxG.getCarta().addEventHandler(MouseEvent.MOUSE_CLICKED, event -> root.getChildren().removeAll(finalCartaAuxG.getCarta(), finalCartaAuxG.getDescripcion()));
         });
