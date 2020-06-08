@@ -1,4 +1,5 @@
 package sample;
+import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 import javafx.scene.Scene;
 import Listas.ListaLineal;
@@ -40,13 +41,13 @@ public class Tablero extends Application {
     private Baraja barajaAzul;
     private Baraja barajaRoja;
     private Baraja barajaDorada;
+    private boolean compraEstrella;
 
     private Jugador pxA;
 
 
-
+    private boolean DEV;
     private boolean DevMOVING;
-    private boolean compraEstrella;
 
 
     public  Tablero()
@@ -61,6 +62,8 @@ public class Tablero extends Application {
          root = new Pane();
          e = new Estrella();
          pxA = new Jugador();
+         cogerCartaV=new Button();
+         DEV=false;
 
     }
     public void setNumeroDeJugadores(int numeroDeJugadores) {
@@ -117,7 +120,6 @@ public class Tablero extends Application {
                                         else {px.moverseA((CasillaDoble) ((CasillaSimple) px.getUbicacionEnElMapa()).getSiguiente()); }
                                     }
                                 Platform.runLater(() -> {
-                                    System.out.println(px);
                                     moverPersonaje(px,numDado,puntero+1);
 
                                 });
@@ -141,43 +143,29 @@ public class Tablero extends Application {
                 }
                     if (x.equals("V")||x.equals("Vi")){
                         tipoCasilla = 1;
-                        cogerCartaV.setGraphic(new ImageView("Imagenes/Cartas/barajaV.png"));
-                        cogerCartaV.setLayoutX(-100);
-                        cogerCartaV.setLayoutY(250);
-                        cogerCartaV.setText("");
-                        cogerCartaV.setScaleX(0.2);
-                        cogerCartaV.setScaleY(0.2);
-
+                            cogerCartaV.setGraphic(new ImageView("Imagenes/Cartas/barajaV.png"));
 
                     }
                     if (x.equals("R")||x.equals("Ri")){
                         tipoCasilla = 2;
                         cogerCartaV.setGraphic(new ImageView("Imagenes/Cartas/baraja(R).png"));
-                        cogerCartaV.setLayoutX(-100);
-                        cogerCartaV.setLayoutY(250);
-                        cogerCartaV.setText("");
-                        cogerCartaV.setScaleX(0.2);
-                        cogerCartaV.setScaleY(0.2);
+
 
                     }
                     if (x.equals("A")||x.equals("Ai")) {
                         tipoCasilla = 3;
                         cogerCartaV.setGraphic(new ImageView("Imagenes/Cartas/baraja(A).png"));
-                        cogerCartaV.setLayoutX(-100);
-                        cogerCartaV.setLayoutY(250);
-                        cogerCartaV.setText("");
-                        cogerCartaV.setScaleX(0.2);
-                        cogerCartaV.setScaleY(0.2);
+
                     }
                     if (x.equals("D")){
                         tipoCasilla = 4;
                         cogerCartaV.setGraphic(new ImageView("Imagenes/Cartas/baraja(D).png"));
-                        cogerCartaV.setLayoutX(-100);
-                        cogerCartaV.setLayoutY(250);
-                        cogerCartaV.setText("");
-                        cogerCartaV.setScaleX(0.2);
-                        cogerCartaV.setScaleY(0.2);
+
                 }
+                cogerCartaV.setLayoutX(240);
+                cogerCartaV.setLayoutY(100);
+                cogerCartaV.setScaleX(0.2);
+                cogerCartaV.setScaleY(0.2);
                 }
 
             }
@@ -335,11 +323,11 @@ public class Tablero extends Application {
         //Boton comprar
         Button Compra = new Button("", new ImageView(btn));
         Compra.setStyle("-fx-background-color:transparent;-fx-background-radius: 30");
-        Compra.setLayoutX(420);
+        Compra.setLayoutX(485);
         Compra.setLayoutY(600);
         Compra.setScaleX(0.5);
         Compra.setScaleY(0.5);
-        Compra.setFont(Font.font("Verdana", FontWeight.BOLD, 30));
+        Compra.setFont(Font.font("Verdana", FontWeight.BOLD, 25));
         Compra.setText("¡Comprar Estrella!");
         Compra.setContentDisplay(ContentDisplay.CENTER);
         Compra.setOnAction(event -> {
@@ -424,11 +412,13 @@ public class Tablero extends Application {
 
         Button Turno = new Button ("", new ImageView(btn));
         Turno.setStyle("-fx-background-color:transparent;");
-        Turno.setLayoutX(495);
-        Turno.setLayoutY(420);
+        Turno.setText("Turno");
+        Turno.setFont(Font.font("Verdana", FontWeight.BOLD, 30));
+        Turno.setLayoutX(295);
+        Turno.setLayoutY(600);
         Turno.setScaleX(0.5);
         Turno.setScaleY(0.5);
-
+        Turno.setContentDisplay(ContentDisplay.CENTER);
 
         Label victoria = new Label();
 
@@ -461,18 +451,10 @@ public class Tablero extends Application {
 
         });
         ///////////////////////////////////////////////////////////////////////      /////////////////////////////////////////////////////////////////////////////
-        Button cogerCartaV = new Button("", new ImageView(btn));
+        cogerCartaV = new Button("");
         cogerCartaV.setStyle("-fx-background-color:transparent;-fx-background-radius: 30");
-        cogerCartaV.setLayoutX(190);
-        cogerCartaV.setLayoutY(-28);
-        cogerCartaV.setScaleX(0.5);
-        cogerCartaV.setScaleY(0.5);
-        cogerCartaV.setFont(Font.font("Verdana", FontWeight.BOLD, 30));
-        cogerCartaV.setText("¡Carta!");
-        cogerCartaV.setContentDisplay(ContentDisplay.CENTER);
         cogerCartaV.setOnAction(actionEvent -> {
             Carta cartaAuxG = new Carta();
-            System.out.println(tipoCasilla);
 
             if (tipoCasilla == 1) {
                 cartaAuxG = barajaVerde.crearCarta();
@@ -507,7 +489,7 @@ public class Tablero extends Application {
         ///////////////////////////////////////////////////////////////////////        ///////////////////////////////////////////////////////////////////////
         ///////////////////////////////////////////////////////////////////////
 
-        root.getChildren().addAll(tableroImagen, Move, Turno, ronda,victoria,Moved,EVENT,Compra,cogerCartaV);
+        root.getChildren().addAll(tableroImagen, Move, ronda,victoria,Compra,cogerCartaV);
         if(numeroDeJugadores>=2) {
             //Acá agarro la primera casilla de la lista circular
 
@@ -530,6 +512,15 @@ public class Tablero extends Application {
         primaryStage.setResizable(false);
         primaryStage.setTitle("Datos Party 1");
         primaryStage.setScene(new Scene(root, 700, 700));
+        primaryStage.addEventFilter(KeyEvent.KEY_PRESSED, evt -> {
+            DEV= !DEV;
+            if(DEV){
+            root.getChildren().addAll(Moved,EVENT,Turno);}
+            else {root.getChildren().removeAll(Moved,EVENT,Turno);}
+
+
+
+        });
 
         primaryStage.show();
     }
