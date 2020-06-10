@@ -149,11 +149,11 @@ public class Force extends Application {
                 if (workers.getLayoutX() > 561) {
                     timeForShoot = false;
                     vic.setText(px2.getNombre() +"  Ha ganado el duelo!");
-                   // px2.setMonedas(px2.getMonedas()+1);
-                    //px1.setMonedas(px1.getMonedas()-1);
+                    px2.setMonedas(px2.getMonedas()+1);
+                    px1.setMonedas(px1.getMonedas()-1);
 
                 }
-                Platform.runLater(new Runnable() {@Override public void run() { root.getChildren().add(vic); }});
+                Platform.runLater(() -> root.getChildren().add(vic));
 
                 new java.util.Timer().schedule(
 

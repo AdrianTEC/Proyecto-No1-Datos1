@@ -167,13 +167,11 @@ public class Tablero extends Application {
                     if (x.equals("V")||x.equals("Vi")){
                         tipoCasilla = 1;
                             cogerCartaV.setGraphic(new ImageView("Imagenes/Cartas/barajaV.png"));
-                            pxA.setMonedas(pxA.getMonedas()+1);
 
                     }
                     if (x.equals("R")||x.equals("Ri")){
                         tipoCasilla = 2;
                         cogerCartaV.setGraphic(new ImageView("Imagenes/Cartas/baraja(R).png"));
-                        pxA.setMonedas(pxA.getMonedas()-1);
 
 
                     }
@@ -442,7 +440,7 @@ public class Tablero extends Application {
             Partida.encojerBoton(EVENT);
 
             try {
-                eventManager.takeACard(p1,p2);
+                eventManager.takeACard(p1);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -507,7 +505,6 @@ public class Tablero extends Application {
                 cartaAuxG.setDescripcion(tipoCasilla);
                 pxA.setMonedas(pxA.getMonedas()+1);
 
-
                 root.getChildren().addAll(cartaAuxG.getCarta(),cartaAuxG.getDescripcion());
 
             }
@@ -521,12 +518,12 @@ public class Tablero extends Application {
             if (tipoCasilla == 2){
                 cartaAuxG = barajaRoja.crearCarta();
                 cartaAuxG.setDescripcion(tipoCasilla);
-                pxA.setMonedas(pxA.getMonedas()-1);
                 root.getChildren().addAll(cartaAuxG.getCarta(),cartaAuxG.getDescripcion());
+                pxA.setMonedas(pxA.getMonedas()-1);
+
             }
             if (tipoCasilla == 4){
-                cartaAuxG = barajaDorada.crearCarta();
-                cartaAuxG.setDescripcion(tipoCasilla);
+                cartaAuxG = eventManager.takeACard(pxA);
                 root.getChildren().addAll(cartaAuxG.getCarta(), cartaAuxG.getDescripcion());
             }
             Carta finalCartaAuxG = cartaAuxG;

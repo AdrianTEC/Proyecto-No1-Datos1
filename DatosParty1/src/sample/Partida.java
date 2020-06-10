@@ -250,6 +250,13 @@ public class   Partida extends Application {
             nombreSonido="DatosParty1/src/Media/hit.wav";
 
         }
+        if(nombre.equals("coin")){
+            nombreSonido="DatosParty1/src/Media/coin.wav";
+
+        }
+
+
+
         try {
             AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File(nombreSonido).getAbsoluteFile());
             Clip clip = AudioSystem.getClip();

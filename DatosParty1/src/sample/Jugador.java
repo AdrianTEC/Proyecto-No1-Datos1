@@ -83,6 +83,7 @@ public class    Jugador {   // ATRIBUTOS DEL JUGADOR
     }
 
     public void setMonedas(int monedas) {
+        Partida.reproducirSonido("coin");
         this.monedas = monedas;
         actualizarRecursos();
 

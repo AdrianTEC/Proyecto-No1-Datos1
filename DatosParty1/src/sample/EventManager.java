@@ -55,13 +55,11 @@ public class EventManager extends Baraja {
 
         for(int i=0; i<jugadores.Size();i++)
             {
-
-
-
                 int finalI1 = i;
                     Jugador aux= (Jugador) ((CasillaExtraSimple) jugadores.giveMe(finalI1)).getDato();
                      aux.getImagen().addEventHandler(MouseEvent.MOUSE_CLICKED, mouseEvent -> {
                         if(robando){
+                            robando=false;
                             robarA(pxa, (Jugador) ((CasillaExtraSimple) jugadores.giveMe(finalI1)).getDato());
                         }
 
@@ -92,7 +90,7 @@ public class EventManager extends Baraja {
 
     }
 
-    public void takeACard(Jugador px1,Jugador px2) {
+    public Carta takeACard(Jugador px1) {
         /*This take a card from pila and creates an event
          *@author Adrián González Jiménez
          *@Version 02/05/2020
@@ -100,38 +98,66 @@ public class EventManager extends Baraja {
          */
         pxa=px1;
 
-        CasillaExtraSimple x =barajaDeEventos.peek();  //toma una carta de la pila
+        CasillaExtraSimple x =barajaDeEventos.pop();  //toma una carta de la pila
 
 
          actual= crearCarta();
-         actual.setDescripcion((String) x.getDato());
+         actual.setDescripcion("Has activado un evento! "+"\n"+ "el evento activado es"+"\n"+" de tipo :" +(String) x.getDato());
 
         if(barajaDeEventos.ultimo==null){
             Barajar();
         }
-        magicfuntion(px1,px2,x);
 
-}
+        new java.util.Timer().schedule(
 
-    private void magicfuntion(Jugador px1,Jugador px2, CasillaExtraSimple x)
-        {
+                new java.util.TimerTask() {
+                    @Override
+                    public void run() {
+                    Platform.runLater(()->{
+
+                        magicfuntion(px1,x);
+
+
+                    });
+
+
+
+                    }
+                },
+                3000
+        );
+
+
+        return actual;
+    }
+    private  Jugador dameUnJugador()
+    {
+            Jugador aux;
+            aux= (Jugador) ((CasillaExtraSimple) jugadores.giveMe((int) (Math.random()*jugadores.Size()))).getDato();
+            if(aux==pxa)
+                {
+                    while (aux==pxa) {
+                        aux = (Jugador) ((CasillaExtraSimple) jugadores.giveMe((int) (Math.random() * jugadores.Size()))).getDato();
+                    }
+                }
+            return aux;
+        }
+    private void magicfuntion(Jugador px1, CasillaExtraSimple x)
+    {
             try {
                 ///esta función es especial, llama al metodo que contiene la carta es casi magia
                 System.out.println(x.getDato());
-                Method method = EventManager.class.getMethod((String) x.getDato(),Jugador.class ,Jugador.class);
-                method.invoke(this,px1,px2);
-            }catch (NoSuchMethodException e){
+                Method method = EventManager.class.getMethod((String) x.getDato(),Jugador.class );
+                method.invoke(this,px1);
+            }catch (Exception e){
                 System.out.println(e);
-            } catch (IllegalAccessException e) {
-                e.printStackTrace();
-            } catch (InvocationTargetException e) {
-                e.printStackTrace();
             }
         }
-    public void duelo(Jugador px1, Jugador px2) throws Exception//Aparece 10 veces.
+    public void duelo(Jugador px1) throws Exception//Aparece 10 veces.
     {
         int numero = (int) (Math.random() * 3);
         Stage ventana= new Stage();
+        Jugador px2= dameUnJugador();
         if (numero == 0) {
             CowBoys vaqueros= new CowBoys();
             vaqueros.setPxs(px1,px2);
@@ -151,50 +177,44 @@ public class EventManager extends Baraja {
 
 
     }
-    public void robarMonedas(Jugador px11, Jugador px22)//Aparece 10 veces
+    public void robarMonedas(Jugador px11)//Aparece 10 veces
     {
         robando=true;
     }
-    private void robarA(Jugador benefiado, Jugador victima)
-        { int regalo = (int)(Math.random()*3);
-        benefiado.setMonedas(benefiado.getMonedas()+regalo);
-        victima.setMonedas(victima.getMonedas()-regalo);
 
-
-        }
-    public void regalarMonedas(Jugador px11, Jugador px22)//
+    public void regalarMonedas(Jugador px11)//
     {
-        int regalo = ((int)(Math.random()*3))*4;
-        px11.setMonedas(px11.getMonedas()-regalo);
-        for(int i=0;i<jugadores.Size();i++)
-            {
-                Jugador aux= (Jugador) ((CasillaExtraSimple) jugadores.giveMe(i)).getDato();
-                aux.setMonedas(aux.getMonedas()+regalo);
-            }
-    }
-    public void perderUnaEstrella(Jugador px11, Jugador px22)//
+            int regalo = ((int)(Math.random()*3))*4;
+            px11.setMonedas(px11.getMonedas()-regalo);
+            for(int i=0;i<jugadores.Size();i++)
+                {
+                    Jugador aux = dameUnJugador();
+                    aux.setMonedas(aux.getMonedas()+regalo);
+                }
+        }
+    public void perderUnaEstrella(Jugador px11)//
     {
         if (px11.getEstrellas()>0){
             px11.setEstrellas(px11.getEstrellas()-1);
-            px22.setEstrellas(px22.getEstrellas()+1);
+            Jugador j = null;
+            while (j!=pxa) {
+                j=dameUnJugador();
+            }
+            j.setEstrellas(j.getEstrellas() + 1);
+
         }
     }
-    public void ganar2Estrellas(Jugador px11,Jugador px22)// Aparece 3 veces.
+    public void ganar2Estrellas(Jugador px11)// Aparece 3 veces.
     {
         px11.setEstrellas(px11.getEstrellas()+2);
     }
-    public void ganar5Estrellas(Jugador px11, Jugador px)//Aparece una vez.
+    public void ganar5Estrellas(Jugador px11)//Aparece una vez.
     {
         px11.setEstrellas(px11.getEstrellas()+5);
 
     }
-    public void robarEstrella(Jugador px11, Jugador px22)//Aparece 3 veces
-    {
-        px11.setEstrellas(px11.getEstrellas()+1);
-        px22.setEstrellas((px22.getEstrellas()-1));
-    }
 
-    //
+
 
     private void teletransporte(Jugador px, Object nuevaUbicación)//Aparece 10 veces.
         {
@@ -203,8 +223,9 @@ public class EventManager extends Baraja {
         }
 
 
-    public void cambioDeLugares(Jugador px1, Jugador px2)//Aparece 5 veces.//
+    public void cambioDeLugares(Jugador px1)//Aparece 5 veces.//
         {
+            Jugador px2= dameUnJugador();
             // Yo soy un asistente que trabaja tras el telón asegurandose de qué metodos requieren los actores( eventos)
             Object ubicacion1 = px1.getUbicacionEnElMapa();
             px1.moverseA((CasillaSimple) px2.getUbicacionEnElMapa());
@@ -212,14 +233,23 @@ public class EventManager extends Baraja {
 
         }
 
-    public void telAfaseD(Jugador px, Jugador px2)
+    public void telAfaseD(Jugador px)
         {
             teletransporte(px,faseD.giveMe(1) );
         }
-    public void telRamdom(Jugador px11,Jugador px22)
+    public void telRamdom(Jugador px11)
         {
             teletransporte( px11,camPrincipal.giveMe((int) (Math.random()*37)));
         }
+
+
+    public void robarEstrella(Jugador px11)//Aparece 3 veces
+    {
+        px11.setEstrellas(px11.getEstrellas()+1);
+        Jugador pxAux=dameUnJugador();
+        pxAux.setEstrellas(pxAux.getEstrellas()-1);
+    }
+
     public void generarJuego(Jugador px) throws Exception {
         int numero = (int) (Math.random() * 3);
         Stage ventana= new Stage();
@@ -242,5 +272,11 @@ public class EventManager extends Baraja {
         }
 
     }
+    private void robarA(Jugador benefiado, Jugador victima)
+    { int regalo = (int)(Math.random()*3);
+        benefiado.setMonedas(benefiado.getMonedas()+regalo);
+        victima.setMonedas(victima.getMonedas()-regalo);
 
+
+    }
 }
