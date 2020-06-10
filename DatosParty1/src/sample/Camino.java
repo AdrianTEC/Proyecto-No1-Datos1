@@ -1,12 +1,7 @@
 package sample;
 
 
-import Listas.CasillaDoble;
-import Listas.CasillaSimple;
-import Listas.ListaCircular;
-import Listas.ListaLineal;
-
-import java.util.IllegalFormatCodePointException;
+import Listas.*;
 
 public class Camino
 {
@@ -33,8 +28,8 @@ public class Camino
                         nuevo.setPosicion(i);
                         if(casillas instanceof ListaCircular){
                             ((ListaCircular) casillas).ingresarNodo(nuevo);}
-                        if(casillas instanceof  ListaLineal){
-                            ((ListaLineal) casillas).ingresarNodo(nuevo);}
+                        if(casillas instanceof ListaLineal){
+                            ((Lista) casillas).ingresarNodo(nuevo);}
                         }
                     }
 

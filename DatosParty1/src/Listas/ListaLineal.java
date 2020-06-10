@@ -1,19 +1,19 @@
 package Listas;
 
 public class ListaLineal extends Lista
+{
+
+    public ListaLineal()
     {
-
-        public ListaLineal()
-            {
-                ultimo=null;
-                tamano=0;
-            }
-
-
-
-
-
-
-
-
+        ultimo=null;
+        tamano=0;
     }
+
+
+
+
+
+
+
+
+}

@@ -3,8 +3,10 @@ package sample;
 
 import Listas.CasillaDoble;
 import Listas.CasillaSimple;
+import javafx.event.EventHandler;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 
@@ -18,7 +20,6 @@ public class    Jugador {   // ATRIBUTOS DEL JUGADOR
     private ImageView imagen;
     private Object ubicacionEnElMapa;
     private boolean direction = true;
-    private int numero;
     private Label recursos;
 
     public Jugador() {
@@ -73,6 +74,8 @@ public class    Jugador {   // ATRIBUTOS DEL JUGADOR
 
     public void setEstrellas(int estrellas) {
         this.estrellas = estrellas;
+        actualizarRecursos();
+
     }
 
     public int getMonedas() {
@@ -81,6 +84,8 @@ public class    Jugador {   // ATRIBUTOS DEL JUGADOR
 
     public void setMonedas(int monedas) {
         this.monedas = monedas;
+        actualizarRecursos();
+
     }
 
     public ImageView getImagen() {
@@ -88,7 +93,10 @@ public class    Jugador {   // ATRIBUTOS DEL JUGADOR
     }
 
     public void setImagen(ImageView imagen) {
+
         this.imagen = imagen;
+
+
     }
 
     public Object getUbicacionEnElMapa() {

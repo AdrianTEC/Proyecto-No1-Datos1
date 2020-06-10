@@ -1,11 +1,8 @@
 package sample;
+import Listas.*;
 import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 import javafx.scene.Scene;
-import Listas.ListaLineal;
-import Listas.CasillaDoble;
-import Listas.CasillaSimple;
-import Listas.ListaCircular;
 import javafx.scene.text.Font;
 import javafx.scene.layout.Pane;
 import javafx.scene.image.Image;
@@ -18,7 +15,6 @@ import javafx.scene.input.MouseEvent;
 import javafx.application.Application;
 import javafx.scene.control.ContentDisplay;
 
-import java.lang.reflect.InvocationTargetException;
 
 public class Tablero extends Application {
     // there is the class atributes and encapsulation levels  (private and public)
@@ -30,24 +26,15 @@ public class Tablero extends Application {
     private ListaCircular caminoPrincipal;
     private EventManager eventManager;
 
-
-
+    private  ListaLineal jugadores;
     private int numeroDeJugadores;
     private int cantidadDeTurnos;
     private int turnodeJugador ;
     private int rondasJugadas;
     private int tipoCasilla;
     private Button cogerCartaV;
-
-    private Baraja barajaVerde;
-    private Baraja barajaAzul;
-    private Baraja barajaRoja;
-    private Baraja barajaDorada;
     private boolean compraEstrella;
-
     private Jugador pxA;
-
-
     private boolean DEV;
     private boolean DevMOVING;
 
@@ -66,7 +53,8 @@ public class Tablero extends Application {
          pxA = new Jugador();
          cogerCartaV=new Button();
          DEV=false;
-
+         jugadores= new ListaLineal();
+         eventManager= new EventManager();
     }
     public void setNumeroDeJugadores(int numeroDeJugadores) {
         this.numeroDeJugadores = numeroDeJugadores;
@@ -74,9 +62,7 @@ public class Tablero extends Application {
     public void setCantidadDeTurnos(int cantidadDeTurnos) {
         this.cantidadDeTurnos = cantidadDeTurnos;
     }
-    public int getNumeroDeJugadores() {
-        return numeroDeJugadores;
-    }
+
 
     public void generar(Estrella es) {
         if(rondasJugadas>=2) {
@@ -159,10 +145,7 @@ public class Tablero extends Application {
                                             }
                                     }
 
-                                Platform.runLater(() -> {
-                                    moverPersonaje(px,numDado,puntero+1,false);
-
-                                });
+                                Platform.runLater(() -> moverPersonaje(px,numDado,puntero+1,false));
                             }
                         },
                         300
@@ -203,6 +186,7 @@ public class Tablero extends Application {
                         tipoCasilla = 4;
                         cogerCartaV.setGraphic(new ImageView("Imagenes/Cartas/baraja(D).png"));
 
+
                 }
                 cogerCartaV.setLayoutX(240);
                 cogerCartaV.setLayoutY(100);
@@ -237,20 +221,24 @@ public class Tablero extends Application {
         }
 
     @Override// there is overwriting  this  use  handle method from other class;
-    public void start(Stage primaryStage) throws ClassNotFoundException, NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+    public void start(Stage primaryStage) {
         /*This funtion is in charge of window building and creates the way list
          *@author Adrián González Jiménez
          *@Version 02/05/2020
          * @param primaryStage
          */
 
-        eventManager= new EventManager(); //creo una instancia manejadora de eventos
+         //creo una instancia manejadora de eventos
 
         //////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
         e.setImagen(new ImageView("Imagenes/Estrella.png"));
 
 
+        Baraja barajaVerde;
+        Baraja barajaAzul;
+        Baraja barajaRoja;
+        Baraja barajaDorada;
 
         barajaVerde = new Baraja();barajaVerde.setTipoBaraja("V");
 
@@ -275,6 +263,7 @@ public class Tablero extends Application {
             caminoPrincipal.remplazarCasillaSimple(31);
             caminoPrincipal.remplazarCasillaSimple(14);
             caminoPrincipal.remplazarCasillaSimple(22);
+            eventManager.setCamPrincipal(caminoPrincipal);
         //////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
         //CREO LA FASE A
@@ -315,7 +304,15 @@ public class Tablero extends Application {
 
 
         /////////////////////////////////////////////////////////////////////////
+            //CREO LA FASE D
+        Camino FaseD= new Camino();
+        FaseD.dobleEnlaze=true;
+        FaseD.matrizPosiciones= new float[][]{{142, 0},{210, 0},{272, 0},{334, 0},{386, 0}};
+        ListaLineal caminoD = (ListaLineal) FaseD.convertirMatrizALista(new ListaLineal());
 
+        caminoD.aplicarPropiedades(new String[]{"R","V","R","V","R"});
+        eventManager.setFaseD(caminoD);
+        //////////////////////////////////////////////////////////////////////////////7
         //IMAGEN TABLERO
         Image btn           = new Image("Imagenes/Boton.png  ");
         Image TableroImagen = new Image("Imagenes/Tablero.png");
@@ -417,7 +414,7 @@ public class Tablero extends Application {
         });
       /////////////////////////////////////////////////////////////////////////////      /////////////////////////////////////////////////////////////////////////////
         Button Moved = new Button("", new ImageView(btn));
-
+        Partida.encojerBoton(Moved);
         Moved.setStyle("-fx-background-color:transparent;-fx-background-radius: 30");
         Moved.setLayoutX(490);
         Moved.setLayoutY(-28);
@@ -432,7 +429,7 @@ public class Tablero extends Application {
         /////////////////////////////////////////////////////////////////////////////        /////////////////////////////////////////////////////////////////////////////
 
         Button EVENT = new Button("", new ImageView(btn));
-
+        Partida.encojerBoton(EVENT);
         EVENT.setStyle("-fx-background-color:transparent;-fx-background-radius: 30");
         EVENT.setLayoutX(350);
         EVENT.setLayoutY(-28);
@@ -442,8 +439,10 @@ public class Tablero extends Application {
         EVENT.setText("Event");
         EVENT.setContentDisplay(ContentDisplay.CENTER);
         EVENT.setOnAction(event -> {
+            Partida.encojerBoton(EVENT);
+
             try {
-                eventManager.teletransporte(p1, caminoPrincipal.giveMe((int)(Math.random()*31) + 1));
+                eventManager.takeACard(p1,p2);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -466,6 +465,8 @@ public class Tablero extends Application {
         Label victoria = new Label();
 
         Turno.setOnAction(actionEvent -> {
+            Partida.encojerBoton(Turno);
+
             if (turnodeJugador < numeroDeJugadores+1) {
                 turnodeJugador += 1;
                 ronda.setText(rondasJugadas + "/" + cantidadDeTurnos);
@@ -497,9 +498,11 @@ public class Tablero extends Application {
         cogerCartaV = new Button("");
         cogerCartaV.setStyle("-fx-background-color:transparent;-fx-background-radius: 30");
         cogerCartaV.setOnAction(actionEvent -> {
-            Carta cartaAuxG = new Carta();
+            Partida.encojerBoton(cogerCartaV);
 
+            Carta cartaAuxG = new Carta();
             if (tipoCasilla == 1) {
+
                 cartaAuxG = barajaVerde.crearCarta();
                 cartaAuxG.setDescripcion(tipoCasilla);
                 pxA.setMonedas(pxA.getMonedas()+1);
@@ -543,20 +546,30 @@ public class Tablero extends Application {
 
             root.getChildren().add(p1.getImagen());
             root.getChildren().add(p2.getImagen());
-
+            CasillaExtraSimple pl1=new CasillaExtraSimple();pl1.setDato(p1);
             root.getChildren().add(p1.getRecursos());
             root.getChildren().add(p2.getRecursos());
+            CasillaExtraSimple pl2=new CasillaExtraSimple();pl2.setDato(p2);
 
-        }
+            jugadores.ingresarNodo(pl1);
+            jugadores.ingresarNodo(pl2);
+    }
         if(numeroDeJugadores>=3) {
             root.getChildren().add(p3.getImagen());
             root.getChildren().add(p3.getRecursos());
+            CasillaExtraSimple pl3=new CasillaExtraSimple();pl3.setDato(p3);
 
+            jugadores.ingresarNodo(pl3);
         }
         if(numeroDeJugadores==4) {
             root.getChildren().add(p4.getImagen());
             root.getChildren().add(p4.getRecursos());
+            CasillaExtraSimple pl4=new CasillaExtraSimple();pl4.setDato(p4);
+
+            jugadores.ingresarNodo(pl4);
+
         }
+        eventManager.setJugadores(jugadores);
         primaryStage.setResizable(false);
         primaryStage.setTitle("Datos Party 1");
         primaryStage.setScene(new Scene(root, 700, 700));

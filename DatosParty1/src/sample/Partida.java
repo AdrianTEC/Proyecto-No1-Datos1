@@ -267,16 +267,19 @@ public class   Partida extends Application {
          *@Version 02/05/2020
          * @param nothing
          */
+        double x= boton.getScaleX();
+        double y= boton.getScaleY();
+
         reproducirSonido("boton");
-        boton.setScaleX(0.4);
-        boton.setScaleY(0.4);
+        boton.setScaleX(x/2);
+        boton.setScaleY(y/2);
         new java.util.Timer().schedule(
 
                 new java.util.TimerTask() {
                     @Override
                     public void run() {
-                        boton.setScaleX(0.5);
-                        boton.setScaleY(0.5);
+                        boton.setScaleX(x);
+                        boton.setScaleY(y);
                     }
                 },
                 100

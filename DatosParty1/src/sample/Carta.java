@@ -23,6 +23,14 @@ public class Carta {
         descripcion.setFont(Font.font("Verdana", FontWeight.BOLD, 14));
 
     }
+    public void setDescripcion(String tipoCarta){
+
+        descripcion.setLayoutX(280);
+        descripcion.setLayoutY(270);
+        descripcion.setText(tipoCarta);
+        descripcion.setFont(Font.font("Verdana", FontWeight.BOLD, 14));
+
+    }
 
     public ImageView getCarta() {
         return carta;

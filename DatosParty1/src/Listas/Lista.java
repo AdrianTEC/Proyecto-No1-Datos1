@@ -13,6 +13,11 @@ public class Lista
 
 
 ////POLIMORFISMO SE ENCUENTRA EN LAS CLASES QUE HEREDAN DE LISTA Y QUE MODIFICAN SUS MÉTODOS TAL COMO LISTA CIRCULAR
+    public int Size()
+        {
+            return tamano;
+        }
+
     public void ingresarNodo(CasillaSimple casillita)
     {
         if(ultimo ==null)
@@ -34,27 +39,53 @@ public class Lista
         }
     }
     public void ingresarNodo(CasillaDoble casillita)
+{
+    {
+        if(ultimo ==null)
+
         {
+            ultimo =casillita;
+            ((CasillaDoble) ultimo).setINDEX(tamano);
+            tamano+=1;
+            primero= ultimo;
+        }
+
+        else
+        {   casillita.setAnterior(ultimo);
+            ((CasillaDoble) ultimo).setSiguiente(casillita);
+            ultimo =casillita;
+            ((CasillaDoble) ultimo).setINDEX(tamano);
+            tamano+=1;
+
+        }
+    }
+}
+
+    public void ingresarNodo(CasillaExtraSimple casillita)
+    {
+        {
+            if(ultimo ==null)
+
             {
-                if(ultimo ==null)
+                ultimo =casillita;
+                ((CasillaExtraSimple) ultimo).setINDEX(tamano);
 
-                {
-                    ultimo =casillita;
-                    ((CasillaDoble) ultimo).setINDEX(tamano);
-                    tamano+=1;
-                    primero= ultimo;
-                }
+                tamano+=1;
+                primero= ultimo;
+            }
 
-                else
-                {   casillita.setAnterior(ultimo);
-                    ((CasillaDoble) ultimo).setSiguiente(casillita);
-                    ultimo =casillita;
-                    ((CasillaDoble) ultimo).setINDEX(tamano);
-                    tamano+=1;
+            else
+            {
+                ((CasillaExtraSimple) ultimo).setSiguiente(casillita);
+                ultimo =casillita;
+                ((CasillaExtraSimple) ultimo).setINDEX(tamano);
 
-                }
+                tamano+=1;
+
             }
         }
+    }
+
     public Object giveMe(int ind)
         {
 
@@ -67,6 +98,18 @@ public class Lista
             int i =0;
             while (i!=ind)
                 {
+
+                    if(puntero instanceof  CasillaExtraSimple)
+                    {
+                        if(((CasillaExtraSimple)puntero).getINDEX()==ind)
+                        {
+                            return puntero;
+                        }
+                        puntero= ((CasillaExtraSimple) puntero).getSiguiente();
+
+                        i++;
+                    }
+
                     if(puntero instanceof  CasillaSimple)
                         {
                             if(((CasillaSimple)puntero).getINDEX()==ind)
@@ -109,7 +152,7 @@ public class Lista
                                         }
                                     }
                             }
-                            else  {
+                            if (apuntador instanceof CasillaDoble) {
 
                                     ((CasillaDoble) apuntador).setTipo(propiedades[i]);
                                     apuntador = ((CasillaDoble) apuntador).getSiguiente();

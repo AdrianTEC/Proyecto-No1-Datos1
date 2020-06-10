@@ -37,7 +37,10 @@ public class Force extends Application {
         flag= new ImageView("Imagenes/Minijuegos/flag.png");
         root = new Pane();
     }
-
+    public void setPxs(Jugador px1,Jugador px2) {
+        this.px1 = px1;
+        this.px2=px2;
+    }
     private  void shoot()
     {
         timeForShoot=true;
@@ -138,14 +141,14 @@ public class Force extends Application {
                 vic.setPrefSize(1300,200);
                 if (workers.getLayoutX() < 229) {
                     timeForShoot = false;
-                    vic.setText("px1.getNombre()" +"  Ha ganado el duelo!");
+                    vic.setText(px1.getNombre() +"  Ha ganado el duelo!");
                     px1.setMonedas(px1.getMonedas()+1);
                     px2.setMonedas(px2.getMonedas()-1);
 
                 }
                 if (workers.getLayoutX() > 561) {
                     timeForShoot = false;
-                    vic.setText("px2.getNombre()" +"  Ha ganado el duelo!");
+                    vic.setText(px2.getNombre() +"  Ha ganado el duelo!");
                    // px2.setMonedas(px2.getMonedas()+1);
                     //px1.setMonedas(px1.getMonedas()-1);
 
@@ -161,7 +164,7 @@ public class Force extends Application {
                                 Platform.runLater(new Runnable() {
                                     @Override
                                     public void run() {
-                                        System.exit(1);
+                                        stage.close();
                                     }
                                 });
 

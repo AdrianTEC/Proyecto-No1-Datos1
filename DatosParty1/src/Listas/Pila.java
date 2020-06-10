@@ -1,16 +1,37 @@
 package Listas;
 
+
 public class Pila {
-    private CasillaExtraSimple ultimo; // LAST IN FIRST OUT LIFO
-    //push pop peek
+    public CasillaExtraSimple ultimo; // LAST IN FIRST OUT LIFO
+    private int size;
+
+    public Pila() {
+        ultimo= null;
+        size=0;
+    }
+
+    public void ShowPila()
+        {
+            Pila x= this;
+            String b="[";
+
+            for(int i=size; i>0 ;i--)
+                {
+                    b+= x.peek().getDato() + ", ";
+                }
+            b+="]";
+            System.out.println(b);
+        }
     public void push(CasillaExtraSimple casillita)
         {/*This adds a CasillaExtraSimple to the top of the pila
          *@author Adrián González
          *@Version 06/06/2020
          * @param CasilaExtraSimple
          */
+            size++;
           casillita.setSiguiente(ultimo);
           ultimo= casillita;
+
         }
     public void especialPush(String[] cadena)
         {/*This converts a String[] int a pila
@@ -35,7 +56,7 @@ public class Pila {
         x=  ultimo.getSiguiente();
         ultimo.setSiguiente(null);
         ultimo=x;
-
+        size--;
     }
     public CasillaExtraSimple peek()
     {/*This funtion returns the last CasillaExtraSimple from pila
@@ -44,8 +65,12 @@ public class Pila {
      * @param nothing
      *@returns CasillaExtraSimple ultimo
      */
+        CasillaExtraSimple x= ultimo;
+        pop();
 
-        return ultimo;
+        return x;
+
+
     }
 
 

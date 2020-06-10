@@ -2,7 +2,6 @@ package MiniJuegos;
 
 import javafx.application.Application;
 import javafx.application.Platform;
-import javafx.event.EventHandler;
 import javafx.scene.Scene;
 
 import javafx.scene.control.Label;
@@ -13,18 +12,44 @@ import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
 import sample.Jugador;
 import sample.Partida;
+import sample.bancoDeTextos;
 
 
 public class EscribirPalabra extends Application implements Observador {
-    private Pane root = new Pane();
+    private Pane root;
     private String texto_ingresado;
-    private TextField cajaDeTexto= new TextField();
+    private TextField cajaDeTexto;
     private Jugador px;
-    private String currentText="hola";
+    private String currentText;
+    private Stage ventana;
+    public EscribirPalabra() {
+        bancoDeTextos bn = new bancoDeTextos();
+        px = new Jugador();
+        cajaDeTexto= new TextField();
+        currentText= bn.giveMeAText();
+        ventana= new Stage();
+        root = new Pane();
+    }
 
-    public EscribirPalabra(Jugador px) {
+
+    private String mezclarPalabra(){
+        String newtext = "";
+        for(int i =0 ; i < currentText.length();i++)
+            {
+                char[] auxtext= currentText.toCharArray();
+
+                int num = (int) (Math.random()*currentText.length());
+                char aux= auxtext[i];
+                auxtext[i]=auxtext[num];
+                auxtext[num]=aux;
+                newtext= String.valueOf(auxtext);
+
+
+            }
+        return newtext;
+    }
+    public void setPx(Jugador px) {
         this.px = px;
-
     }
 
     public void verificar()
@@ -36,38 +61,45 @@ public class EscribirPalabra extends Application implements Observador {
             victory.setFont(Font.font("Verdana", FontWeight.BOLD, 30));
             texto_ingresado=  String.valueOf(cajaDeTexto.getText());
 
-            System.out.println(texto_ingresado.getClass().getName() + currentText.getClass().getName() );
-
             if (texto_ingresado.equals(currentText))
             {
-              victory.setText("¡CORRECTO!"+"\n"+"Ganaste 3 monedas");
-                //px.setMonedas(px.getMonedas+3);
+              victory.setText("¡CORRECTO!"+"\n"+"Ganaste 1 monedas");
+                px.setMonedas(px.getMonedas()+1);
                 Partida.reproducirSonido("win");
 
             }
             else {
 
-                victory.setText("¡Mal!"+"\n"+"perdiste contundentemente");
+                victory.setText("¡Mal!"+"\n"+"perdiste contundentemente"+"\n"+"la palabra era:"+"\n"+currentText);
 
             }
 
 
-            Platform.runLater(new Runnable()
-            {
-                @Override
-                public void run()
-                {
-                    root.getChildren().add(victory);
-                }
+
+            Platform.runLater(() ->{ root.getChildren().add(victory);
+                new java.util.Timer().schedule(
+                        new java.util.TimerTask() {
+                            @Override
+                            public void run() {
+                                Platform.runLater(()->{ventana.close();});
+
+                            }
+                        },
+                        2000
+                );
+
             });
+
+
+
         }
 
 
     @Override
     public void start(Stage stage) throws Exception {
+        ventana=stage;
+
         root.setStyle("-fx-background-color: #202f4a");
-
-
         BarraTiempo barrita = new BarraTiempo();
         barrita.getBarra().setLayoutX(150);
         barrita.getBarra().setLayoutY(350);
@@ -81,7 +113,7 @@ public class EscribirPalabra extends Application implements Observador {
         oracion.setLayoutY(250);
         oracion.setPrefSize(400,50);
         oracion.setFont(Font.font("Verdana", FontWeight.BOLD, 20));
-        oracion.setText("   le errpo omec ercan");
+        oracion.setText(mezclarPalabra());
         oracion.setStyle("-fx-background-color: #535c94");
 
         cajaDeTexto.setPrefSize(400,200);
@@ -96,7 +128,6 @@ public class EscribirPalabra extends Application implements Observador {
         stage.setScene(new Scene(root, 700, 700));
         root.getChildren().addAll(barrita.getBarra(),barrita.getBarraContainer(),oracion,cajaDeTexto);
         stage.show();
-        stage.setOnCloseRequest(event -> { System.exit(1);});
     }
 
     @Override

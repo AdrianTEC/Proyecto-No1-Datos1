@@ -1,5 +1,6 @@
 package MiniJuegos;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
@@ -18,20 +19,26 @@ public class Minesweeper extends Application implements Observador {
     private int puntos;
     private float [][] posiciones;
     private Jugador px;
-
+    private Stage ventana;
     public Minesweeper (){
         px = new Jugador();
         puntos = 0;
         root = new Pane();
         puntaje= new Label();
         cantidadPuntos= new Label();
+        ventana= new Stage();
+
+    }
+
+    public void setPx(Jugador px) {
+        this.px = px;
     }
 
     public void premio (){
-        if (puntos > 29){
+        if (puntos >50){
             px.setMonedas(px.getMonedas() +2);
         }
-        if (puntos > 60){
+        if (puntos > 100){
             px.setMonedas(px.getMonedas() +4);
         }
         else{
@@ -74,6 +81,7 @@ public class Minesweeper extends Application implements Observador {
 
     @Override
     public void start(Stage stage) {
+        ventana=stage;
         ImageView fondo= new ImageView("Imagenes/Minijuegos/FondoMarino.png");
         fondo.setFitWidth(1200);
         fondo.setFitHeight(800);
@@ -138,6 +146,8 @@ public class Minesweeper extends Application implements Observador {
     @Override
     public void Update() {
             px.setMonedas(puntos/100);
-            System.exit(1);
+            Platform.runLater(()->{ventana.close();});
+
     }
+
 }

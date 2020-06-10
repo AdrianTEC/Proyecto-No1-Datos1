@@ -3,14 +3,14 @@ package MiniJuegos;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
-public class Carta {
+public class CartaJueg {
 
     private ImageView imagen;
     private int tipo;
 
 
-    public Carta() {
-        imagen = new ImageView(new Image("Imagenes/Minijuegos/bomb.png"));
+    public CartaJueg() {
+        imagen = new ImageView(new Image("Imagenes/Minijuegos/Mcart.png"));
         imagen.setFitHeight(50);
         imagen.setFitWidth(50);
         tipo = 0;

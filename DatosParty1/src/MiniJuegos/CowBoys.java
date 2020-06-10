@@ -33,6 +33,15 @@ public class CowBoys extends Application {
         flag= new ImageView("Imagenes/Minijuegos/flag.png");
         root = new Pane();
     }
+
+
+    public void setPxs(Jugador px1,Jugador px2) {
+        this.px1 = px1;
+        this.px2=px2;
+    }
+
+
+
     private  void shoot()
         {
             timeForShoot=true;
@@ -131,7 +140,7 @@ public class CowBoys extends Application {
                         @Override
                         public void run() {
 
-                            Platform.runLater(() -> System.exit(1));
+                            Platform.runLater(() -> stage.close());
 
                         }
                     },

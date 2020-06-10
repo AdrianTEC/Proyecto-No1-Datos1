@@ -7,24 +7,14 @@ import javafx.scene.image.ImageView;
 public class Baraja {
 
     private String tipoBaraja;
-    private ImageView baraja;
 
 
-    public String getTipoBaraja() {
-        return tipoBaraja;
-    }
+
 
     public void setTipoBaraja(String tipoBaraja) {
         this.tipoBaraja = tipoBaraja;
     }
 
-    public ImageView getBaraja() {
-        return baraja;
-    }
-
-    public void setBaraja(ImageView baraja) {
-        this.baraja = baraja;
-    }
 
     Image verde=new Image("Imagenes/Cartas/CVERDE.png");
     Image rojo=new Image("Imagenes/Cartas/CROJA.png");

@@ -2,6 +2,24 @@ package sample;
 
 public class bancoDeTextos {
 
+    private  String[] textos;
+
+    public bancoDeTextos(){
+        textos= new String[]{"cohete",
+                "programacion", "computadores", "doctor", "abecedario", "hormiga", "datos","mapache","palabra","tecnologico"
+
+        };
+    }
+
+    public  String giveMeAText()
+        {
+            String mensaje;
+                mensaje= textos[(int) (Math.random()*textos.length)];
+
+            return mensaje;
+
+        }
+
     public String textoDeCartaTipo(int tipo){
         String random = new String();
         int x = (int)(Math.random()*3);
@@ -20,13 +38,11 @@ public class bancoDeTextos {
             random = cartasROJAS [x];
 
         }
-        if (tipo == 4){
 
-            random = cartasDORADAS [x];
-
-        }
         return random;
     }
+
+
 
     private String[] cartasVERDES= new String[]
             {"te encontraste una"+"\n"+ "moneda en el suelo,"+"\n"+"eres 1% más rico"+"\n"+"\n"+"\n"+"\n"+"\n"+"\n"+
@@ -50,14 +66,7 @@ public class bancoDeTextos {
               "Tu mala suerte"+"\n"+"te trajo aqui"+"\n"+"\n"+"\n"+"\n"+"\n"+"\n"+"\n"+
                     "        -1 moneda"
             };
-    private String [] cartasDORADAS = new String []
-            { "Felicidades,"+"\n"+"encontraste"+"\n"+"un juego aleatorio,"+"\n"+"disfrutalo"+"\n"+"\n"+"\n"+"\n"+
-                    "          Que inicie"+"\n"+"          el juego!",
-              "Tienes la"+"\n"+"oportunidad"+"\n"+"de ganar mas"+"\n"+"\n"+"\n"+"\n"+"\n"+
-                    "          Que inicie"+"\n"+"          el juego!",
-              "Demuestra tu"+"\n"+"hablilidad!"+"\n"+"\n"+"\n"+"\n"+"\n"+"\n"+
-                    "          Que inicie"+"\n"+"          el juego!"
-            };
+
 
 
 }

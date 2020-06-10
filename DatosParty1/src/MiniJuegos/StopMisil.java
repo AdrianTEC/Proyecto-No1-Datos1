@@ -18,18 +18,31 @@ import sample.Partida;
 
 public class StopMisil extends Application implements  Observador
 {
-    private Pane root = new Pane();
+    private Pane root ;
     private int puntos;
     private int destruidos;
-    private Label puntaje= new Label();
-    private Label Destruidos= new Label();
-    private Label velocidadMisil = new Label();
+    private Label puntaje;
+    private Label Destruidos;
+    private Label velocidadMisil ;
     private Jugador px;
-    private float  velocidad=10;
-    private boolean canIproduceMoreMisils=true;
+    private float  velocidad;
+    private boolean canIproduceMoreMisils;
+    private Stage v;
+
    public StopMisil() {
         px= new Jugador();
+       canIproduceMoreMisils=true;
+       velocidadMisil = new Label();
+       Destruidos= new Label();
+       puntaje= new Label();
+       root = new Pane();
+       velocidad=10;
     }
+
+    public void setPx(Jugador px) {
+        this.px = px;
+    }
+
     private void destruirMisil(Misil exp)
 
     {
@@ -79,7 +92,7 @@ public class StopMisil extends Application implements  Observador
                                 @Override
                                 public void run()
                                 {
-                                    System.exit(1);
+                                    v.close();
 
                                 }
                             });
@@ -175,7 +188,8 @@ public void start(Stage stage) throws Exception {
          *@Version 06/06/2020
          * @param Stage stage
          */
-        ImageView fondo = new ImageView(new Image("Imagenes/Minijuegos/D3-1.png.png"));
+    v=stage;
+    ImageView fondo = new ImageView(new Image("Imagenes/Minijuegos/D3-1.png.png"));
     fondo.setFitWidth(400);
     fondo.setFitHeight(700);
     root.setStyle("-fx-background-color: #202f4a");

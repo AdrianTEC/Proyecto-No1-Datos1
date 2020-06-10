@@ -1,15 +1,24 @@
 package Listas;
 
 public class CasillaExtraSimple {
-    private String dato;
+    private Object dato;
     private CasillaExtraSimple siguiente;
+    private int INDEX;
+
+    public int getINDEX() {
+        return INDEX;
+    }
+
+    public void setINDEX(int INDEX) {
+        this.INDEX = INDEX;
+    }
 
     public CasillaExtraSimple() {
         dato="estoy vacio";
         siguiente= null;
     }
 
-    public void setDato(String dato) {
+    public void setDato(Object dato) {
         this.dato = dato;
     }
 
@@ -17,7 +26,7 @@ public class CasillaExtraSimple {
         this.siguiente = siguiente;
     }
 
-    public String getDato() {
+    public Object getDato() {
         return dato;
     }
 
