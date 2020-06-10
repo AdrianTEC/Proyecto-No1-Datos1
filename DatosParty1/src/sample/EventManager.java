@@ -15,7 +15,7 @@ public class EventManager extends Baraja {
     private Pila barajaDeEventos;
     private String[] memoriaDeInicio;
     private ListaCircular camPrincipal;
-    private ListaLineal faseD;
+    private ListaCircular faseD;
     private ListaLineal jugadores;
     private Boolean robando;
     private Jugador pxa;
@@ -46,7 +46,7 @@ public class EventManager extends Baraja {
         this.camPrincipal = camPrincipal;
     }
 
-    public void setFaseD(ListaLineal faseD) {
+    public void setFaseD(ListaCircular faseD) {
         this.faseD = faseD;
     }
 
@@ -96,13 +96,10 @@ public class EventManager extends Baraja {
          *@Version 02/05/2020
          * @param Jugador px1,px2
          */
-        pxa=px1;
-
-        CasillaExtraSimple x =barajaDeEventos.pop();  //toma una carta de la pila
-
-
+         pxa=px1; //actualizo el jugador actual
+         CasillaExtraSimple x =barajaDeEventos.pop();  //toma una carta de la pila
          actual= crearCarta();
-         actual.setDescripcion("Has activado un evento! "+"\n"+ "el evento activado es"+"\n"+" de tipo :" +(String) x.getDato());
+         actual.setDescripcion("Has activado un evento! "+"\n"+ "el evento activado es"+"\n"+" de tipo :" + x.getDato());
 
         if(barajaDeEventos.ultimo==null){
             Barajar();
@@ -116,12 +113,7 @@ public class EventManager extends Baraja {
                     Platform.runLater(()->{
 
                         magicfuntion(px1,x);
-
-
                     });
-
-
-
                     }
                 },
                 3000
@@ -142,6 +134,17 @@ public class EventManager extends Baraja {
                 }
             return aux;
         }
+
+    public void Dev(Jugador px1)
+    {
+        try {
+            ///esta función es especial, llama al metodo que contiene la carta es casi magia
+
+            Method method = EventManager.class.getMethod("telAfaseD",Jugador.class );
+            method.invoke(this,px1);
+        }catch (Exception e){
+        }
+    }
     private void magicfuntion(Jugador px1, CasillaExtraSimple x)
     {
             try {
@@ -235,7 +238,7 @@ public class EventManager extends Baraja {
 
     public void telAfaseD(Jugador px)
         {
-            teletransporte(px,faseD.giveMe(1) );
+            teletransporte(px,faseD.giveMe(0) );
         }
     public void telRamdom(Jugador px11)
         {

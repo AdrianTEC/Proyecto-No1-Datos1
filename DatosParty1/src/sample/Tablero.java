@@ -305,10 +305,10 @@ public class Tablero extends Application {
             //CREO LA FASE D
         Camino FaseD= new Camino();
         FaseD.dobleEnlaze=true;
-        FaseD.matrizPosiciones= new float[][]{{142, 0},{210, 0},{272, 0},{334, 0},{386, 0}};
-        ListaLineal caminoD = (ListaLineal) FaseD.convertirMatrizALista(new ListaLineal());
+        FaseD.matrizPosiciones= new float[][]{{10,80},{117,80},{240,80},{363,80},{480,80},{528,80},{528,138},{528,256},{528,370},{528,488},{528,595},{480,595},{363,595},{240,595},{117,595},{10,595},{10,488} ,{10,370},{10,256},{10,138}   };
+        ListaCircular caminoD = (ListaCircular) FaseD.convertirMatrizALista(new ListaCircular());
 
-        caminoD.aplicarPropiedades(new String[]{"R","V","R","V","R"});
+      //  caminoD.aplicarPropiedades(new String[]{"D","D","D","D","D","D","D","D","D","D"});
         eventManager.setFaseD(caminoD);
         //////////////////////////////////////////////////////////////////////////////7
         //IMAGEN TABLERO
@@ -340,7 +340,7 @@ public class Tablero extends Application {
         p1.getRecursos().setLayoutX(565);p1.getRecursos().setLayoutY(300);
         p1.setNombre("1");
         p1.        actualizarRecursos();
-
+        pxA=p1;
 
         //////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -431,8 +431,8 @@ public class Tablero extends Application {
         EVENT.setStyle("-fx-background-color:transparent;-fx-background-radius: 30");
         EVENT.setLayoutX(350);
         EVENT.setLayoutY(-28);
-        EVENT.setScaleX(0.5);
-        EVENT.setScaleY(0.5);
+        EVENT.setScaleX(0.1);
+        EVENT.setScaleY(0.1);
         EVENT.setFont(Font.font("Verdana", FontWeight.BOLD, 30));
         EVENT.setText("Event");
         EVENT.setContentDisplay(ContentDisplay.CENTER);
@@ -440,7 +440,7 @@ public class Tablero extends Application {
             Partida.encojerBoton(EVENT);
 
             try {
-                eventManager.takeACard(p1);
+                eventManager.Dev(pxA);
             } catch (Exception e) {
                 e.printStackTrace();
             }
