@@ -12,7 +12,7 @@ import javafx.stage.Stage;
 import sample.Jugador;
 import sample.Partida;
 
-public class Minesweeper extends Application implements Observador {
+public class Minesweeper extends Application implements Observador, Observado {
     private Pane root;
     private Label puntaje;
     private Label cantidadPuntos;
@@ -20,6 +20,8 @@ public class Minesweeper extends Application implements Observador {
     private float [][] posiciones;
     private Jugador px;
     private Stage ventana;
+    private Observador eventManager;
+
     public Minesweeper (){
         px = new Jugador();
         puntos = 0;
@@ -29,7 +31,9 @@ public class Minesweeper extends Application implements Observador {
         ventana= new Stage();
 
     }
-
+    public void setEventManager(Observador eventManager) {
+        this.eventManager = eventManager;
+    }
     public void setPx(Jugador px) {
         this.px = px;
     }
@@ -116,6 +120,13 @@ public class Minesweeper extends Application implements Observador {
         puntaje.setStyle("-fx-background-color: #535c94");
         puntaje.setFont(Font.font("Verdana", FontWeight.BOLD, 20));
 
+        Label INDICADOR= new Label();
+        INDICADOR.setText("Jugador: "+px.getNombre());
+        INDICADOR.setLayoutX(0);
+        INDICADOR.setLayoutY(0);
+        INDICADOR.setPrefSize(200,50);
+        INDICADOR.setFont(Font.font("Verdana", FontWeight.BOLD, 20));
+
         cantidadPuntos.setText(String.valueOf(puntos));
         cantidadPuntos.setLayoutX(730);
         cantidadPuntos.setLayoutY(30);
@@ -128,7 +139,7 @@ public class Minesweeper extends Application implements Observador {
         stage.setResizable(false);
         stage.setTitle("Minesweeper");
         stage.setScene(new Scene(root, 1200, 700));
-        root.getChildren().addAll(fondo,barrita.getBarra(),puntaje,cantidadPuntos,barrita.getBarraContainer());
+        root.getChildren().addAll(fondo,barrita.getBarra(),INDICADOR,puntaje,cantidadPuntos,barrita.getBarraContainer());
         stage.show();
         stage.setOnCloseRequest(event -> System.exit(1));
 
@@ -143,11 +154,7 @@ public class Minesweeper extends Application implements Observador {
 
     }
 
-    @Override
-    public void Update() {
-            px.setMonedas(puntos/100);
-            Platform.runLater(()->{ventana.close();});
-
-    }
-
+    @Override public void Update() {px.setMonedas(px.getMonedas()+puntos/100);notificar();Platform.runLater(()->{ventana.close();}); }
+    @Override public void Update(int puntaje,Jugador jugador) { }
+    @Override public void notificar() { eventManager.Update(puntos,px); }
 }

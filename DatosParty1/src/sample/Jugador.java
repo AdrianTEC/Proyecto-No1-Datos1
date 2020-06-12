@@ -3,12 +3,12 @@ package sample;
 
 import Listas.CasillaDoble;
 import Listas.CasillaSimple;
-import javafx.event.EventHandler;
+import javafx.application.Platform;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
+//Por medio de abstracción se conceptualizó una versión sencilla del jugador
 
 
 public class    Jugador {   // ATRIBUTOS DEL JUGADOR
@@ -46,7 +46,7 @@ public class    Jugador {   // ATRIBUTOS DEL JUGADOR
 
     public void actualizarRecursos()
     {
-        recursos.setText("P"+nombre +":"  + monedas+ "   "+ estrellas);
+        Platform.runLater(()->{ recursos.setText("P"+nombre +":"  + monedas+ "   "+ estrellas); });
 
     }
 
@@ -73,6 +73,7 @@ public class    Jugador {   // ATRIBUTOS DEL JUGADOR
     }
 
     public void setEstrellas(int estrellas) {
+        Partida.reproducirSonido("star");
         this.estrellas = estrellas;
         actualizarRecursos();
 
@@ -123,6 +124,7 @@ public class    Jugador {   // ATRIBUTOS DEL JUGADOR
         ubicacionEnElMapa = casillita;// ahora la nueva casilla donde está el jugador es la introducida
 
         moverAcoordenada(casillita.getPosicion()[0], casillita.getPosicion()[1]);
+        //System.out.println(casillita.getTipo()+ casillita.getINDEX());
 
 
     }
@@ -136,7 +138,6 @@ public class    Jugador {   // ATRIBUTOS DEL JUGADOR
          */
         ubicacionEnElMapa = casillita;// ahora la nueva casilla donde está el jugador es la introducida
         moverAcoordenada(casillita.getPosicion()[0], casillita.getPosicion()[1]);
-
 
     }
 

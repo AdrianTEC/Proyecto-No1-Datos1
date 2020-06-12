@@ -24,10 +24,11 @@ public class Estrella {
     public  void moverseA(CasillaSimple casillita)
 
     {
+        Partida.reproducirSonido("star");
 
         ubicacionEnElMapa=casillita;
 
-        System.out.println(casillita.getINDEX() +" "+ casillita.getTipo() );
+        //System.out.println(casillita.getINDEX() +" "+ casillita.getTipo() );
         moverAcoordenada(casillita.getPosicion()[0],casillita.getPosicion()[1]);
 
 

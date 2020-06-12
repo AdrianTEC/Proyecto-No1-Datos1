@@ -3,14 +3,11 @@ package sample;
 import Listas.*;
 import MiniJuegos.*;
 import javafx.application.Platform;
-import javafx.event.EventHandler;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
-
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
-public class EventManager extends Baraja {
+public class EventManager extends Baraja implements Observador{
     private String[] eventos;
     private Pila barajaDeEventos;
     private String[] memoriaDeInicio;
@@ -20,6 +17,9 @@ public class EventManager extends Baraja {
     private Boolean robando;
     private Jugador pxa;
     private Carta actual;
+    private Boolean minijuegoAbierto;
+    private Jugador ganador;
+    private int maxPuntaje;
 
     public EventManager() {
         setTipoBaraja("D");
@@ -34,12 +34,23 @@ public class EventManager extends Baraja {
                             "telRamdom","telRamdom","telRamdom","telAfaseD","telAfaseD","telAfaseD","telRamdom","telRamdom","telRamdom","telRamdom", //Teletransporte
                             "cambioDeLugares","cambioDeLugares","cambioDeLugares","cambioDeLugares","cambioDeLugares"
         };  //IntercambioDeLugares
-
+        ganador=new Jugador();
+        maxPuntaje=0;
         memoriaDeInicio=eventos;
+        minijuegoAbierto=false;
         Barajar();
         robando=false;
         pxa= new Jugador();
         actual= new Carta();
+    }
+
+    public Boolean getMinijuegoAbierto() {
+        return minijuegoAbierto;
+    }
+
+    public Jugador getGanador() {
+
+        return ganador;
     }
 
     public void setCamPrincipal(ListaCircular camPrincipal) {
@@ -110,10 +121,7 @@ public class EventManager extends Baraja {
                 new java.util.TimerTask() {
                     @Override
                     public void run() {
-                    Platform.runLater(()->{
-
-                        magicfuntion(px1,x);
-                    });
+                    Platform.runLater(()-> magicfuntion(px1,x));
                     }
                 },
                 3000
@@ -142,7 +150,7 @@ public class EventManager extends Baraja {
 
             Method method = EventManager.class.getMethod("telAfaseD",Jugador.class );
             method.invoke(this,px1);
-        }catch (Exception e){
+        }catch (Exception ignored){
         }
     }
     private void magicfuntion(Jugador px1, CasillaExtraSimple x)
@@ -152,8 +160,7 @@ public class EventManager extends Baraja {
                 System.out.println(x.getDato());
                 Method method = EventManager.class.getMethod((String) x.getDato(),Jugador.class );
                 method.invoke(this,px1);
-            }catch (Exception e){
-                System.out.println(e);
+            }catch (Exception ignored){
             }
         }
     public void duelo(Jugador px1) throws Exception//Aparece 10 veces.
@@ -199,10 +206,7 @@ public class EventManager extends Baraja {
     {
         if (px11.getEstrellas()>0){
             px11.setEstrellas(px11.getEstrellas()-1);
-            Jugador j = null;
-            while (j!=pxa) {
-                j=dameUnJugador();
-            }
+            Jugador j=dameUnJugador();
             j.setEstrellas(j.getEstrellas() + 1);
 
         }
@@ -219,9 +223,9 @@ public class EventManager extends Baraja {
 
 
 
-    private void teletransporte(Jugador px, Object nuevaUbicación)//Aparece 10 veces.
+    private void teletransporte(Jugador px, Object nuevaUbicacion)//Aparece 10 veces.
         {
-            px.setUbicacionEnElMapa(nuevaUbicación);  //nuevaUbicación es caminoPrincipal.giveMe(px.numeroRandom())
+            px.setUbicacionEnElMapa(nuevaUbicacion);  //nuevaUbicación es caminoPrincipal.giveMe(px.numeroRandom())
             px.moverseA((CasillaSimple) px.getUbicacionEnElMapa());
         }
 
@@ -237,8 +241,12 @@ public class EventManager extends Baraja {
         }
 
     public void telAfaseD(Jugador px)
-        {
-            teletransporte(px,faseD.giveMe(0) );
+        {   CasillaDoble i= (CasillaDoble) faseD.giveMe((int) (Math.random()*faseD.Size()));
+            while (i.getTipo().equals("Di")){
+                i= (CasillaDoble) faseD.giveMe((int) (Math.random()*faseD.Size()));
+
+            }
+            teletransporte(px,i);
         }
     public void telRamdom(Jugador px11)
         {
@@ -253,27 +261,37 @@ public class EventManager extends Baraja {
         pxAux.setEstrellas(pxAux.getEstrellas()-1);
     }
 
-    public void generarJuego(Jugador px) throws Exception {
-        int numero = (int) (Math.random() * 3);
-        Stage ventana= new Stage();
-        if (numero == 0) {
-            StopMisil stopMisil= new StopMisil();
-            stopMisil.start(ventana);
-        }
-        if(numero==1)
-            {
-                EscribirPalabra escribirPalabra= new EscribirPalabra();
-                escribirPalabra.setPx(px);
-                escribirPalabra.start(ventana);
-            }
-        if(numero==2)
-        {
+    public void generarJuego(Jugador px,int numero)  {
 
-            Minesweeper minesweeper= new Minesweeper();
-            minesweeper.setPx(px);
-            minesweeper.start(ventana);
-        }
 
+        Platform.runLater(()->{
+                    try {
+                        minijuegoAbierto=true;
+                        Stage ventana= new Stage();
+                        if (numero == 0) {
+                            StopMisil stopMisil= new StopMisil();
+                            stopMisil.setPx(px);
+                            stopMisil.start(ventana);
+                            stopMisil.setEventManager(this);
+                        }
+                        if(numero==1)
+                        {
+                            EscribirPalabra escribirPalabra= new EscribirPalabra();
+                            escribirPalabra.setPx(px);
+                            escribirPalabra.start(ventana);
+                            escribirPalabra.setEventManager(this);
+                        }
+                        if(numero==2)
+                        {
+
+                            Minesweeper minesweeper= new Minesweeper();
+                            minesweeper.setPx(px);
+                            minesweeper.start(ventana);
+                            minesweeper.setEventManager(this);
+                        }
+                    }catch (Exception ignored){}
+
+        });
     }
     private void robarA(Jugador benefiado, Jugador victima)
     { int regalo = (int)(Math.random()*3);
@@ -281,5 +299,25 @@ public class EventManager extends Baraja {
         victima.setMonedas(victima.getMonedas()-regalo);
 
 
+    }
+
+    @Override
+    public void Update() {
+
+
+
+    }
+
+    @Override
+    public void Update(int puntaje, Jugador jugador) {
+        minijuegoAbierto=false;
+        if(maxPuntaje< puntaje)
+            {
+                maxPuntaje=puntaje;
+                ganador=jugador;
+
+
+                System.out.println("asd");
+            }
     }
 }

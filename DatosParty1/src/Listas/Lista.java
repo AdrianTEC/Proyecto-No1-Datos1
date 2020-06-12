@@ -1,6 +1,6 @@
 package Listas;
 
-public class Lista
+public abstract class Lista
 {
 
     public Object ultimo;
@@ -9,6 +9,10 @@ public class Lista
 //////////////////////////////////////////////////////////////////////////
 ////AQUI HAY UN EJEMPLO DE OVERLOAD ///////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////
+
+
+    //ABSTRACCIÓN PARA NOSOTROS IMPLEMENTAR EL CÓDIGO DE LISTAS LO VEMOS COMO UN CONCEPTO ABSTRACTO
+    //EN EL CUAL SE SIMPLIFICÓ A NIVEL DE CÓDIGO LA FORMA EN LA QUE SE DESARROLLAN Y RELACIONAN SUS COMPONENTES
 
 
 
@@ -39,7 +43,7 @@ public class Lista
         }
     }
     public void ingresarNodo(CasillaDoble casillita)
-{
+    {
     {
         if(ultimo ==null)
 
@@ -146,20 +150,13 @@ public class Lista
 
                                     ((CasillaSimple) apuntador).setTipo(propiedades[i]);
                                     apuntador = ((CasillaSimple) apuntador).getSiguiente();
-                                    if(apuntador!=null) {
-                                        if (((CasillaSimple) apuntador).getSiguiente() == primero) {
+                                    if(apuntador!=null  ) {
+                                        if (apuntador == primero) {
                                             apuntador = null;
                                         }
                                     }
                             }
-                            if (apuntador instanceof CasillaDoble) {
 
-                                    ((CasillaDoble) apuntador).setTipo(propiedades[i]);
-                                    apuntador = ((CasillaDoble) apuntador).getSiguiente();
-                                    if (((CasillaDoble) apuntador).getSiguiente() == primero) {
-                                        apuntador = null;
-                                }
-                            }
                     i++;
 
                 }

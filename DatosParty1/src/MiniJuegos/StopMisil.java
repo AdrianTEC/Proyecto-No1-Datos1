@@ -2,7 +2,6 @@ package MiniJuegos;
 
 import javafx.application.Application;
 import javafx.application.Platform;
-import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
@@ -16,7 +15,8 @@ import sample.Jugador;
 import sample.Partida;
 
 
-public class StopMisil extends Application implements  Observador
+
+public class StopMisil extends Application implements  Observador ,Observado
 {
     private Pane root ;
     private int puntos;
@@ -28,6 +28,7 @@ public class StopMisil extends Application implements  Observador
     private float  velocidad;
     private boolean canIproduceMoreMisils;
     private Stage v;
+    private Observador eventManager;
 
    public StopMisil() {
         px= new Jugador();
@@ -37,6 +38,10 @@ public class StopMisil extends Application implements  Observador
        puntaje= new Label();
        root = new Pane();
        velocidad=10;
+    }
+
+    public void setEventManager(Observador eventManager) {
+        this.eventManager = eventManager;
     }
 
     public void setPx(Jugador px) {
@@ -61,12 +66,13 @@ public class StopMisil extends Application implements  Observador
              *@Version 06/06/2020
              * @param nothing
              */
+            notificar();
 
             Label vic= new Label();vic.setLayoutX(0);vic.setLayoutY(100);vic.setFont(Font.font("Verdana", FontWeight.BOLD, 40));vic.setStyle("-fx-background-color: #8fa1bd");vic.setPrefSize(600,500);
 
             if(puntos>=100)  {
                 Partida.reproducirSonido("win");
-                vic.setText("felicidades has ganado la"+"\n"+ "siguiente cantidad"+"\n"+ "de monedas: "+ (int) puntos/100);
+                vic.setText("felicidades has ganado la"+"\n"+ "siguiente cantidad"+"\n"+ "de monedas: "+ puntos /100);
             }
             if (puntos<100){
                 Partida.reproducirSonido("fail");
@@ -74,8 +80,7 @@ public class StopMisil extends Application implements  Observador
 
 
             }
-            Platform.runLater(new Runnable()
-            {@Override public void run() { root.getChildren().add(vic); }});
+            Platform.runLater(() -> root.getChildren().add(vic));
 
 
 
@@ -87,15 +92,7 @@ public class StopMisil extends Application implements  Observador
                         @Override
                         public void run()
                         {
-                            Platform.runLater(new Runnable()
-                            {
-                                @Override
-                                public void run()
-                                {
-                                    v.close();
-
-                                }
-                            });
+                            Platform.runLater(() -> v.close());
                         }
                     },
                     3000
@@ -121,39 +118,27 @@ public class StopMisil extends Application implements  Observador
         bomba.getImagen().setFitWidth(55);
         bomba.setVelocidad(velocidad);
         bomba.myObserverIs(StopMisil.this);
-        bomba.getImagen().addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
+        bomba.getImagen().addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
+            bomba.explotar();
+            destruidos+=1;
+            puntos+= 10;
+            velocidad+=0.5;
+            puntaje.setText("Puntaje:"+puntos);
+            Destruidos.setText("Destruidos:"+destruidos);
+            velocidadMisil.setText("Velocidad actual: "+ velocidad);
+            new java.util.Timer().schedule(
 
-
-                    @Override
-                    public void handle(MouseEvent event) {
-                        bomba.explotar();
-                        destruidos+=1;
-                        puntos+= 10;
-                        velocidad+=0.5;
-                        puntaje.setText("Puntaje:"+puntos);
-                        Destruidos.setText("Destruidos:"+destruidos);
-                        velocidadMisil.setText("Velocidad actual: "+ velocidad);
-                        new java.util.Timer().schedule(
-
-                                new java.util.TimerTask()
-                                {
-                                    @Override
-                                    public void run()
-                                    {
-                                        Platform.runLater(new Runnable()
-                                        {
-                                            @Override
-                                            public void run()
-                                            {
-                                                destruirMisil(bomba);
-                                            }
-                                        });
-                                    }
-                                },
-                                30
-                        );
-                    }
-                });
+                    new java.util.TimerTask()
+                    {
+                        @Override
+                        public void run()
+                        {
+                            Platform.runLater(() -> destruirMisil(bomba));
+                        }
+                    },
+                    30
+            );
+        });
 
 
         root.getChildren().add(bomba.getImagen());
@@ -164,14 +149,11 @@ public class StopMisil extends Application implements  Observador
                         @Override
                         public void run() {
 
-                            Platform.runLater(new Runnable() {
-                                @Override
-                                public void run() {
-                                    if (canIproduceMoreMisils) {
-                                        crearMisil();
-                                    }
+                            // ...
+                            Platform.runLater(() -> {
+                                if (canIproduceMoreMisils) {
+                                    crearMisil();
                                 }
-                                // ...
                             });
 
 
@@ -182,7 +164,7 @@ public class StopMisil extends Application implements  Observador
         }
     }
     @Override
-public void start(Stage stage) throws Exception {
+public void start(Stage stage) {
         /*This function is extended from application it makes a new window and managed it from javafx thread
          *@author Adrián González
          *@Version 06/06/2020
@@ -201,7 +183,12 @@ public void start(Stage stage) throws Exception {
     puntaje.setPrefSize(300,80);
     puntaje.setStyle("-fx-background-color: #535c94;-fx-background-radius: 30");
     puntaje.setFont(Font.font("Verdana", FontWeight.BOLD, 20));
-
+        Label INDICADOR= new Label();
+        INDICADOR.setText("Jugador: "+px.getNombre());
+        INDICADOR.setLayoutX(0);
+        INDICADOR.setLayoutY(0);
+        INDICADOR.setPrefSize(200,50);
+        INDICADOR.setFont(Font.font("Verdana", FontWeight.BOLD, 20));
     Label indic = new Label();
     indic.setText("Ganas monedas cada 100 puntos");
     indic.setLayoutX(400);
@@ -228,11 +215,11 @@ public void start(Stage stage) throws Exception {
     stage.setResizable(false);
     stage.setTitle("Save D3");
     stage.setScene(new Scene(root, 700, 700));
-    root.getChildren().addAll(fondo,Destruidos,puntaje,velocidadMisil,indic);
+    root.getChildren().addAll(fondo,Destruidos,puntaje,velocidadMisil,INDICADOR,indic);
     crearMisil();
 
     stage.show();
-    stage.setOnCloseRequest(event -> { System.exit(1);});
+    stage.setOnCloseRequest(event -> System.exit(1));
 
 }
 
@@ -242,5 +229,15 @@ public void start(Stage stage) throws Exception {
             canIproduceMoreMisils=false;
 
             cerrarJuego();}
+    }
+
+    @Override
+    public void Update(int puntaje, Jugador jugador) {
+
+    }
+
+    @Override
+    public void notificar() {
+        eventManager.Update(puntos,px);
     }
 }

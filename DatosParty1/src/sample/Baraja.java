@@ -30,11 +30,11 @@ public class Baraja {
          */
         Carta cartita = new Carta();
 
-        if (tipoBaraja == "V"){ cartita.setCarta(new ImageView(verde));}
+        if (tipoBaraja.equals("V")){ cartita.setCarta(new ImageView(verde));}
 
-        if (tipoBaraja == "A"){ cartita.setCarta(new ImageView(azul));}
+        if (tipoBaraja.equals("A")){ cartita.setCarta(new ImageView(azul));}
 
-        if (tipoBaraja == "R"){ cartita.setCarta(new ImageView(rojo));}
+        if (tipoBaraja.equals("R")){ cartita.setCarta(new ImageView(rojo));}
 
         if (tipoBaraja.equals("D")){ cartita.setCarta(new ImageView(dorada));}
 

@@ -121,7 +121,7 @@ public class CowBoys extends Application {
 
                     v1.dead();
                     vic.setText("El jugador :" + px2.getNombre() + " ha ganado!!");
-                    px2.setEstrellas(px2.getMonedas() + 1);
+                    px2.setMonedas(px2.getMonedas() + 1);
                     px1.setMonedas(px1.getMonedas() - 1);
 
 

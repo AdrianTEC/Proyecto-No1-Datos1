@@ -17,6 +17,8 @@ import javafx.scene.control.ContentDisplay;
 
 
 public class Tablero extends Application {
+
+    //Para realizar el juego se usó abstracción para simplificar la idea del tablero y las relaciones y procesos que ocurren
     // there is the class atributes and encapsulation levels  (private and public)
     private Dado dado1;
     private Dado dado2;
@@ -36,11 +38,12 @@ public class Tablero extends Application {
     private boolean compraEstrella;
     private Jugador pxA;
     private boolean DEV;
+    private boolean sePuedeMover;
     private boolean DevMOVING;
-
+    private Label ronda;
 
     public  Tablero()
-    {
+         {
          numeroDeJugadores=2;
          cantidadDeTurnos=10;
          compraEstrella = false;
@@ -55,16 +58,151 @@ public class Tablero extends Application {
          DEV=false;
          jugadores= new ListaLineal();
          eventManager= new EventManager();
+         ronda = new Label();
+         sePuedeMover=true;
+
     }
-    public void setNumeroDeJugadores(int numeroDeJugadores) {
+    public  void setNumeroDeJugadores(int numeroDeJugadores) {
         this.numeroDeJugadores = numeroDeJugadores;
     }
-    public void setCantidadDeTurnos(int cantidadDeTurnos) {
+    public  void setCantidadDeTurnos(int cantidadDeTurnos) {
         this.cantidadDeTurnos = cantidadDeTurnos;
     }
+    private void generarTextoEmergente(String text){
+        Label victoria = new Label();
+        victoria.setText(text);
+        victoria.setLayoutX(10);
+        victoria.setLayoutY(0);
+        victoria.setPrefSize(700,200);
+        victoria.setFont(Font.font("Verdana", FontWeight.BOLD, 50));
+        victoria.setStyle("-fx-background-color: rgb(255,255,255);");
+        Platform.runLater(()-> {root.getChildren().add(victoria);
+
+            new java.util.Timer().schedule(
+
+                    new java.util.TimerTask() {
+                        @Override
+                        public void run() {
+                            Platform.runLater(()-> root.getChildren().remove(victoria));
+                        }
+                    },
+                    3000
+            );
 
 
-    public void generar(Estrella es) {
+        });
+
+
+    }
+    private void generarJuego(int puntero,int juego) // función recursiva
+        {
+            if(puntero==0&& !eventManager.getMinijuegoAbierto())
+                {
+                    if(!sePuedeMover) {
+                        puntero--;
+                        Jugador p = eventManager.getGanador();
+                        generarTextoEmergente("El ganador del" + "\n" + "juego fue :" + p.getNombre() + "\n" + "gana " + numeroDeJugadores + "monedas");
+                        p.setMonedas(p.getMonedas() + numeroDeJugadores);
+                        sePuedeMover = true;
+                    }
+
+
+                }
+            if(puntero>0) {
+                if(!eventManager.getMinijuegoAbierto()) {
+
+                    puntero--;
+                    Jugador p = (Jugador) ((CasillaExtraSimple) jugadores.giveMe(puntero)).getDato();
+                    eventManager.generarJuego(p, juego);
+                    int finalPuntero = puntero;
+                    Platform.runLater(() -> generarJuego(finalPuntero, juego));
+                }
+                else {
+                    int finalPuntero = puntero;
+                    new java.util.Timer().schedule(  //recursividad asistida jeje
+                            new java.util.TimerTask()
+                            {  @Override
+                                public void run()
+                                {
+                                    Platform.runLater(() -> Platform.runLater(() -> generarJuego(finalPuntero, juego))); }}, 3000);
+
+                }
+            }
+            if(puntero==0&&eventManager.getMinijuegoAbierto()){
+
+                int finalPuntero = puntero;
+
+                new java.util.Timer().schedule(  //recursividad asistida jeje
+                        new java.util.TimerTask()
+                        {  @Override
+                        public void run()
+                        {
+                            Platform.runLater(() -> Platform.runLater(() -> generarJuego(finalPuntero, juego))); }}, 3000);
+
+            }
+
+
+
+        }
+
+    private void cambioTurno(){
+
+        if (turnodeJugador < numeroDeJugadores+1)
+            {
+                turnodeJugador += 1;
+                ronda.setText(rondasJugadas + "/" + cantidadDeTurnos);
+            }
+
+        if (turnodeJugador == numeroDeJugadores+1)
+            {
+                if (rondasJugadas<cantidadDeTurnos) {
+
+                    turnodeJugador = 1;
+                    rondasJugadas += 1;
+
+
+                    if (rondasJugadas==2)
+                    {
+                        generar(e);
+                    }
+                    ronda.setText(rondasJugadas + "/" + cantidadDeTurnos); //se actualiza la ronda
+                    generarTextoEmergente("¡MINIJUEGO!");
+                    sePuedeMover=false;
+
+                    new java.util.Timer().schedule(new java.util.TimerTask() {
+                                @Override
+                                public void run() {
+                                    generarJuego(jugadores.Size(), (int) (Math.random() * 3));
+                                }}, 3000
+                    );
+
+                }
+                else{
+                    Label victoria = new Label();
+                    int max=0;
+                    String ganador="";
+                    for (int i=0; i<jugadores.Size();i++)
+                        {
+                            Jugador aux= (Jugador) ((CasillaExtraSimple)jugadores.giveMe(i)).getDato();
+                            if(aux.getEstrellas()> max){
+                                ganador=aux.getNombre();
+                                max=aux.getEstrellas();
+                            }
+                        }
+                    victoria.setText("Fin del juego"+"\n"+ "gana el jugador :" +ganador );
+                    victoria.setLayoutX(100);
+                    victoria.setLayoutY(130);
+                    victoria.setFont(Font.font("Verdana", FontWeight.BOLD, 50));
+                    victoria.setStyle("-fx-background-color: rgb(255,255,255);");
+                    sePuedeMover= false;
+
+                    root.getChildren().add(victoria);
+                }
+            }
+
+
+    }
+    public  void generar(Estrella es) {
         if(rondasJugadas>=2) {
             es.numeroRandom();
             es.setUbicacionEnElMapa(caminoPrincipal.giveMe(es.getNumero()));
@@ -72,22 +210,22 @@ public class Tablero extends Application {
             root.getChildren().add(es.getImagen());
         }
     }
-
-    public void MoverEstrella(){
+    public  void MoverEstrella(){
+        /*This funtion is in charge of controlling the game boards
+         *@author Adrián González Jiménez
+         *@Version 02/05/2020
+         * @param nothing
+         */
         e.numeroRandom();
         e.setUbicacionEnElMapa(caminoPrincipal.giveMe(e.getNumero()));
         e.moverseA((CasillaSimple) e.getUbicacionEnElMapa());
     }
-
-    /*This funtion is in charge of controlling the game boards
-     *@author Adrián González Jiménez
-     *@Version 02/05/2020
-     * @param Stage
-     */
     private void moverPersonaje(Jugador px,int numDado,int puntero,boolean hasnotMovingYet)
-        {
-            pxA = px;
-
+        {/*This funtion is in charge of moving the players, recognize the actual player kind of Casilla, and turns the Casillas Dobles "intersection"
+         *@author Adrián González Jiménez
+         *@Version 10/05/2020
+         * @param Jugador px, Int num Dado,int puntero,boolean hasnotMovingYet
+         */
             Partida.reproducirSonido("paso");
             if( puntero <numDado) {
                 if(px.getUbicacionEnElMapa()==e.getUbicacionEnElMapa())
@@ -104,25 +242,28 @@ public class Tablero extends Application {
                             @Override
                             public void run() {
 
-                                if(px.getUbicacionEnElMapa() instanceof  CasillaDoble)
+
+                                if(px.getUbicacionEnElMapa() instanceof  CasillaDoble) // está en una casilla doble?
                                 {       //Estoy en una casilla Doble
-                                    if(! ((CasillaDoble) px.getUbicacionEnElMapa()).getTipo().contains("i")) {
-                                        if (px.getDirection())// VECTOR QUE LE DA UNA CASILLA DE INTERSECCIÓN AL JUGADOR
+
+                                    if(! ((CasillaDoble) px.getUbicacionEnElMapa()).getTipo().contains("i")) { //NO es una intersección????
+                                        if (px.getDirection())// VECTOR QUE LE DA UNA CASILLA DE INTERSECCIÓN AL JUGADOR  //vas hacia la derecha???
                                         {   //SI TRUE AL SIGUIENTE
                                             px.moverseA((CasillaSimple) ((CasillaDoble) px.getUbicacionEnElMapa()).getSiguiente());
+
                                         } else {  //SI FALSE AL ANTERIOR
                                             px.moverseA((CasillaSimple) ((CasillaDoble) px.getUbicacionEnElMapa()).getAnterior());
                                         }
-
                                     }
                                     else {
-                                        CasillaDoble xx= (CasillaDoble) px.getUbicacionEnElMapa();
+                                        CasillaDoble xx= (CasillaDoble) px.getUbicacionEnElMapa(); /// ES UNA INTERSECCIÓN
 
                                         if(hasnotMovingYet)
                                             {
                                                  px.moverseA((CasillaSimple) ((CasillaDoble) px.getUbicacionEnElMapa()).getSiguiente());
                                                  px.setDirection(xx.getRight());
-                                                 xx.changeDirection();
+                                                xx.changeDirection();
+                                                //
 
                                             }
                                         else {  px.moverseA((CasillaSimple) ((CasillaDoble) px.getUbicacionEnElMapa()).getSiguiente());
@@ -154,12 +295,10 @@ public class Tablero extends Application {
 
 
             else {
-
                 String x=((CasillaSimple) px.getUbicacionEnElMapa()).getTipo();
                 if (px.getUbicacionEnElMapa() instanceof CasillaDoble) {
 
                     if (x.equals("Vi") || x.equals("Ri") || x.equals("Ai")) {
-                        System.out.println("se ha cambiado la orientación");
                         px.setDirection(   ((CasillaDoble) px.getUbicacionEnElMapa()).getRight()          );
                         ((CasillaDoble) px.getUbicacionEnElMapa()).changeDirection();
                     }
@@ -185,11 +324,18 @@ public class Tablero extends Application {
                         cogerCartaV.setGraphic(new ImageView("Imagenes/Cartas/baraja(D).png"));
 
 
-                }
+                    }
+                    if (x.equals("Di")){
+                    eventManager.telRamdom(pxA);
+
+
+                     }
+
                 cogerCartaV.setLayoutX(240);
                 cogerCartaV.setLayoutY(100);
                 cogerCartaV.setScaleX(0.2);
                 cogerCartaV.setScaleY(0.2);
+
                 }
 
             }
@@ -201,6 +347,7 @@ public class Tablero extends Application {
          * @param Jugador
          */
             if(!DevMOVING) {
+                root.getChildren().removeAll(dado1.cara,dado2.cara);
             dado1.tirar();
             dado2.tirar();
 
@@ -213,7 +360,9 @@ public class Tablero extends Application {
             //Entonces ellas tendran de atributo de tipo OBJETO entonces hacemos doble casteo primero por "UBICACION EN EL MAPA"
             //            //Luego lo hacemos por "SIGUIENTE"
 
+                sePuedeMover=false;
                 moverPersonaje(px, dado1.getNumero() + dado2.getNumero(), 0,true);
+
             }
             else { moverPersonaje(px, 1, 0,true); }
         }
@@ -307,8 +456,7 @@ public class Tablero extends Application {
         FaseD.dobleEnlaze=true;
         FaseD.matrizPosiciones= new float[][]{{10,80},{117,80},{240,80},{363,80},{480,80},{528,80},{528,138},{528,256},{528,370},{528,488},{528,595},{480,595},{363,595},{240,595},{117,595},{10,595},{10,488} ,{10,370},{10,256},{10,138}   };
         ListaCircular caminoD = (ListaCircular) FaseD.convertirMatrizALista(new ListaCircular());
-
-      //  caminoD.aplicarPropiedades(new String[]{"D","D","D","D","D","D","D","D","D","D"});
+        caminoD.aplicarPropiedades(new String[]{"Di","D","D","D","D","Di","D","D","D","D","Di","D","D","D","D","Di","D","D","D","D"});
         eventManager.setFaseD(caminoD);
         //////////////////////////////////////////////////////////////////////////////7
         //IMAGEN TABLERO
@@ -318,7 +466,6 @@ public class Tablero extends Application {
 
         /////////////////////////////////////////////////////////////////////////
         //Aqui se muestra la cantidad de rondas que han pasado y la cantidad de rondas que se deben jugar
-        Label ronda = new Label();
         ronda.setLayoutX(605);ronda.setLayoutY(130);
         ronda.setText(rondasJugadas + "/" + cantidadDeTurnos);
         ronda.setStyle("-fx-background-color: rgba(243,236,250,0.63);");
@@ -401,14 +548,22 @@ public class Tablero extends Application {
         Move.setFont(Font.font("Verdana", FontWeight.BOLD, 30));Move.setText("¡Mover!");
         Move.setContentDisplay(ContentDisplay.CENTER);
         Move.setOnAction(event -> {
+            if(sePuedeMover) {
+                Partida.encojerBoton(Move);
 
-            Partida.encojerBoton(Move);
-
-            if (turnodeJugador==1) { lanzarDados(p1); }
-            if (turnodeJugador==2) { lanzarDados(p2); }
-            if (turnodeJugador==3) { lanzarDados(p3); }
-            if (turnodeJugador==4) { lanzarDados(p4); }
-
+                if (turnodeJugador == 1) {
+                    lanzarDados(p1);
+                }
+                if (turnodeJugador == 2) {
+                    lanzarDados(p2);
+                }
+                if (turnodeJugador == 3) {
+                    lanzarDados(p3);
+                }
+                if (turnodeJugador == 4) {
+                    lanzarDados(p4);
+                }
+            }
         });
       /////////////////////////////////////////////////////////////////////////////      /////////////////////////////////////////////////////////////////////////////
         Button Moved = new Button("", new ImageView(btn));
@@ -460,75 +615,51 @@ public class Tablero extends Application {
         Turno.setScaleY(0.5);
         Turno.setContentDisplay(ContentDisplay.CENTER);
 
-        Label victoria = new Label();
 
         Turno.setOnAction(actionEvent -> {
             Partida.encojerBoton(Turno);
+            cambioTurno();
 
-            if (turnodeJugador < numeroDeJugadores+1) {
-                turnodeJugador += 1;
-                ronda.setText(rondasJugadas + "/" + cantidadDeTurnos);
-            }
-
-            if (turnodeJugador == numeroDeJugadores+1) {
-                if (rondasJugadas<cantidadDeTurnos) {
-
-                        turnodeJugador = 1;
-                        rondasJugadas += 1;
-                    if (rondasJugadas==2)
-                    {
-                        generar(e);
-                    }
-                        ronda.setText(rondasJugadas + "/" + cantidadDeTurnos);
-
-                }
-                else{
-                    victoria.setText("Victory Royale");
-                    victoria.setLayoutX(100);
-                    victoria.setLayoutY(130);
-                    victoria.setFont(Font.font("Verdana", FontWeight.BOLD, 50));
-                    victoria.setStyle("-fx-background-color: rgb(255,255,255);");
-                }
-            }
 
         });
         ///////////////////////////////////////////////////////////////////////      /////////////////////////////////////////////////////////////////////////////
         cogerCartaV = new Button("");
         cogerCartaV.setStyle("-fx-background-color:transparent;-fx-background-radius: 30");
         cogerCartaV.setOnAction(actionEvent -> {
-            Partida.encojerBoton(cogerCartaV);
 
-            Carta cartaAuxG = new Carta();
-            if (tipoCasilla == 1) {
+            if(!sePuedeMover)
+             {      sePuedeMover=true;
+                    Partida.encojerBoton(cogerCartaV);
 
-                cartaAuxG = barajaVerde.crearCarta();
-                cartaAuxG.setDescripcion(tipoCasilla);
-                pxA.setMonedas(pxA.getMonedas()+1);
+                    Carta cartaAuxG = new Carta();
+                    if (tipoCasilla == 1) {
 
-                root.getChildren().addAll(cartaAuxG.getCarta(),cartaAuxG.getDescripcion());
-
-            }
-            if (tipoCasilla == 3){
-                cartaAuxG = barajaAzul.crearCarta();
-                cartaAuxG.setDescripcion(tipoCasilla);
-                root.getChildren().addAll(cartaAuxG.getCarta(),cartaAuxG.getDescripcion());
+                        cartaAuxG = barajaVerde.crearCarta();
+                        cartaAuxG.setDescripcion(tipoCasilla);
+                        pxA.setMonedas(pxA.getMonedas() + 1);
 
 
-            }
-            if (tipoCasilla == 2){
-                cartaAuxG = barajaRoja.crearCarta();
-                cartaAuxG.setDescripcion(tipoCasilla);
-                root.getChildren().addAll(cartaAuxG.getCarta(),cartaAuxG.getDescripcion());
-                pxA.setMonedas(pxA.getMonedas()-1);
+                    }
+                    if (tipoCasilla == 3) {
+                        cartaAuxG = barajaAzul.crearCarta();
+                        cartaAuxG.setDescripcion(tipoCasilla);
 
-            }
-            if (tipoCasilla == 4){
-                cartaAuxG = eventManager.takeACard(pxA);
-                root.getChildren().addAll(cartaAuxG.getCarta(), cartaAuxG.getDescripcion());
-            }
-            Carta finalCartaAuxG = cartaAuxG;
-            cartaAuxG.getCarta().addEventHandler(MouseEvent.MOUSE_CLICKED, event -> root.getChildren().removeAll(finalCartaAuxG.getCarta(), finalCartaAuxG.getDescripcion()));
-        });
+                    }
+                    if (tipoCasilla == 2) {
+                        cartaAuxG = barajaRoja.crearCarta();
+                        cartaAuxG.setDescripcion(tipoCasilla);
+                        pxA.setMonedas(pxA.getMonedas() - 1);
+
+                    }
+                    if (tipoCasilla == 4) {
+                        cartaAuxG = eventManager.takeACard(pxA);
+                    }
+                    Carta finalCartaAuxG = cartaAuxG;
+                    root.getChildren().addAll(cartaAuxG.getCarta(), cartaAuxG.getDescripcion());
+                    cartaAuxG.getCarta().addEventHandler(MouseEvent.MOUSE_CLICKED, event -> root.getChildren().removeAll(finalCartaAuxG.getCarta(), finalCartaAuxG.getDescripcion()));
+                    cambioTurno();
+                }
+            });
         ///////////////////////////////////////////////////////////////////////        ///////////////////////////////////////////////////////////////////////
         ///////////////////////////////////////////////////////////////////////
 
@@ -537,7 +668,7 @@ public class Tablero extends Application {
         ///////////////////////////////////////////////////////////////////////        ///////////////////////////////////////////////////////////////////////
         ///////////////////////////////////////////////////////////////////////
 
-        root.getChildren().addAll(tableroImagen, Move, ronda,victoria,Compra,cogerCartaV);
+        root.getChildren().addAll(tableroImagen, Move, ronda,Compra,cogerCartaV);
         if(numeroDeJugadores>=2) {
             //Acá agarro la primera casilla de la lista circular
 
@@ -581,5 +712,6 @@ public class Tablero extends Application {
         });
 
         primaryStage.show();
+        primaryStage.setOnCloseRequest(event -> System.exit(1));
     }
 }

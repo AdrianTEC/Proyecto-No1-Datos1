@@ -2,7 +2,7 @@ package Listas;
 
 //NOTA ESTE CODIGO ES INSPIRADO EN EL QUE SE ENSEÑA A HACER EN EL SIGUIENTE TUTORIAL https://www.youtube.com/watch?v=J1T5VJ93SAk
 
-public class ListaCircular extends Lista
+public class ListaCircular extends Lista //HERENCIA
     {
 
         public ListaCircular()
@@ -12,10 +12,9 @@ public class ListaCircular extends Lista
                 primero= null;      //es necesario que empiecen como un valor nulo, mas adelante se les brindará un valor
                 ultimo=null;
                 tamano =0;
-
             }
         @Override
-        public void ingresarNodo(CasillaSimple x)
+        public void ingresarNodo(CasillaSimple x)//OVERLOADING Y OVERWRITING
             {
 
                     /*This funtion adds new component to a list
@@ -45,7 +44,7 @@ public class ListaCircular extends Lista
             }
 
         @Override
-        public void ingresarNodo(CasillaDoble x)
+        public void ingresarNodo(CasillaDoble x) //OVERLOADING Y OVERWRITING
          {
 
             /*This funtion adds new component to a list

@@ -1,6 +1,6 @@
 package Listas;
 
-public class ListaLineal extends Lista
+public class ListaLineal extends Lista //HERENCIA AQUI
 {
 
     public ListaLineal()
