@@ -146,7 +146,7 @@ public class EscribirPalabra extends Application implements Observador, Observad
         cajaDeTexto.setLayoutX(150);
 
         stage.setResizable(false);
-        stage.setTitle("Save D3");
+        stage.setTitle("escribirPalabra");
         stage.setScene(new Scene(root, 700, 700));
         root.getChildren().addAll(barrita.getBarra(),pts,barrita.getBarraContainer(),oracion,cajaDeTexto,INDICADOR);
         stage.show();

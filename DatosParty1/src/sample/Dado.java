@@ -7,8 +7,8 @@ import javafx.scene.image.ImageView;
 
 public class Dado {
     private  int numero;
-    public ImageView cara;
 
+    public ImageView cara;
     //IMAGEN LADOS DEL DADO
     private Image D1=new Image("Imagenes/Dados-1.png.png");
     private Image D2=new Image("Imagenes/Dados-2.png.png");

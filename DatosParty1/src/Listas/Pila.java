@@ -10,18 +10,7 @@ public class Pila {
         size=0;
     }
 
-    public void ShowPila()
-        {
-            Pila x= this;
-            String b="[";
 
-            for(int i=size; i>0 ;i--)
-                {
-                    b+= x.pop().getDato() + ", ";
-                }
-            b+="]";
-            System.out.println(b);
-        }
     public void push(CasillaExtraSimple casillita)
         {/*This adds a CasillaExtraSimple to the top of the pila
          *@author Adrián González

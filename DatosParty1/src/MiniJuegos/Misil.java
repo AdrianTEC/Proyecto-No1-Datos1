@@ -6,7 +6,7 @@ import sample.Partida;
 
 public class Misil implements Observado {
 
-
+    //ejemplo de modularidad, cada misil generado funciona autónoma  la parte que lo contiene
     private ImageView imagen = new ImageView(new Image("Imagenes/Minijuegos/misil.png"));
     private Image exp= new Image("Imagenes/Minijuegos/Expl.png");
     private int MaximoY=600;

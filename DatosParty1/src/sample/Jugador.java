@@ -11,13 +11,13 @@ import javafx.scene.text.FontWeight;
 //Por medio de abstracción se conceptualizó una versión sencilla del jugador
 
 
-public class    Jugador {   // ATRIBUTOS DEL JUGADOR
+public class    Jugador {   // ATRIBUTOS DEL JUGADOR EL JUGADOR ES MODULAR :IDEPENDIENTE A TABLERO
     private String nombre;
     private float posX;  //estos valores se consideran que deben de ser publicos para luego utilizarlos en eventos (QUIZA)
     private float posY;
     private int estrellas;
     private int monedas;
-    private ImageView imagen;
+    private ImageView imagen;//modularidad
     private Object ubicacionEnElMapa;
     private boolean direction = true;
     private Label recursos;
