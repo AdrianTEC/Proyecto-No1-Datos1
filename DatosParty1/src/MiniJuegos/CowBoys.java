@@ -43,7 +43,12 @@ public class CowBoys extends Application {
 
 
     private  void shoot()
-        {
+        {/*This funtion shows a flag and alert
+         *@author Adrián González
+         *@Version 11/06/2020
+         * @param nothing
+         *@returns
+         */
             timeForShoot=true;
             Partida.reproducirSonido("alert");
             Platform.runLater(() -> root.getChildren().add(flag));

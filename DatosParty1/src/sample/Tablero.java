@@ -75,6 +75,12 @@ public class Tablero extends Application {
         this.cantidadDeTurnos = cantidadDeTurnos;
     }
     private void generarTextoEmergente(String text){
+        /*This creates new games text and place it in the root
+         *@author  Adrián González
+         *@Version14/6/2020
+         * @param String text
+         *
+         */
         Label victoria = new Label();
         victoria.setText(text);
         victoria.setLayoutX(10);
@@ -101,7 +107,12 @@ public class Tablero extends Application {
 
     }
     private void generarJuego(int puntero,int juego) // función recursiva
-        {
+        { /*This creates new games from numJugadores int
+         *@author  Adrián González
+         *@Version14/6/2020
+         * @param int Puntero, juego
+         *
+         */
             if(puntero==0 && !eventManager.getMinijuegoAbierto())
                 {
                     if(!sePuedeMover) {
@@ -164,7 +175,12 @@ public class Tablero extends Application {
         }
 
     private void cambioTurno(){
-
+        /*This change the turno adding 1
+         *@author  Andrés Quirós
+         *@Version x/5/2020
+         * @param null
+         *
+         */
         if (turnodeJugador < numeroDeJugadores+1)
             {
                 turnodeJugador += 1;
@@ -229,6 +245,12 @@ public class Tablero extends Application {
 
     }
     public  void generar(Estrella es) {
+        /*This creates a new start and replace it when its bought
+         *@author  Andrés Quirós
+         *@Version15/06/20
+         * @param int Estrella es
+         *
+         */
         es.numeroRandom();
         if (rondasJugadas >= 2) {
             if (es.getNumero() == 1) {

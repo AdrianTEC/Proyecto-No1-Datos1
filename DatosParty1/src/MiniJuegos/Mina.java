@@ -18,7 +18,12 @@ public class Mina {
         tipo = "inactiva";
     }
     public void encoger()
-        {
+        {/*This funtion reduces mina size by little time
+         *@author Adrián González
+         *@Version x/06/2020
+         * @param nothing
+         *@returns
+         */
 
             new java.util.Timer().schedule(
 

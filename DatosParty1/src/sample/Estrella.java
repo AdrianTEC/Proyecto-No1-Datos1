@@ -23,7 +23,11 @@ public class Estrella {
 
     public  void moverseA(CasillaSimple casillita)
 
-    {
+    {  /*this moves the Start to Casilla Simple casillita
+     *@author Andrés Quirós Guzman
+     *@Version 01/05/2020
+     * @param and object type of CasillaSimple
+     */
         Partida.reproducirSonido("star");
 
         ubicacionEnElMapa=casillita;
@@ -35,7 +39,11 @@ public class Estrella {
     }
 
     public  void moverseA(CasillaDoble casillita)
-
+        /*this moves the Start to Casilla Doble casillita
+         *@author Andrés Quirós Guzman
+         *@Version 01/05/2020
+         * @param and object type of CasillaSimple
+         */
     {
 
 
@@ -46,7 +54,11 @@ public class Estrella {
 
     }
     private void moverAcoordenada(float x, float y)
-    {
+    { /*this moves the Start to specific coordinates (x,y)
+     *@author Andrés Quirós Guzman
+     *@Version 01/05/2020
+     * @param
+     */
         posY=y;
         posX=x;
         imagen.setLayoutX(posX);

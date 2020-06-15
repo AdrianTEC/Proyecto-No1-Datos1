@@ -52,6 +52,12 @@ public class Minesweeper extends Application implements Observador, Observado {
 
 
     public  void crearMinas(){
+        /*This creates mines an place it in the root
+         *@author  Andrés Quirós
+         *@Version7/5/2020
+         * @param null
+         *
+         */
         for (float []i:posiciones) {
 
 

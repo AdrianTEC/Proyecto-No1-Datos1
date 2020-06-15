@@ -23,7 +23,12 @@ public abstract class Lista
         }
 
     public void ingresarNodo(CasillaSimple casillita)
-    {
+    {/*This adds a new Casilla to the  list
+     *@author  Adrián González
+     *@Version 17/05/20
+     * @param CasillaSimple casillita
+     *
+     */
         if(ultimo ==null)
 
         {
@@ -43,7 +48,12 @@ public abstract class Lista
         }
     }
     public void ingresarNodo(CasillaDoble casillita)
-    {
+    {/*This adds a new Casilla to the  list
+     *@author  Adrián González
+     *@Version 17/05/20
+     * @param CasillaDoble casillita
+     *
+     */
     {
         if(ultimo ==null)
 
@@ -66,7 +76,12 @@ public abstract class Lista
 }
 
     public void ingresarNodo(CasillaExtraSimple casillita)
-    {
+    {/*This adds a new Casilla to the  list
+     *@author  Adrián González
+     *@Version 17/05/20
+     * @param CasillaExtraSimple casillita
+     *
+     */
         {
             if(ultimo ==null)
 
@@ -137,7 +152,12 @@ public abstract class Lista
         }
 
     public void aplicarPropiedades(String[] propiedades)
-        {
+        {/*This applies string value to a casilla tipo
+         *@author  Adrián González
+         *@Version 20/05/20
+         * @param String[] propiedades
+         *
+         */
             //esta función le va a dar identidad a las celdas "rojo" "verde" "dorado"
             Object apuntador; //nesecito un objeto para explorar la lista
             apuntador=primero; //empezaré en el primero
@@ -165,7 +185,12 @@ public abstract class Lista
         }
 
     public  void remplazarCasillaSimple(int index)
-        {
+        {/*This replaces a Casilla Simple to Casilla Doble
+         *@author  Adrián González
+         *@Version 23/05/20
+         * @param index
+         *
+         */
             CasillaDoble remplazo = new CasillaDoble();
            if(giveMe(index)instanceof  CasillaSimple)
             {

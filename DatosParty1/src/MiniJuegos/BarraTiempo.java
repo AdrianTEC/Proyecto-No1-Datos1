@@ -53,7 +53,12 @@ public class BarraTiempo implements Observado
     }
 
     public void encoger()
-    {
+    {/*This funtion reduce ImageView size
+     *@author Adrián González
+     *@Version 12/06/2020
+     * @param nothing
+     *@returns null
+     */
 
         tiempo-=tiempoParaActualizarse;
         if(tamano>0) {

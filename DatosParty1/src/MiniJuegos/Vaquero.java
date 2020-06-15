@@ -17,6 +17,11 @@ public class Vaquero {
     }
 
     private void moverSombrero(int puntero){
+        /* This moves the cowBoy's hat
+              *@author Adrián González Jiménez
+                *@Version 1/06/2020
+                * @param Double
+                */
         if(puntero>0) {
             puntero-=40;
             sombrero.setLayoutY(puntero);
@@ -43,7 +48,11 @@ public class Vaquero {
     }
 
     public void dead()
-    {
+    { /* This calls to moverSombrero
+     *@author Adrián González Jiménez
+     *@Version 1/06/2020
+     * @param
+     */
         moverSombrero((int) sombrero.getLayoutY());
 
 

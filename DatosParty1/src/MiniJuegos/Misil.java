@@ -32,7 +32,11 @@ public class Misil implements Observado {
             observer=o;
         }
     public void moverse(Double puntero){
-
+        /*This funtion moves the misil image
+         *@author Adrián González Jiménez
+         *@Version 1x/06/2020
+         * @param Double
+         */
 
 
         if(puntero<MaximoY && sinExplotar)

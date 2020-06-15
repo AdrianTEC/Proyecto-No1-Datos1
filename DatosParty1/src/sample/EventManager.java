@@ -186,7 +186,7 @@ public class EventManager extends Baraja implements Observador{
      *@author Adrián González Jiménez
      *@Version 11/05/2020
      * @param Jugador CasillaExtraSimple
-     *@return
+     *
      */
             try {
                 ///esta función es especial, llama al metodo que contiene la carta es casi magia
@@ -201,7 +201,12 @@ public class EventManager extends Baraja implements Observador{
             }
         }
     public void duelo(Jugador px1, Jugador px2) //Aparece 10 veces.
-    {
+    {/*This invoke a duelo minigame
+     *@author Adrián González Jiménez, Andrés Quirós
+     *@Version 11/05/2020
+     * @param Jugador Jugador
+     *
+     */
         try {
 
 
@@ -233,12 +238,22 @@ public class EventManager extends Baraja implements Observador{
 
 
     public void robarMonedas(Jugador px11)//Aparece 10 veces
-    {
+    {/*This stoles money and give to Jugador
+     *@author Yordan Rojas, Adrián González
+     *@Version 7/05/2020
+     * @param Jugador
+     *
+     */
         robando=true;
     }
 
     public void regalarMonedas(Jugador px11)//
-    {
+    {/*This removes money from Jugador
+     *@author Yordan Rojas, Adrián González
+     *@Version 7/05/2020
+     * @param Jugador
+     *
+     */
             int regalo = ((int)(Math.random()*3))*4;
             px11.setMonedas(px11.getMonedas()-regalo);
             for(int i=0;i<jugadores.Size();i++)
@@ -248,7 +263,12 @@ public class EventManager extends Baraja implements Observador{
                 }
         }
     public void perderUnaEstrella(Jugador px11)//
-    {
+    {/*This removes a start From px11
+     *@author Yordan Rojas, Adrián González
+     *@Version 7/05/2020
+     * @param Jugador
+     *
+     */
         if (px11.getEstrellas()>0){
             px11.setEstrellas(px11.getEstrellas()-1);
             Jugador j=dameUnJugador();
@@ -257,11 +277,21 @@ public class EventManager extends Baraja implements Observador{
         }
     }
     public void ganar2Estrellas(Jugador px11)// Aparece 3 veces.
-    {
+    {/*This give 1 start to px11
+     *@author Yordan Rojas, Adrián González
+     *@Version 7/05/2020
+     * @param Jugador
+     *
+     */
         px11.setEstrellas(px11.getEstrellas()+2);
     }
     public void ganar5Estrellas(Jugador px11)//Aparece una vez.
-    {
+    {/*This give 5 starts to px11
+     *@author Yordan Rojas, Adrián González
+     *@Version 7/05/2020
+     * @param Jugador
+     *
+     */
         px11.setEstrellas(px11.getEstrellas()+5);
 
     }
@@ -269,7 +299,12 @@ public class EventManager extends Baraja implements Observador{
 
 
     private void teletransporte(Jugador px, Object nuevaUbicacion)//Aparece 10 veces.
-        {
+        {/*This teleport px to nuevaUbicación
+         *@author Andrés Quirós, Adrián González
+         *@Version 8/05/2020
+         * @param Jugador
+         *
+         */
             px.setUbicacionEnElMapa(nuevaUbicacion);  //nuevaUbicación es caminoPrincipal.giveMe(px.numeroRandom())
             px.moverseA((CasillaSimple) px.getUbicacionEnElMapa());
         }
@@ -277,6 +312,12 @@ public class EventManager extends Baraja implements Observador{
 
     public void cambioDeLugares(Jugador px1)//Aparece 5 veces.//
         {
+            /*This teleport px1 to other Jugador position
+             *@author Andrés Quirós, Adrián González
+             *@Version 8/05/2020
+             * @param Jugador
+             *
+             */
             Jugador px2= dameUnJugador();
             // Yo soy un asistente que trabaja tras el telón asegurandose de qué metodos requieren los actores( eventos)
             Object ubicacion1 = px1.getUbicacionEnElMapa();
@@ -286,7 +327,14 @@ public class EventManager extends Baraja implements Observador{
         }
 
     public void telAfaseD(Jugador px)
-        {   CasillaDoble i= (CasillaDoble) faseD.giveMe((int) (Math.random()*faseD.Size()));
+        {  /*This teleport px1 to faseD
+         *@author  Adrián González
+         *@Version 9/05/2020
+         * @param Jugador
+         *
+         */
+
+            CasillaDoble i= (CasillaDoble) faseD.giveMe((int) (Math.random()*faseD.Size()));
             while (i.getTipo().equals("Di")){
                 i= (CasillaDoble) faseD.giveMe((int) (Math.random()*faseD.Size()));
 
@@ -294,20 +342,35 @@ public class EventManager extends Baraja implements Observador{
             teletransporte(px,i);
         }
     public void telRamdom(Jugador px11)
-        {
+        {/*This teleport px1 to randomPosition
+         *@author  Adrián González
+         *@Version 9/05/2020
+         * @param Jugador
+         *
+         */
             teletransporte( px11,camPrincipal.giveMe((int) (Math.random()*37)));
         }
 
 
     public void robarEstrella(Jugador px11)//Aparece 3 veces
-    {
+    {/*This stoles a start from px11
+     *@author  Adrián González
+     *@Version 9/05/2020
+     * @param Jugador
+     *
+     */
         px11.setEstrellas(px11.getEstrellas()+1);
         Jugador pxAux=dameUnJugador();
         pxAux.setEstrellas(pxAux.getEstrellas()-1);
     }
 
     public void generarJuego(Jugador px,int numero)  {
-
+        /*This creates a new miniGame
+         *@author  Adrián González
+         *@Version 9/05/2020
+         * @param Jugador
+         *
+         */
 
         Platform.runLater(()->{
                     try {
@@ -339,7 +402,13 @@ public class EventManager extends Baraja implements Observador{
         });
     }
     private void robarA(Jugador benefiado, Jugador victima)
-    { int regalo = (int)(Math.random()*3);
+    { /*This allos to beneficiado to select victima to stole starts from him
+     *@author  Adrián González
+     *@Version 9/05/2020
+     * @param Jugador
+     *
+     */
+        int regalo = (int)(Math.random()*3);
         benefiado.setMonedas(benefiado.getMonedas()+regalo);
         victima.setMonedas(victima.getMonedas()-regalo);
 

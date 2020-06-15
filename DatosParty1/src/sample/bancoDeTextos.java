@@ -12,7 +12,11 @@ public class bancoDeTextos {
     }
 
     public  String giveMeAText()
-        {
+        { /*This returns a text from text Bank
+         *@author Yordan Rojas
+         *@Version 01/06/2020
+         * @param nothing
+         */
             String mensaje;
                 mensaje= textos[(int) (Math.random()*textos.length)];
 
@@ -21,6 +25,12 @@ public class bancoDeTextos {
         }
 
     public String textoDeCartaTipo(int tipo){
+        /*This returns a text from text Bank
+         *@author Yordan Rojas
+         *@Version 01/06/2020
+         * @param int
+         * @returns String
+         */
         String random = new String();
         int x = (int)(Math.random()*3);
         if (tipo == 1){

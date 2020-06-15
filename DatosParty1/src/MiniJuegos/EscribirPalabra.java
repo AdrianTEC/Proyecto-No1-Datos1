@@ -52,6 +52,12 @@ public class EscribirPalabra extends Application implements Observador, Observad
         this.eventManager = eventManager;
     }
     private String mezclarPalabra(){
+        /*This funtion mixes a String
+         *@author Adrián González
+         *@Version x/06/2020
+         * @param nothing
+         *@returns
+         */
         String newtext = "";
         for(int i =0 ; i < currentText.length();i++)
             {
@@ -71,7 +77,12 @@ public class EscribirPalabra extends Application implements Observador, Observad
         this.px = px;
     }
     private void changeText()
-        {
+        {/*This funtion change the text from cajaDeTexto
+         *@author Adrián González
+         *@Version x/06/2020
+         * @param nothing
+         *@returns
+         */
 
             bancoDeTextos bn = new bancoDeTextos();
             cajaDeTexto.setText("");
@@ -80,7 +91,12 @@ public class EscribirPalabra extends Application implements Observador, Observad
 
         }
     public void verificar()
-        {
+        {/*This funtion comprobes if texto_ingresado= cajaDeTexto text's
+         *@author Adrián González
+         *@Version x/06/2020
+         * @param nothing
+         *@returns
+         */
                 texto_ingresado = String.valueOf(cajaDeTexto.getText());
 
                 if (!texto_ingresado.equals(currentText)) {

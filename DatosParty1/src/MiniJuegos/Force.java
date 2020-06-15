@@ -45,12 +45,7 @@ public class Force extends Application {
     {
         timeForShoot=true;
         Partida.reproducirSonido("alert");
-        Platform.runLater(new Runnable() {
-            @Override
-            public void run() {
-                root.getChildren().add(flag);
-            }
-        });
+        Platform.runLater(() -> root.getChildren().add(flag));
 
         new java.util.Timer().schedule(
 
@@ -58,12 +53,7 @@ public class Force extends Application {
                     @Override
                     public void run() {
 
-                        Platform.runLater(new Runnable() {
-                            @Override
-                            public void run() {
-                                root.getChildren().remove(flag);
-                            }
-                        });
+                        Platform.runLater(() -> root.getChildren().remove(flag));
 
                     }
                 },
@@ -73,7 +63,7 @@ public class Force extends Application {
     }
 
     @Override
-    public void start(Stage stage) throws Exception {
+    public void start(Stage stage) {
         ImageView fondo= new ImageView("Imagenes/Minijuegos/Construction.png");
 
         //creo los vaqueros
@@ -102,14 +92,7 @@ public class Force extends Application {
         root.setStyle("-fx-background-color: #202f4a");
 
         stage.show();
-        stage.addEventFilter(KeyEvent.KEY_PRESSED, new EventHandler<KeyEvent>()
-
-
-
-
-        {   @Override
-        public void handle(KeyEvent evt)
-        {
+        stage.addEventFilter(KeyEvent.KEY_PRESSED, evt -> {
 
             if(timeForShoot) {
 
@@ -161,12 +144,7 @@ public class Force extends Application {
                             @Override
                             public void run() {
 
-                                Platform.runLater(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        stage.close();
-                                    }
-                                });
+                                Platform.runLater(stage::close);
 
                             }
                         },
@@ -179,7 +157,7 @@ public class Force extends Application {
 
 
 
-        }  });
+        });
 
 
         stage.setOnCloseRequest(event -> { System.exit(1);});

@@ -142,7 +142,12 @@ public class    Jugador {   // ATRIBUTOS DEL JUGADOR EL JUGADOR ES MODULAR :IDEP
     }
 
     private void moverAcoordenada(float x, float y) {
-
+        /*This movees the player to x,y coordinates
+         *@author  Adrián González
+         *@Version 15/04/2020
+         * @param float x, float y
+         *
+         */
         posY = y;
         posX = x;
         imagen.setLayoutX(posX);

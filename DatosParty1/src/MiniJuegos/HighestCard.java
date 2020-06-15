@@ -44,6 +44,12 @@ public class HighestCard extends Application {
         this.px2=px2;
     }
     public void definirGanador(){
+        /*This choose a winner
+         *@author  Andrés Quirós
+         *@Version 1/05/2020
+         * @param
+         *
+         */
         if (numero1 > numero2){
             instruccion.setText("¡Jugador 1 ha ganado!");
             px1.setMonedas(px1.getMonedas() +2);
@@ -62,6 +68,12 @@ public class HighestCard extends Application {
 
 
     public  void crearCartas(){
+        /*This create cards and place it in the root
+         *@author  Andrés Quirós
+         *@Version 1/05/2020
+         * @param
+         *
+         */
         for (float []i:posiciones) {
 
             CartaJueg cartaJueg = new CartaJueg();
