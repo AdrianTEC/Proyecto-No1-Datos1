@@ -1,5 +1,7 @@
 package MiniJuegos;
 
+import Listas.CasillaDoble;
+import Listas.CasillaSimple;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.event.EventHandler;
@@ -122,20 +124,39 @@ public class Force extends Application {
                 vic.setFont(Font.font("Verdana", FontWeight.BOLD, 50));
                 vic.setStyle("-fx-background-color: #8fb8c9");
                 vic.setPrefSize(1300,200);
+                Jugador perdedor = null;
                 if (workers.getLayoutX() < 229) {
                     timeForShoot = false;
                     vic.setText(px1.getNombre() +"  Ha ganado el duelo!");
                     px1.setMonedas(px1.getMonedas()+1);
                     px2.setMonedas(px2.getMonedas()-1);
+                    perdedor=px2;
+                    if(perdedor.getUbicacionEnElMapa() instanceof  CasillaDoble){
 
+                        perdedor.moverseA((CasillaDoble) perdedor.getUbicacionPasada());
+                    }
+                    if(perdedor.getUbicacionEnElMapa() instanceof CasillaSimple){
+
+                        perdedor.moverseA((CasillaSimple) perdedor.getUbicacionPasada());
+                    }
                 }
                 if (workers.getLayoutX() > 561) {
                     timeForShoot = false;
                     vic.setText(px2.getNombre() +"  Ha ganado el duelo!");
                     px2.setMonedas(px2.getMonedas()+1);
                     px1.setMonedas(px1.getMonedas()-1);
+                    perdedor=px1;
+                    if(perdedor.getUbicacionEnElMapa() instanceof  CasillaDoble){
 
+                        perdedor.moverseA((CasillaDoble) perdedor.getUbicacionPasada());
+                    }
+                    if(perdedor.getUbicacionEnElMapa() instanceof CasillaSimple){
+
+                        perdedor.moverseA((CasillaSimple) perdedor.getUbicacionPasada());
+                    }
                 }
+
+
                 Platform.runLater(() -> root.getChildren().add(vic));
 
                 new java.util.Timer().schedule(

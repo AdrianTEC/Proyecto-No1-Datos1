@@ -13,12 +13,14 @@ import javafx.scene.text.FontWeight;
 
 public class    Jugador {   // ATRIBUTOS DEL JUGADOR EL JUGADOR ES MODULAR :IDEPENDIENTE A TABLERO
     private String nombre;
-    private float posX;  //estos valores se consideran que deben de ser publicos para luego utilizarlos en eventos (QUIZA)
+    private float posX;
     private float posY;
     private int estrellas;
     private int monedas;
     private ImageView imagen;//modularidad
     private Object ubicacionEnElMapa;
+    private Object ubicacionPasada;
+
     private boolean direction = true;
     private Label recursos;
 
@@ -38,6 +40,10 @@ public class    Jugador {   // ATRIBUTOS DEL JUGADOR EL JUGADOR ES MODULAR :IDEP
         recursos.setStyle("-fx-background-color: rgba(243,236,250,0.63);");
 
 
+    }
+
+    public Object getUbicacionPasada() {
+        return ubicacionPasada;
     }
 
     public Label getRecursos() {
@@ -120,6 +126,7 @@ public class    Jugador {   // ATRIBUTOS DEL JUGADOR EL JUGADOR ES MODULAR :IDEP
          *@Version 02/05/2020
          * @param and object type of CasillaSimple
          */
+        ubicacionPasada=ubicacionEnElMapa;
 
         ubicacionEnElMapa = casillita;// ahora la nueva casilla donde está el jugador es la introducida
 

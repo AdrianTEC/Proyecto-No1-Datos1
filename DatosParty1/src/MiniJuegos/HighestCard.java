@@ -1,5 +1,7 @@
 package MiniJuegos;
 
+import Listas.CasillaDoble;
+import Listas.CasillaSimple;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.scene.Scene;
@@ -53,6 +55,15 @@ public class HighestCard extends Application {
         if (numero1 > numero2){
             instruccion.setText("¡Jugador 1 ha ganado!");
             px1.setMonedas(px1.getMonedas() +2);
+            Jugador perdedor= px2;
+            if(perdedor.getUbicacionEnElMapa() instanceof CasillaDoble){
+
+                perdedor.moverseA((CasillaDoble) perdedor.getUbicacionPasada());
+            }
+            if(perdedor.getUbicacionEnElMapa() instanceof CasillaSimple){
+
+                perdedor.moverseA((CasillaSimple) perdedor.getUbicacionPasada());
+            }
         }
         else if (numero1 == numero2){
             instruccion.setText("¡Empate!");
@@ -62,6 +73,15 @@ public class HighestCard extends Application {
         else{
             instruccion.setText("¡Jugador 2 ha ganado!");
             px2.setMonedas(px2.getMonedas() +2);
+            Jugador perdedor= px1;
+            if(perdedor.getUbicacionEnElMapa() instanceof CasillaDoble){
+
+                perdedor.moverseA((CasillaDoble) perdedor.getUbicacionPasada());
+            }
+            if(perdedor.getUbicacionEnElMapa() instanceof CasillaSimple){
+
+                perdedor.moverseA((CasillaSimple) perdedor.getUbicacionPasada());
+            }
         }
 
     }

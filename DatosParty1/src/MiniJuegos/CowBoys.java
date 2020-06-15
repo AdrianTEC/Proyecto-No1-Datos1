@@ -1,5 +1,7 @@
 package MiniJuegos;
 
+import Listas.CasillaDoble;
+import Listas.CasillaSimple;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.scene.Scene;
@@ -111,7 +113,15 @@ public class CowBoys extends Application {
                     vic.setText("El jugador :" + px1.getNombre() + " ha ganado!!");
                     px1.setMonedas(px1.getMonedas() + 1);
                     px2.setMonedas(px2.getMonedas() - 1);
+                    Jugador perdedor= px2;
+                    if(perdedor.getUbicacionEnElMapa() instanceof CasillaDoble){
 
+                        perdedor.moverseA((CasillaDoble) perdedor.getUbicacionPasada());
+                    }
+                    if(perdedor.getUbicacionEnElMapa() instanceof CasillaSimple){
+
+                        perdedor.moverseA((CasillaSimple) perdedor.getUbicacionPasada());
+                    }
 
                 }
 
@@ -129,7 +139,15 @@ public class CowBoys extends Application {
                     px2.setMonedas(px2.getMonedas() + 1);
                     px1.setMonedas(px1.getMonedas() - 1);
 
+                    Jugador perdedor= px1;
+                    if(perdedor.getUbicacionEnElMapa() instanceof CasillaDoble){
 
+                        perdedor.moverseA((CasillaDoble) perdedor.getUbicacionPasada());
+                    }
+                    if(perdedor.getUbicacionEnElMapa() instanceof CasillaSimple){
+
+                        perdedor.moverseA((CasillaSimple) perdedor.getUbicacionPasada());
+                    }
                 }
 
 

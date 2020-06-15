@@ -59,18 +59,20 @@ public class EscribirPalabra extends Application implements Observador, Observad
          *@returns
          */
         String newtext = "";
-        for(int i =0 ; i < currentText.length();i++)
+
+            for(int i =1 ; i < currentText.length();i+=2)
             {
-                char[] auxtext= currentText.toCharArray();
-
-                int num = (int) (Math.random()*currentText.length());
-                char aux= auxtext[i];
-                auxtext[i]=auxtext[num];
-                auxtext[num]=aux;
-                newtext= String.valueOf(auxtext);
+                    char[] auxtext = currentText.toCharArray();
 
 
-            }
+
+                        char aux = auxtext[i-1];
+                        auxtext[i-1]=auxtext[i] ;
+                        auxtext[i] = aux;
+                        newtext = String.valueOf(auxtext);
+
+                }
+
         return newtext;
     }
     public void setPx(Jugador px) {
@@ -85,9 +87,12 @@ public class EscribirPalabra extends Application implements Observador, Observad
          */
 
             bancoDeTextos bn = new bancoDeTextos();
+
             cajaDeTexto.setText("");
             currentText=bn.giveMeAText();
-            oracion.setText(currentText);
+
+
+            oracion.setText(mezclarPalabra());
 
         }
     public void verificar()

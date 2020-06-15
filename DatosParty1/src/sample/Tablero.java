@@ -1,5 +1,6 @@
 package sample;
 import Listas.*;
+import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 import javafx.scene.Scene;
@@ -16,7 +17,9 @@ import javafx.application.Application;
 import javafx.scene.control.ContentDisplay;
 
 
-public class Tablero extends Application {
+public class Tablero extends Application {//HERENCIA
+
+    //UN EJEMPLO DE MODULARIDAD MUY BASICA SE ENCUENTRA EN LA SEPARACIÓN DE LAS CLASES EN CARPETAS,
 
     //Para realizar el juego se usó abstracción para simplificar la idea del tablero y las relaciones y procesos que ocurren
     // there is the class atributes and encapsulation levels  (private and public)
@@ -304,7 +307,7 @@ public class Tablero extends Application {
                                 if(px.getUbicacionEnElMapa() instanceof  CasillaDoble) // está en una casilla doble?
                                 {       //Estoy en una casilla Doble
 
-                                    if(! ((CasillaDoble) px.getUbicacionEnElMapa()).getTipo().contains("i")  ) { //NO es una intersección????
+                                    if(! ((CasillaDoble) px.getUbicacionEnElMapa()).getTipo().contains("i") ){ //NO es una intersección????
                                         if (px.getDirection())// VECTOR QUE LE DA UNA CASILLA DE INTERSECCIÓN AL JUGADOR  //vas hacia la derecha???
                                         {   //SI TRUE AL SIGUIENTE
                                             px.moverseA((CasillaSimple) ((CasillaDoble) px.getUbicacionEnElMapa()).getSiguiente());
@@ -314,23 +317,16 @@ public class Tablero extends Application {
                                         }
 
                                     }
-                                    else {
+                                    else {//Estoy en una intersección
                                         CasillaDoble xx= (CasillaDoble) px.getUbicacionEnElMapa(); /// ES UNA INTERSECCIÓN
-                                        System.out.println("Medidor");
                                         if(hasnotMovingYet)
                                             {
-                                                if  (!((CasillaDoble) px.getUbicacionEnElMapa()).getTipo().equals("Di")){
-
                                                 px.moverseA((CasillaSimple) ((CasillaDoble) px.getUbicacionEnElMapa()).getSiguiente());
-                                                px.setDirection(xx.getRight());
-                                                xx.changeDirection();
                                             }
-                                                else{
-                                                    px.moverseA((CasillaSimple) ((CasillaDoble) px.getUbicacionEnElMapa()).getSiguiente());
-                                                    px.setDirection(xx.getRight());
-                                                }
-                                            }
-                                        else {   px.moverseA((CasillaSimple) ((CasillaDoble) px.getUbicacionEnElMapa()).getSiguiente());
+                                        else {
+                                            px.setDirection(xx.getRight());
+
+                                            px.moverseA((CasillaSimple) ((CasillaDoble) px.getUbicacionEnElMapa()).getSiguiente());
 
                                              }
                                         }
@@ -392,7 +388,7 @@ public class Tablero extends Application {
 
 
                     }
-                    if (x.equals("Di")){
+                    if (x.equals("Dy")){
                     eventManager.telRamdom(pxA);
                      }
 
@@ -400,7 +396,7 @@ public class Tablero extends Application {
                     if(px!= ((CasillaExtraSimple)jugadores.giveMe(i) ).getDato()) {
                         if (px.getUbicacionEnElMapa() == ((Jugador) ((CasillaExtraSimple)jugadores.giveMe(i) ).getDato()).getUbicacionEnElMapa()) {
 
-                            eventManager.duelo(px,((Jugador) ((CasillaExtraSimple)jugadores.giveMe(i) ).getDato()));
+                            eventManager.dueloA(px,((Jugador) ((CasillaExtraSimple)jugadores.giveMe(i) ).getDato()));
                         }
                     }
                 }
@@ -529,7 +525,7 @@ public class Tablero extends Application {
         FaseD.dobleEnlaze=true;
         FaseD.matrizPosiciones= new float[][]{{10,80},{117,80},{240,80},{363,80},{480,80},{528,80},{528,138},{528,256},{528,370},{528,488},{528,595},{480,595},{363,595},{240,595},{117,595},{10,595},{10,488} ,{10,370},{10,256},{10,138}   };
         caminoD = (ListaCircular) FaseD.convertirMatrizALista(new ListaCircular());
-        caminoD.aplicarPropiedades(new String[]{"Di","Dx","Dx","Dx","Dx","Di","Dx","Dx","Dx","Dx","Di","Dx","Dx","Dx","Dx","Di","Dx","Dx","Dx","Dx"});
+        caminoD.aplicarPropiedades(new String[]{"DY","Dx","Dx","Dx","Dx","Dy","Dx","Dx","Dx","Dx","Dy","Dx","Dx","Dx","Dx","Dy","Dx","Dx","Dx","Dx"});
         eventManager.setFaseD(caminoD);
         //////////////////////////////////////////////////////////////////////////////7
         //IMAGEN TABLERO
@@ -625,15 +621,22 @@ public class Tablero extends Application {
                 Partida.encojerBoton(Move);
 
                 if (turnodeJugador == 1) {
+                    pxA=p1;
                     lanzarDados(p1);
                 }
                 if (turnodeJugador == 2) {
+                    pxA=p2;
+
                     lanzarDados(p2);
                 }
                 if (turnodeJugador == 3) {
+                    pxA=p3;
+
                     lanzarDados(p3);
                 }
                 if (turnodeJugador == 4) {
+                    pxA=p4;
+
                     lanzarDados(p4);
                 }
             }
@@ -775,10 +778,15 @@ public class Tablero extends Application {
         primaryStage.setTitle("Datos Party 1");
         primaryStage.setScene(new Scene(root, 700, 700));
         primaryStage.addEventFilter(KeyEvent.KEY_PRESSED, evt -> {
-            DEV= !DEV;
-            if(DEV){
-            root.getChildren().addAll(Moved,EVENT,Turno);}
-            else {root.getChildren().removeAll(Moved,EVENT,Turno);}
+
+            if (evt.getCode().equals(KeyCode.ESCAPE)) {            DEV= !DEV;
+                if(DEV){
+                    root.getChildren().addAll(Moved,EVENT,Turno);}
+                else {root.getChildren().removeAll(Moved,EVENT,Turno);}}
+            if(evt.getCode().equals(KeyCode.SPACE)){
+
+                eventManager.dueloA(p1,p2);
+            }
         });
 
         primaryStage.show();

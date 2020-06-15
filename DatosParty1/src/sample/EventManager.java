@@ -200,7 +200,11 @@ public class EventManager extends Baraja implements Observador{
             }catch (Exception ignored){
             }
         }
-    public void duelo(Jugador px1, Jugador px2) //Aparece 10 veces.
+
+    public void duelo(Jugador px1)  {
+        dueloA(px1, null);
+    }
+    public void dueloA(Jugador px1, Jugador px2) //Aparece 10 veces.
     {/*This invoke a duelo minigame
      *@author Adrián González Jiménez, Andrés Quirós
      *@Version 11/05/2020
