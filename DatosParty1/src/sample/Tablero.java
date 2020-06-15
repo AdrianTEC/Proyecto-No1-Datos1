@@ -49,7 +49,7 @@ public class Tablero extends Application {//HERENCIA
     private boolean DevMOVING;
     private boolean primerEstrella;
     private Label ronda;
-
+    private Stage stage;
     public  Tablero()
          {
          numeroDeJugadores=2;
@@ -77,7 +77,7 @@ public class Tablero extends Application {//HERENCIA
     public  void setCantidadDeTurnos(int cantidadDeTurnos) {
         this.cantidadDeTurnos = cantidadDeTurnos;
     }
-    private void generarTextoEmergente(String text){
+    private void generarTextoEmergente(String text,int time){
         /*This creates new games text and place it in the root
          *@author  Adrián González
          *@Version14/6/2020
@@ -87,10 +87,10 @@ public class Tablero extends Application {//HERENCIA
         Label victoria = new Label();
         victoria.setText(text);
         victoria.setLayoutX(10);
-        victoria.setLayoutY(0);
+        victoria.setLayoutY(100);
         victoria.setPrefSize(700,200);
         victoria.setFont(Font.font("Verdana", FontWeight.BOLD, 25));
-        victoria.setStyle("-fx-background-color: rgb(255,255,255);");
+        victoria.setStyle(    "-fx-background-color: rgba(255, 255, 255, 0.5); -fx-effect: dropshadow(gaussian, yellow, 50, 0, 0, 0);");
         Platform.runLater(()-> {root.getChildren().add(victoria);
 
             new java.util.Timer().schedule(
@@ -101,7 +101,7 @@ public class Tablero extends Application {//HERENCIA
                             Platform.runLater(()-> root.getChildren().remove(victoria));
                         }
                     },
-                    6000
+                    4000*time
             );
 
 
@@ -124,11 +124,11 @@ public class Tablero extends Application {//HERENCIA
                         //generarTextoEmergente("El ganador del" + "\n" + "juego fue :" + p.getNombre() + "\n" + "gana " + numeroDeJugadores + "monedas");
                         if (numeroDeJugadores > 2) {  //Aquí se excluye el último jugador ya que pensamos que es lo ideal para el juego
 
-                            generarTextoEmergente("El ganador es el jugador:" + eventManager.getGanador().getNombre()  +"  y gana " + numeroDeJugadores + "monedas" + "\n" + "El sugundo lugar es el jugador:" + eventManager.getSegundo().getNombre() +"  y gana " + (numeroDeJugadores -1) + "monedas"+ "\n" + "El tercer lugar es el jugador" +  eventManager.getTercero().getNombre() +"  y gana " + (numeroDeJugadores -2) + "monedas" );
+                            generarTextoEmergente("El primer lugar es : " + eventManager.getGanador().getNombre()  +"  y gana " + numeroDeJugadores + " $" + "\n" + "El segundo lugar es :" + eventManager.getSegundo().getNombre() +"  gana " + (numeroDeJugadores -1) + " $"+ "\n" + "El tercero es " +  eventManager.getTercero().getNombre() +"  y gana " + (numeroDeJugadores -2) + " $" ,2);
                             eventManager.getTercero().setMonedas(eventManager.getTercero().getMonedas() + 1);
                         }
                         else{
-                            generarTextoEmergente("El ganador del" + "\n" + "juego fue :" + p.getNombre() + "\n" + "gana " + numeroDeJugadores + "monedas");
+                            generarTextoEmergente("El ganador del" + "\n" + "juego fue :" + p.getNombre() + "\n" + "gana " + numeroDeJugadores + "$",2);
 
                         }
                             p.setMonedas(p.getMonedas() + numeroDeJugadores);
@@ -203,7 +203,7 @@ public class Tablero extends Application {//HERENCIA
                         generar(e);
                     }
                     ronda.setText(rondasJugadas + "/" + cantidadDeTurnos); //se actualiza la ronda
-                    generarTextoEmergente("¡MINIJUEGO!");
+                    generarTextoEmergente("¡MINIJUEGO!",1);
                     sePuedeMover=false;
 
                     new java.util.Timer().schedule(new java.util.TimerTask() {
@@ -215,34 +215,55 @@ public class Tablero extends Application {//HERENCIA
 
                 }
                 else{
-                    Label victoria = new Label();
                     int maxMonedas=0;
                     int max=0;
                     String ganador="";
+                    boolean condicionEmpate=false;
                     for (int i=0; i<jugadores.Size();i++)
                         {
                             Jugador aux= (Jugador) ((CasillaExtraSimple)jugadores.giveMe(i)).getDato();
                             if (aux.getEstrellas() == max){
                                 if (aux.getMonedas() > maxMonedas){
                                     ganador= aux.getNombre();
+                                    condicionEmpate=false;
                                     maxMonedas = aux.getMonedas();
-                            }
+                                }
+                                else {
+                                    condicionEmpate=true;
+                                }
                             }
                             if(aux.getEstrellas()> max){
+                                condicionEmpate=false;
                                 ganador=aux.getNombre();
                                 max=aux.getEstrellas();
                                 maxMonedas = aux.getMonedas();
                             }
                         }
-                    victoria.setText("Fin del juego"+"\n"+ "gana el jugador :" +ganador );
-                    victoria.setLayoutX(100);
-                    victoria.setLayoutY(130);
-                    victoria.setFont(Font.font("Verdana", FontWeight.BOLD, 50));
-                    victoria.setStyle("-fx-background-color: rgb(255,255,255);");
-                    sePuedeMover= false;
+                    if(condicionEmpate){
+                        generarTextoEmergente("Nadie ganó, ¡Que tragedia!",10);
+                    }
+                    else {
+                    generarTextoEmergente("El ganador del juego fue : "+ ganador,10);}
+                    }
 
-                    root.getChildren().add(victoria);
-                }
+                new java.util.Timer().schedule(
+                        new java.util.TimerTask() {
+                            @Override
+                            public void run() {
+                                    Partida newPartida= new Partida();
+                                    Platform.runLater(()->{
+                                        Stage v = new Stage();
+                                        newPartida.start(v);
+                                        stage.close();
+
+                                    });
+
+                            }
+                        },
+                        2000
+                );
+
+
             }
 
 
@@ -451,7 +472,7 @@ public class Tablero extends Application {//HERENCIA
 
         e.setImagen(new ImageView("Imagenes/Estrella.png"));
 
-
+        stage=primaryStage;
         Baraja barajaVerde;
         Baraja barajaAzul;
         Baraja barajaRoja;

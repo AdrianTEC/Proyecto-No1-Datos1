@@ -337,7 +337,7 @@ public class EventManager extends Baraja implements Observador{
          * @param Jugador
          *
          */
-
+            Partida.reproducirSonido("star");
             CasillaDoble i= (CasillaDoble) faseD.giveMe((int) (Math.random()*faseD.Size()));
             while (i.getTipo().equals("Di")){
                 i= (CasillaDoble) faseD.giveMe((int) (Math.random()*faseD.Size()));
@@ -346,12 +346,15 @@ public class EventManager extends Baraja implements Observador{
             teletransporte(px,i);
         }
     public void telRamdom(Jugador px11)
-        {/*This teleport px1 to randomPosition
+        {
+            /*This teleport px1 to randomPosition
          *@author  Adrián González
          *@Version 9/05/2020
          * @param Jugador
          *
          */
+            Partida.reproducirSonido("star");
+
             teletransporte( px11,camPrincipal.giveMe((int) (Math.random()*37)));
         }
 
