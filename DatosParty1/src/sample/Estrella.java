@@ -28,7 +28,7 @@ public class Estrella {
 
         ubicacionEnElMapa=casillita;
 
-        //System.out.println(casillita.getINDEX() +" "+ casillita.getTipo() );
+        System.out.println(casillita.getINDEX() +" "+ casillita.getTipo() );
         moverAcoordenada(casillita.getPosicion()[0],casillita.getPosicion()[1]);
 
 
@@ -66,15 +66,15 @@ public class Estrella {
         imagen.setLayoutY(500);
     }
 
-
     public void numeroRandom() {
-        numero = (int)(Math.random()*31) + 1;
+        numero = (int)(Math.random()*4)+1;
     }
 
 
     public int getNumero(){
         return numero;
     }
+
 
     public Object getUbicacionEnElMapa() {
         return ubicacionEnElMapa;

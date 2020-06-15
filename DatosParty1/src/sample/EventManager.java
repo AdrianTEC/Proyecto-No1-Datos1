@@ -20,6 +20,10 @@ public class EventManager extends Baraja implements Observador{
     private Boolean minijuegoAbierto;
     private Jugador ganador;
     private int maxPuntaje;
+    private int segundoPuntaje;
+    private int tercerPuntaje;
+    private Jugador segundo;
+    private Jugador tercero;
 
     public EventManager() {
         setTipoBaraja("D");
@@ -42,6 +46,8 @@ public class EventManager extends Baraja implements Observador{
         robando=false;
         pxa= new Jugador();
         actual= new Carta();
+        segundo = new Jugador();
+        tercero = new Jugador();
     }
 
     public Boolean getMinijuegoAbierto() {
@@ -51,6 +57,14 @@ public class EventManager extends Baraja implements Observador{
     public Jugador getGanador() {
 
         return ganador;
+    }
+
+    public Jugador getSegundo() {
+        return segundo;
+    }
+
+    public Jugador getTercero() {
+        return tercero;
     }
 
     public void setCamPrincipal(ListaCircular camPrincipal) {
@@ -87,6 +101,7 @@ public class EventManager extends Baraja implements Observador{
          *@Version 02/05/2020
          * @param nothing
          */
+        System.out.println("Se barajó la pila de eventos");
         eventos=memoriaDeInicio;
         for(int i=0; i< eventos.length;i++)
         {
@@ -96,9 +111,6 @@ public class EventManager extends Baraja implements Observador{
             eventos[numb]= aux;
         }
         barajaDeEventos.especialPush(eventos);
-
-
-
     }
 
     public Carta takeACard(Jugador px1) {
@@ -163,30 +175,37 @@ public class EventManager extends Baraja implements Observador{
             }catch (Exception ignored){
             }
         }
-    public void duelo(Jugador px1) throws Exception//Aparece 10 veces.
+    public void duelo(Jugador px1, Jugador px2) //Aparece 10 veces.
     {
-        int numero = (int) (Math.random() * 3);
-        Stage ventana= new Stage();
-        Jugador px2= dameUnJugador();
-        if (numero == 0) {
-            CowBoys vaqueros= new CowBoys();
-            vaqueros.setPxs(px1,px2);
-            vaqueros.start(ventana);
+        try {
+
+
+            int numero = (int) (Math.random() * 3);
+            Stage ventana = new Stage();
+            if (px2 == null) {
+                px2 = dameUnJugador();
+            }
+            if (numero == 0) {
+                CowBoys vaqueros = new CowBoys();
+                vaqueros.setPxs(px1, px2);
+                vaqueros.start(ventana);
+            }
+            if (numero == 1) {
+                Force force = new Force();
+                force.setPxs(px1, px2);
+                force.start(ventana);
+            }
+            if (numero == 2) {
+                HighestCard highestCard = new HighestCard();
+                highestCard.setPxs(px1, px2);
+                highestCard.start(ventana);
+            }
         }
-        if(numero==1)  {
-            Force force= new Force();
-            force.setPxs(px1,px2);
-            force.start(ventana);
+        catch (Exception e) {
         }
-        if(numero==2)
-        {
-            HighestCard highestCard= new HighestCard();
-            highestCard.setPxs(px1,px2);
-            highestCard.start(ventana);
         }
 
 
-    }
     public void robarMonedas(Jugador px11)//Aparece 10 veces
     {
         robando=true;
@@ -313,11 +332,28 @@ public class EventManager extends Baraja implements Observador{
         minijuegoAbierto=false;
         if(maxPuntaje< puntaje)
             {
+                segundo = ganador;
+                segundoPuntaje = maxPuntaje;
                 maxPuntaje=puntaje;
                 ganador=jugador;
 
-
-                System.out.println("asd");
             }
+        else{
+            if (segundoPuntaje > puntaje) {
+                tercero = segundo;
+                tercerPuntaje = segundoPuntaje;
+                tercero = jugador;
+                tercerPuntaje = puntaje;
+
+
+            }
+            else{
+                segundo = tercero;
+                segundoPuntaje = tercerPuntaje;
+                segundo = jugador;
+                segundoPuntaje = puntaje;
+            }
+
+        }
     }
 }

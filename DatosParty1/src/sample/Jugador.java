@@ -158,7 +158,7 @@ public class    Jugador {   // ATRIBUTOS DEL JUGADOR
          * @param nothing
          */
         setEstrellas(getEstrellas() + 1);
-        setMonedas(getMonedas() - 2);
+        setMonedas(getMonedas() - 5);
 
     }
 

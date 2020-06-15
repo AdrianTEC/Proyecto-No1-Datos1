@@ -26,6 +26,10 @@ public class Tablero extends Application {
     private Estrella e ;
 
     private ListaCircular caminoPrincipal;
+    private ListaLineal caminoA;
+    private ListaLineal caminoB;
+    private ListaLineal caminoC;
+    private ListaCircular caminoD;
     private EventManager eventManager;
 
     private  ListaLineal jugadores;
@@ -40,6 +44,7 @@ public class Tablero extends Application {
     private boolean DEV;
     private boolean sePuedeMover;
     private boolean DevMOVING;
+    private boolean primerEstrella;
     private Label ronda;
 
     public  Tablero()
@@ -60,6 +65,7 @@ public class Tablero extends Application {
          eventManager= new EventManager();
          ronda = new Label();
          sePuedeMover=true;
+         primerEstrella = true;
 
     }
     public  void setNumeroDeJugadores(int numeroDeJugadores) {
@@ -74,7 +80,7 @@ public class Tablero extends Application {
         victoria.setLayoutX(10);
         victoria.setLayoutY(0);
         victoria.setPrefSize(700,200);
-        victoria.setFont(Font.font("Verdana", FontWeight.BOLD, 50));
+        victoria.setFont(Font.font("Verdana", FontWeight.BOLD, 25));
         victoria.setStyle("-fx-background-color: rgb(255,255,255);");
         Platform.runLater(()-> {root.getChildren().add(victoria);
 
@@ -86,7 +92,7 @@ public class Tablero extends Application {
                             Platform.runLater(()-> root.getChildren().remove(victoria));
                         }
                     },
-                    3000
+                    6000
             );
 
 
@@ -96,14 +102,26 @@ public class Tablero extends Application {
     }
     private void generarJuego(int puntero,int juego) // función recursiva
         {
-            if(puntero==0&& !eventManager.getMinijuegoAbierto())
+            if(puntero==0 && !eventManager.getMinijuegoAbierto())
                 {
                     if(!sePuedeMover) {
                         puntero--;
                         Jugador p = eventManager.getGanador();
-                        generarTextoEmergente("El ganador del" + "\n" + "juego fue :" + p.getNombre() + "\n" + "gana " + numeroDeJugadores + "monedas");
-                        p.setMonedas(p.getMonedas() + numeroDeJugadores);
-                        sePuedeMover = true;
+                        //generarTextoEmergente("El ganador del" + "\n" + "juego fue :" + p.getNombre() + "\n" + "gana " + numeroDeJugadores + "monedas");
+                        if (numeroDeJugadores > 2) {  //Aquí se excluye el último jugador ya que pensamos que es lo ideal para el juego
+
+                            generarTextoEmergente("El ganador es el jugador:" + eventManager.getGanador().getNombre()  +"  y gana " + numeroDeJugadores + "monedas" + "\n" + "El sugundo lugar es el jugador:" + eventManager.getSegundo().getNombre() +"  y gana " + (numeroDeJugadores -1) + "monedas"+ "\n" + "El tercer lugar es el jugador" +  eventManager.getTercero().getNombre() +"  y gana " + (numeroDeJugadores -2) + "monedas" );
+                            eventManager.getTercero().setMonedas(eventManager.getTercero().getMonedas() + 1);
+                        }
+                        else{
+                            generarTextoEmergente("El ganador del" + "\n" + "juego fue :" + p.getNombre() + "\n" + "gana " + numeroDeJugadores + "monedas");
+
+                        }
+                            p.setMonedas(p.getMonedas() + numeroDeJugadores);
+                            eventManager.getSegundo().setMonedas(eventManager.getSegundo().getMonedas() + numeroDeJugadores - 1);
+                            sePuedeMover = true;
+
+
                     }
 
 
@@ -179,14 +197,22 @@ public class Tablero extends Application {
                 }
                 else{
                     Label victoria = new Label();
+                    int maxMonedas=0;
                     int max=0;
                     String ganador="";
                     for (int i=0; i<jugadores.Size();i++)
                         {
                             Jugador aux= (Jugador) ((CasillaExtraSimple)jugadores.giveMe(i)).getDato();
+                            if (aux.getEstrellas() == max){
+                                if (aux.getMonedas() > maxMonedas){
+                                    ganador= aux.getNombre();
+                                    maxMonedas = aux.getMonedas();
+                            }
+                            }
                             if(aux.getEstrellas()> max){
                                 ganador=aux.getNombre();
                                 max=aux.getEstrellas();
+                                maxMonedas = aux.getMonedas();
                             }
                         }
                     victoria.setText("Fin del juego"+"\n"+ "gana el jugador :" +ganador );
@@ -203,23 +229,31 @@ public class Tablero extends Application {
 
     }
     public  void generar(Estrella es) {
-        if(rondasJugadas>=2) {
-            es.numeroRandom();
-            es.setUbicacionEnElMapa(caminoPrincipal.giveMe(es.getNumero()));
+        es.numeroRandom();
+        if (rondasJugadas >= 2) {
+            if (es.getNumero() == 1) {
+                es.setUbicacionEnElMapa(caminoA.giveMe(((int) (Math.random() * 3))+1));
+            }
+            if (es.getNumero() == 2) {
+                es.setUbicacionEnElMapa(caminoB.giveMe(((int) (Math.random() * 3))+1));
+            }
+            if (es.getNumero() == 3) {
+                es.setUbicacionEnElMapa(caminoC.giveMe(((int) (Math.random() * 5))+1));
+            }
+            if (es.getNumero()==4){
+                es.setUbicacionEnElMapa(caminoPrincipal.giveMe(((int) (Math.random() * 30))+1));
+            }
+            if (primerEstrella){
+                root.getChildren().add(es.getImagen());
+                primerEstrella = false;
+            }
             es.moverseA((CasillaSimple) es.getUbicacionEnElMapa());
-            root.getChildren().add(es.getImagen());
+
+
+
         }
     }
-    public  void MoverEstrella(){
-        /*This funtion is in charge of controlling the game boards
-         *@author Adrián González Jiménez
-         *@Version 02/05/2020
-         * @param nothing
-         */
-        e.numeroRandom();
-        e.setUbicacionEnElMapa(caminoPrincipal.giveMe(e.getNumero()));
-        e.moverseA((CasillaSimple) e.getUbicacionEnElMapa());
-    }
+
     private void moverPersonaje(Jugador px,int numDado,int puntero,boolean hasnotMovingYet)
         {/*This funtion is in charge of moving the players, recognize the actual player kind of Casilla, and turns the Casillas Dobles "intersection"
          *@author Adrián González Jiménez
@@ -234,9 +268,11 @@ public class Tablero extends Application {
                         Platform.runLater(() -> {
                             if(px.getMonedas() > 1) {
                                 compraEstrella = true;
+
                             }
                         });
                     }
+
                 new java.util.Timer().schedule(
                         new java.util.TimerTask() {
                             @Override
@@ -246,7 +282,7 @@ public class Tablero extends Application {
                                 if(px.getUbicacionEnElMapa() instanceof  CasillaDoble) // está en una casilla doble?
                                 {       //Estoy en una casilla Doble
 
-                                    if(! ((CasillaDoble) px.getUbicacionEnElMapa()).getTipo().contains("i")) { //NO es una intersección????
+                                    if(! ((CasillaDoble) px.getUbicacionEnElMapa()).getTipo().contains("i")  ) { //NO es una intersección????
                                         if (px.getDirection())// VECTOR QUE LE DA UNA CASILLA DE INTERSECCIÓN AL JUGADOR  //vas hacia la derecha???
                                         {   //SI TRUE AL SIGUIENTE
                                             px.moverseA((CasillaSimple) ((CasillaDoble) px.getUbicacionEnElMapa()).getSiguiente());
@@ -254,19 +290,25 @@ public class Tablero extends Application {
                                         } else {  //SI FALSE AL ANTERIOR
                                             px.moverseA((CasillaSimple) ((CasillaDoble) px.getUbicacionEnElMapa()).getAnterior());
                                         }
+
                                     }
                                     else {
                                         CasillaDoble xx= (CasillaDoble) px.getUbicacionEnElMapa(); /// ES UNA INTERSECCIÓN
-
+                                        System.out.println("Medidor");
                                         if(hasnotMovingYet)
                                             {
-                                                 px.moverseA((CasillaSimple) ((CasillaDoble) px.getUbicacionEnElMapa()).getSiguiente());
-                                                 px.setDirection(xx.getRight());
-                                                xx.changeDirection();
-                                                //
+                                                if  (!((CasillaDoble) px.getUbicacionEnElMapa()).getTipo().equals("Di")){
 
+                                                px.moverseA((CasillaSimple) ((CasillaDoble) px.getUbicacionEnElMapa()).getSiguiente());
+                                                px.setDirection(xx.getRight());
+                                                xx.changeDirection();
                                             }
-                                        else {  px.moverseA((CasillaSimple) ((CasillaDoble) px.getUbicacionEnElMapa()).getSiguiente());
+                                                else{
+                                                    px.moverseA((CasillaSimple) ((CasillaDoble) px.getUbicacionEnElMapa()).getSiguiente());
+                                                    px.setDirection(xx.getRight());
+                                                }
+                                            }
+                                        else {   px.moverseA((CasillaSimple) ((CasillaDoble) px.getUbicacionEnElMapa()).getSiguiente());
 
                                              }
                                         }
@@ -302,6 +344,9 @@ public class Tablero extends Application {
                         px.setDirection(   ((CasillaDoble) px.getUbicacionEnElMapa()).getRight()          );
                         ((CasillaDoble) px.getUbicacionEnElMapa()).changeDirection();
                     }
+                    if (x.equals("Dx")) {
+                        px.setDirection(!px.getDirection());
+                    }
                 }
                     if (x.equals("V")||x.equals("Vi")){
                         tipoCasilla = 1;
@@ -319,7 +364,7 @@ public class Tablero extends Application {
                         cogerCartaV.setGraphic(new ImageView("Imagenes/Cartas/baraja(A).png"));
 
                     }
-                    if (x.equals("D")){
+                    if (x.equals("D") || x.equals("Dx")){
                         tipoCasilla = 4;
                         cogerCartaV.setGraphic(new ImageView("Imagenes/Cartas/baraja(D).png"));
 
@@ -327,9 +372,16 @@ public class Tablero extends Application {
                     }
                     if (x.equals("Di")){
                     eventManager.telRamdom(pxA);
-
-
                      }
+
+                for (int i = 0; i<numeroDeJugadores;i++){
+                    if(px!= ((CasillaExtraSimple)jugadores.giveMe(i) ).getDato()) {
+                        if (px.getUbicacionEnElMapa() == ((Jugador) ((CasillaExtraSimple)jugadores.giveMe(i) ).getDato()).getUbicacionEnElMapa()) {
+
+                            eventManager.duelo(px,((Jugador) ((CasillaExtraSimple)jugadores.giveMe(i) ).getDato()));
+                        }
+                    }
+                }
 
                 cogerCartaV.setLayoutX(240);
                 cogerCartaV.setLayoutY(100);
@@ -404,7 +456,6 @@ public class Tablero extends Application {
             FaseInicial.matrizPosiciones= new float[][]{    {427, 531}, {375, 531}, {333, 531}, {291, 531}, {246, 531,}, {204, 531}, {162, 531}, {110, 531}, {70, 494 }, {70, 445}, {70, 402} , {70, 359 }, {70, 316 }, {70, 273 }, {70, 230},{70, 179}, {110, 142}, {162, 142}, {204, 142}, {246, 142}, {291, 142},{333, 142}, {375, 142}, {427, 142}, {470, 185}, {470, 230}, {470, 273}, {470, 316}, {470, 359}, {470, 402} ,{470, 445}, {470, 488}   };
 
             caminoPrincipal= (ListaCircular) FaseInicial.convertirMatrizALista(new ListaCircular());   //extraigo la lista circular
-
             caminoPrincipal.aplicarPropiedades(new String[]{"D","V","R","A","R","V","A","R","D","Vi","A","R","A","Vi","R","D","R","A","R","V","R","Vi","A","D","A","V","R","V","A","V","Ai","R"});
             caminoPrincipal.remplazarCasillaSimple(10);
             caminoPrincipal.remplazarCasillaSimple(31);
@@ -417,7 +468,7 @@ public class Tablero extends Application {
             Camino FaseA= new Camino();
             FaseA.matrizPosiciones= new float[][]{{129,270},{179,251},{205,203}};
 
-        ListaLineal caminoA = (ListaLineal) FaseA.convertirMatrizALista(new ListaLineal());
+        caminoA = (ListaLineal) FaseA.convertirMatrizALista(new ListaLineal());
         caminoA.aplicarPropiedades(new String[]{"R","V","A"});
 
         ((CasillaDoble) caminoPrincipal.giveMe(14)).setAnterior((caminoA.primero));
@@ -427,7 +478,7 @@ public class Tablero extends Application {
         //CREO LA FASE B
             Camino FaseB= new Camino();
             FaseB.matrizPosiciones= new float[][]{{330,203},{355,251},{402,270}};
-        ListaLineal caminoB = (ListaLineal) FaseB.convertirMatrizALista(new ListaLineal());
+        caminoB = (ListaLineal) FaseB.convertirMatrizALista(new ListaLineal());
         caminoB.aplicarPropiedades(new String[]{"D","D","D"});
             ((CasillaDoble) caminoPrincipal.giveMe(22)).setAnterior((caminoB.primero));
             ((CasillaSimple) caminoB.ultimo).setSiguiente(caminoPrincipal.giveMe(27));
@@ -439,7 +490,7 @@ public class Tablero extends Application {
             FaseC.dobleEnlaze=true;
             FaseC.matrizPosiciones= new float[][]{{142, 445},{210, 445},{272, 445},{334, 445},{386, 445}};
 
-        ListaLineal caminoC = (ListaLineal) FaseC.convertirMatrizALista(new ListaLineal());
+        caminoC = (ListaLineal) FaseC.convertirMatrizALista(new ListaLineal());
         caminoC.aplicarPropiedades(new String[]{"R","V","R","V","R"});
 
         ((CasillaDoble) caminoPrincipal.giveMe(10)).setAnterior((caminoC.primero));
@@ -455,8 +506,8 @@ public class Tablero extends Application {
         Camino FaseD= new Camino();
         FaseD.dobleEnlaze=true;
         FaseD.matrizPosiciones= new float[][]{{10,80},{117,80},{240,80},{363,80},{480,80},{528,80},{528,138},{528,256},{528,370},{528,488},{528,595},{480,595},{363,595},{240,595},{117,595},{10,595},{10,488} ,{10,370},{10,256},{10,138}   };
-        ListaCircular caminoD = (ListaCircular) FaseD.convertirMatrizALista(new ListaCircular());
-        caminoD.aplicarPropiedades(new String[]{"Di","D","D","D","D","Di","D","D","D","D","Di","D","D","D","D","Di","D","D","D","D"});
+        caminoD = (ListaCircular) FaseD.convertirMatrizALista(new ListaCircular());
+        caminoD.aplicarPropiedades(new String[]{"Di","Dx","Dx","Dx","Dx","Di","Dx","Dx","Dx","Dx","Di","Dx","Dx","Dx","Dx","Di","Dx","Dx","Dx","Dx"});
         eventManager.setFaseD(caminoD);
         //////////////////////////////////////////////////////////////////////////////7
         //IMAGEN TABLERO
@@ -535,7 +586,7 @@ public class Tablero extends Application {
                     p4.comprarEstrella();
                     p4.getRecursos().setText("P4  " + p4.getMonedas() + "   "+ p4.getEstrellas()); }
 
-                MoverEstrella();
+                generar(e);
                 compraEstrella = false;
 
             }
@@ -706,9 +757,6 @@ public class Tablero extends Application {
             if(DEV){
             root.getChildren().addAll(Moved,EVENT,Turno);}
             else {root.getChildren().removeAll(Moved,EVENT,Turno);}
-
-
-
         });
 
         primaryStage.show();

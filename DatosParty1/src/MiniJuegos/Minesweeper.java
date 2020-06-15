@@ -141,7 +141,7 @@ public class Minesweeper extends Application implements Observador, Observado {
         stage.setScene(new Scene(root, 1200, 700));
         root.getChildren().addAll(fondo,barrita.getBarra(),INDICADOR,puntaje,cantidadPuntos,barrita.getBarraContainer());
         stage.show();
-        stage.setOnCloseRequest(event -> System.exit(1));
+        stage.setOnCloseRequest(event -> notificar());
 
         crearMinas();
 

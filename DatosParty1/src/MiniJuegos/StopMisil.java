@@ -219,8 +219,7 @@ public void start(Stage stage) {
     crearMisil();
 
     stage.show();
-    stage.setOnCloseRequest(event -> System.exit(1));
-
+        stage.setOnCloseRequest(event -> notificar());
 }
 
     @Override

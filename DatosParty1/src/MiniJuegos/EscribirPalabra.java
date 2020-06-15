@@ -150,6 +150,7 @@ public class EscribirPalabra extends Application implements Observador, Observad
         stage.setScene(new Scene(root, 700, 700));
         root.getChildren().addAll(barrita.getBarra(),pts,barrita.getBarraContainer(),oracion,cajaDeTexto,INDICADOR);
         stage.show();
+        stage.setOnCloseRequest(event -> notificar());
         stage.addEventFilter(KeyEvent.KEY_RELEASED, evt -> {
             if(evt.getCode().equals(KeyCode.ENTER)){
 

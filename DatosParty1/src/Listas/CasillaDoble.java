@@ -9,7 +9,7 @@ public class CasillaDoble extends CasillaSimple {
         return right;
     }
 
-    public void setRight(boolean right) {
+    public void setRight(boolean right)  {
         this.right = right;
     }
 
