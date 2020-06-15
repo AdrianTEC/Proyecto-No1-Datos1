@@ -340,8 +340,6 @@ public class EventManager extends Baraja implements Observador{
             }
         else{
             if (segundoPuntaje > puntaje) {
-                tercero = segundo;
-                tercerPuntaje = segundoPuntaje;
                 tercero = jugador;
                 tercerPuntaje = puntaje;
 
