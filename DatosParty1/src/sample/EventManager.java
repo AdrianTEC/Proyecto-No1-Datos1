@@ -8,6 +8,7 @@ import javafx.stage.Stage;
 import java.lang.reflect.Method;
 
 public class EventManager extends Baraja implements Observador{
+
     private String[] eventos;
     private Pila barajaDeEventos;
     private String[] memoriaDeInicio;
@@ -28,6 +29,7 @@ public class EventManager extends Baraja implements Observador{
     public EventManager() {
         setTipoBaraja("D");
         barajaDeEventos= new Pila();
+
         eventos=new String[]{"duelo","duelo","duelo","duelo","duelo","duelo","duelo","duelo","duelo","duelo",  //DUELO
                             "robarMonedas","robarMonedas","robarMonedas","robarMonedas","robarMonedas","robarMonedas","robarMonedas","robarMonedas","robarMonedas","robarMonedas", //ROBAR MONEDAS
                             "regalarMonedas","regalarMonedas","regalarMonedas","regalarMonedas","regalarMonedas", //Regalar Monedas
@@ -111,6 +113,9 @@ public class EventManager extends Baraja implements Observador{
             eventos[numb]= aux;
         }
         barajaDeEventos.especialPush(eventos);
+
+
+
     }
 
     public Carta takeACard(Jugador px1) {
@@ -121,6 +126,7 @@ public class EventManager extends Baraja implements Observador{
          */
          pxa=px1; //actualizo el jugador actual
          CasillaExtraSimple x =barajaDeEventos.pop();  //toma una carta de la pila
+
          actual= crearCarta();
          actual.setDescripcion("Has activado un evento! "+"\n"+ "el evento activado es"+"\n"+" de tipo :" + x.getDato());
 
@@ -143,7 +149,12 @@ public class EventManager extends Baraja implements Observador{
         return actual;
     }
     private  Jugador dameUnJugador()
-    {
+    { /*This returns a random player
+     *@author Adrián González Jiménez
+     *@Version 11/05/2020
+     * @param
+     *@return Jugador
+     */
             Jugador aux;
             aux= (Jugador) ((CasillaExtraSimple) jugadores.giveMe((int) (Math.random()*jugadores.Size()))).getDato();
             if(aux==pxa)
@@ -156,7 +167,12 @@ public class EventManager extends Baraja implements Observador{
         }
 
     public void Dev(Jugador px1)
-    {
+    {/*This tps px1 to faseD
+     *@author Adrián González Jiménez
+     *@Version 11/05/2020
+     * @param Jugador
+     *@return
+     */
         try {
             ///esta función es especial, llama al metodo que contiene la carta es casi magia
 
@@ -166,12 +182,21 @@ public class EventManager extends Baraja implements Observador{
         }
     }
     private void magicfuntion(Jugador px1, CasillaExtraSimple x)
-    {
+    {/*This calls a method from string
+     *@author Adrián González Jiménez
+     *@Version 11/05/2020
+     * @param Jugador CasillaExtraSimple
+     *@return
+     */
             try {
                 ///esta función es especial, llama al metodo que contiene la carta es casi magia
-                System.out.println(x.getDato());
+                 //x dato string
+
+
                 Method method = EventManager.class.getMethod((String) x.getDato(),Jugador.class );
                 method.invoke(this,px1);
+
+
             }catch (Exception ignored){
             }
         }
@@ -201,9 +226,10 @@ public class EventManager extends Baraja implements Observador{
                 highestCard.start(ventana);
             }
         }
-        catch (Exception e) {
+        catch (Exception ignored) {
         }
         }
+
 
 
     public void robarMonedas(Jugador px11)//Aparece 10 veces
